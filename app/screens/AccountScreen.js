@@ -1,14 +1,19 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import Screen from '../components/Screen'
 import colors from '../config/colors'
-import Profile from '../components/profile/Profile'
-import ProfileMenu from '../components/profile/ProfileMenu'
+import {
+  Profile,
+  ProfileMenu,
+  FeelingsCard,
+  DataCard,
+  ForumCard
+} from '../components/profile'
 
 const AccountScreen = () => {
   return (
     <Screen style={styles.screen}>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <ProfileMenu />
         <Profile
           title="Mosh Hamedani"
@@ -16,7 +21,10 @@ const AccountScreen = () => {
           city="São Paulo"
           image={require('../assets/mosh.jpg')}
         />
-      </View>
+        <FeelingsCard />
+        <DataCard />
+        <ForumCard />
+      </ScrollView>
     </Screen>
   )
 }
