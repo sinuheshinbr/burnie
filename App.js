@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import PasswordResetConfirmationScreen from './app/screens/PasswordResetConfirmationScreen'
+import AccountScreen from './app/screens/AccountScreen'
 
 export default function App() {
-  return <PasswordResetConfirmationScreen />
+  return <AccountScreen />
 }
