@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, Post } from './'
+import Card from './Card'
+import Post from './Post'
 import ListItemSeparator from '../ListItemSeparator'
 
 const ForumCard = props => {

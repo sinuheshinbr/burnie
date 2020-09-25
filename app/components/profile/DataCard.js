@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
-import { Card } from './'
+import Card from './Card'
 
 const DataCard = props => {
   const data = {

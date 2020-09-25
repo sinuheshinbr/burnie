@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Button, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import Emoji from 'react-native-emoji'
 
 const EmojiScale = () => {

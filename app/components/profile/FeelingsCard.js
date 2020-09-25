@@ -1,6 +1,6 @@
 import React from 'react'
 import EmojiScale from './EmojiScale'
-import { Card } from './'
+import Card from './Card'
 
 const FeelingsCard = () => {
   return (
