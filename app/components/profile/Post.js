@@ -4,7 +4,14 @@ import AppText from '../AppText'
 import colors from '../../config/colors'
 import ListItemSeparator from '../ListItemSeparator'
 
-const ListItem = ({ title, content, image, IconComponent, onPress }) => {
+const Post = ({
+  title,
+  content,
+  image,
+  IconComponent,
+  elapsedTime,
+  onPress
+}) => {
   return (
     <>
       <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
@@ -12,9 +19,14 @@ const ListItem = ({ title, content, image, IconComponent, onPress }) => {
           {IconComponent}
           {image && <Image source={image} style={styles.image} />}
           <View style={styles.detailsContainer}>
-            <AppText numberOfLines={1} style={styles.title}>
-              {title}
-            </AppText>
+            <View style={styles.titleContainer}>
+              <AppText numberOfLines={1} style={styles.title}>
+                {title}
+              </AppText>
+              <AppText numberOfLines={1} style={styles.elapsedTime}>
+                {elapsedTime}
+              </AppText>
+            </View>
             {content && <AppText style={styles.content}>{content}</AppText>}
           </View>
         </View>
@@ -32,6 +44,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  content: {
+    color: colors.medium,
+    width: '100%'
+  },
+  detailsContainer: {
+    marginLeft: 10,
+    justifyContent: 'center',
+    width: '80%'
+  },
+  elapsedTime: {
+    color: colors.medium,
+    width: 40
+  },
   image: {
     width: 50,
     height: 50,
@@ -41,15 +66,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'black'
   },
-  content: {
-    color: colors.medium,
-    width: '100%'
-  },
-  detailsContainer: {
-    marginLeft: 10,
-    justifyContent: 'center',
-    width: '80%'
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 })
 
-export default ListItem
+export default Post
