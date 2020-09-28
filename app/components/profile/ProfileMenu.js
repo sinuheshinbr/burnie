@@ -1,8 +1,10 @@
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 import colors from '../../config/colors'
 import ListItemSeparator from '../ListItemSeparator'
+import IconButton from '../IconButton'
+import NotificationIcon from './NotificationIcon'
 
 const ProfileMenu = props => {
   return (
@@ -10,8 +12,10 @@ const ProfileMenu = props => {
       <View style={styles.wrapper}>
         <Text style={styles.text}>Burnie</Text>
         <View style={styles.icons}>
-          <MaterialCommunityIcons name="bell" size={25} color={colors.medium} />
-          <Entypo name="cog" size={25} color={colors.medium} />
+          <NotificationIcon newNotifications={100} />
+          <IconButton onPress={() => console.log('cog pressed')}>
+            <Entypo name="cog" size={25} color={colors.medium} />
+          </IconButton>
         </View>
       </View>
       <ListItemSeparator />
