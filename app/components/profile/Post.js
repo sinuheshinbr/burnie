@@ -27,7 +27,11 @@ const Post = ({
                 {elapsedTime}
               </AppText>
             </View>
-            {content && <AppText style={styles.content}>{content}</AppText>}
+            {content && (
+              <AppText numberOfLines={2} style={styles.content}>
+                {content}
+              </AppText>
+            )}
           </View>
         </View>
       </TouchableHighlight>
@@ -55,7 +59,8 @@ const styles = StyleSheet.create({
   },
   elapsedTime: {
     color: colors.medium,
-    width: 40
+    width: '20%',
+    textAlign: 'right'
   },
   image: {
     width: 50,
@@ -64,7 +69,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: '700',
-    color: 'black'
+    color: 'black',
+    width: '70%'
   },
   titleContainer: {
     flexDirection: 'row',

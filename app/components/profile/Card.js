@@ -13,7 +13,7 @@ const Card = ({ title = '', minHeight, children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
+    marginBottom: 15,
     width: '90%',
     alignSelf: 'center',
     elevation: 5,

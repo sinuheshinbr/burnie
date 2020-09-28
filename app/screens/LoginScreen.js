@@ -58,7 +58,7 @@ const WelcomeScreen = props => {
         </AppForm>
         <View style={styles.rememberContainer}>
           <AppCheckBox title="Remember-me" />
-          <Text style={styles.resetPassword}>Esqueceu sua senha?</Text>
+          <Text style={styles.resetPassword}>Forgot your password?</Text>
         </View>
       </View>
     </ImageBackground>
