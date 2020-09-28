@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     minWidth: 15,
     borderRadius: 9,
     position: 'absolute',
-    top: 8,
-    left: 15,
+    top: '10%',
+    left: '20%',
     alignItems: 'center',
     justifyContent: 'center'
   },

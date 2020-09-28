@@ -1,11 +1,21 @@
 import React, { useRef } from 'react'
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
-import { AppFormField, AppForm, SubmitButton } from '../components/forms'
+import { StyleSheet, View } from 'react-native'
+import Screen from '../components/Screen'
 import colors from '../config/colors'
+import { ProfileMenu } from '../components/profile'
+import SelectPhoto from '../components/edit-profile/SelectPhoto'
+import AppForm from '../components/forms/AppForm'
 import * as Yup from 'yup'
+import AppFormField from '../components/forms/AppFormField'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required()
+    .label('Name'),
+  city: Yup.string()
+    .required()
+    .label('City'),
   email: Yup.string()
     .required()
     .email()
@@ -19,30 +29,26 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
-const RegisterScreen = props => {
+const ConfigurationScreen = () => {
+  const cityEl = useRef(null)
+  const emailEl = useRef(null)
   const passwordEl = useRef(null)
   const passwordConfirmEl = useRef(null)
 
   return (
-    <ImageBackground
-      style={styles.background}
-      source={require('../assets/background.jpg')}
-    >
+    <Screen style={styles.screen}>
+      <ProfileMenu isEditing />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
-        scrollEnabled={false}
+        scrollEnabled={true}
       >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.logo}
-            source={require('../assets/burnie-logo.png')}
-          />
-          <Text style={styles.tagline}>Burnie</Text>
-        </View>
+        <SelectPhoto image={require('../assets/mosh.jpg')} />
         <View style={styles.formContainer}>
           <AppForm
             initialValues={{
+              name: '',
+              city: '',
               email: '',
               password: '',
               passwordConfirmation: ''
@@ -51,72 +57,85 @@ const RegisterScreen = props => {
             validationSchema={validationSchema}
           >
             <AppFormField
-              errorColor={colors.light}
-              backgroundColor={colors.transparent08}
+              textColor={colors.dark}
+              name="name"
+              autoCapitalize="words"
+              icon="account-outline"
+              iconColor={colors.medium}
+              keyboardType="default"
+              placeholder="Name"
+              textContentType="name"
+              nextEl={cityEl}
+            />
+            <AppFormField
+              textColor={colors.dark}
+              innerRef={cityEl}
+              name="city"
+              autoCapitalize="words"
+              autoCorrect={false}
+              icon="pin"
+              iconColor={colors.medium}
+              keyboardType="default"
+              placeholder="City"
+              textContentType="addressCity"
+              nextEl={emailEl}
+            />
+            <AppFormField
+              textColor={colors.dark}
+              innerRef={emailEl}
               name="email"
               autoCapitalize="none"
               autoCorrect={false}
               icon="email"
+              iconColor={colors.medium}
               keyboardType="email-address"
               placeholder="Email"
               textContentType="emailAddress"
               nextEl={passwordEl}
             />
             <AppFormField
+              textColor={colors.dark}
               innerRef={passwordEl}
-              errorColor={colors.light}
-              backgroundColor={colors.transparent08}
               name="password"
               autoCapitalize="none"
               autoCorrect={false}
               icon="lock"
+              iconColor={colors.medium}
               placeholder="Password"
               secureTextEntry
               textContentType="password"
               nextEl={passwordConfirmEl}
             />
             <AppFormField
+              textColor={colors.dark}
               innerRef={passwordConfirmEl}
-              errorColor={colors.light}
-              backgroundColor={colors.transparent08}
               name="passwordConfirmation"
               autoCapitalize="none"
               autoCorrect={false}
               icon="lock"
+              iconColor={colors.medium}
               placeholder="Confirm password"
               secureTextEntry
               textContentType="password"
             />
-            <SubmitButton title="Sign Up" color="secondary" />
           </AppForm>
         </View>
       </KeyboardAwareScrollView>
-    </ImageBackground>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1
-  },
-  logo: {
-    width: 100,
-    height: 100
-  },
-  logoContainer: {
-    marginTop: 90,
-    alignItems: 'center'
-  },
+  container: {},
   formContainer: {
-    padding: 20,
-    width: '100%'
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 30,
+    marginBottom: 50
   },
-  tagline: {
-    color: colors.white,
-    fontSize: 45,
-    fontWeight: '800',
-    paddingVertical: 20
+  screen: {
+    backgroundColor: colors.light
   }
 })
 
-export default RegisterScreen
+export default ConfigurationScreen

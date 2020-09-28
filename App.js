@@ -1,6 +1,6 @@
 import React from 'react'
-import HomeScreen from './app/screens/HomeScreen'
+import ConfigurationScreen from './app/screens/ConfigurationScreen'
 
 export default function App() {
-  return <HomeScreen />
+  return <ConfigurationScreen />
 }

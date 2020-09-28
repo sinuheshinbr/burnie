@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { AppFormField, AppForm, SubmitButton } from '../components/forms'
 import colors from '../config/colors'
 import * as Yup from 'yup'
 import AppCheckBox from '../components/AppCheckBox'
 import defaultStyles from '../config/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -17,50 +18,66 @@ const validationSchema = Yup.object().shape({
     .label('Password')
 })
 
-const WelcomeScreen = props => {
+const LoginScreen = props => {
+  const passwordEl = useRef(null)
   return (
     <ImageBackground
       style={styles.background}
       source={require('../assets/background.jpg')}
     >
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require('../assets/burnie-logo.png')}
-        />
-        <Text style={styles.tagline}>Burnie</Text>
-      </View>
-      <View style={styles.formContainer}>
-        <AppForm
-          initialValues={{ email: '', password: '' }}
-          onSubmit={values => console.log(values)}
-          validationSchema={validationSchema}
-        >
-          <AppFormField
-            name="email"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="email"
-            keyboardType="email-address"
-            placeholder="Email"
-            textContentType="emailAddress"
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+      >
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={require('../assets/burnie-logo.png')}
           />
-          <AppFormField
-            name="password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <SubmitButton title="Login" color="secondary" />
-        </AppForm>
-        <View style={styles.rememberContainer}>
-          <AppCheckBox title="Remember-me" />
-          <Text style={styles.resetPassword}>Forgot your password?</Text>
+          <Text style={styles.tagline}>Burnie</Text>
         </View>
-      </View>
+        <View behavior="padding" style={styles.formContainer}>
+          <AppForm
+            style={styles.form}
+            initialValues={{ email: '', password: '' }}
+            onSubmit={values => console.log(values)}
+            validationSchema={validationSchema}
+          >
+            <AppFormField
+              errorColor={colors.light}
+              backgroundColor={colors.transparent08}
+              name="email"
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="email"
+              keyboardType="email-address"
+              placeholder="Email"
+              textContentType="emailAddress"
+              nextEl={passwordEl}
+            />
+            <AppFormField
+              innerRef={passwordEl}
+              errorColor={colors.light}
+              backgroundColor={colors.transparent08}
+              name="password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+            <SubmitButton title="Login" color="secondary" />
+          </AppForm>
+          <View style={styles.rememberContainer}>
+            <View style={styles.checkBox}>
+              <AppCheckBox title="Remember-me" />
+            </View>
+            <Text style={styles.resetPassword}>Forgot your password?</Text>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
     </ImageBackground>
   )
 }
@@ -68,6 +85,9 @@ const WelcomeScreen = props => {
 const styles = StyleSheet.create({
   background: {
     flex: 1
+  },
+  checkBox: {
+    marginLeft: -5
   },
   logo: {
     width: 100,
@@ -88,8 +108,8 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   rememberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginTop: 20,
+    height: 70,
     justifyContent: 'space-between'
   },
   tagline: {
@@ -100,4 +120,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default WelcomeScreen
+export default LoginScreen

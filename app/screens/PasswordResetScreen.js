@@ -37,6 +37,8 @@ const PasswordResetScreen = props => {
             <Text style={styles.text}>Type your e-mail to reset password:</Text>
           </View>
           <AppFormField
+            errorColor={colors.light}
+            backgroundColor={colors.transparent08}
             name="email"
             autoCapitalize="none"
             autoCorrect={false}
