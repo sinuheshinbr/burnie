@@ -5,6 +5,7 @@ import defaultStyles from '../config/styles'
 
 const AppTextInput = ({
   backgroundColor = defaultStyles.colors.transparent02,
+  bigFocusDisplay,
   disableFocusDisplay,
   icon,
   iconColor = defaultStyles.colors.medium,
@@ -25,7 +26,8 @@ const AppTextInput = ({
               : isFocused
               ? defaultStyles.colors.primary
               : null
-          }
+          },
+          { height: bigFocusDisplay ? 117 : 55 }
         ]}
       />
       {icon && (
@@ -38,7 +40,6 @@ const AppTextInput = ({
       )}
       <TextInput
         ref={innerRef}
-        numberOfLines={4}
         onFocus={() => setIsFocused(true)}
         placeholderTextColor={defaultStyles.colors.medium}
         style={[defaultStyles.text, styles.text, { color: textColor }]}
@@ -54,7 +55,6 @@ const AppTextInput = ({
 const styles = StyleSheet.create({
   focusDisplay: {
     width: 4,
-    height: 55,
     position: 'absolute',
     top: 0
   },

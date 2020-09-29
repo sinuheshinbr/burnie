@@ -1,11 +1,14 @@
-import React from 'react'
-import { StyleSheet, Image, Text, View } from 'react-native'
+import React, { useRef } from 'react'
+import { StyleSheet, Image, Text } from 'react-native'
 import Screen from '../components/Screen'
 import { ProfileMenu } from '../components/profile'
 import colors from '../config/colors'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import AppButton from '../components/AppButton'
 import DiscussionItem from '../components/forum/DiscussionItem'
+import SubmitButton from '../components/forms/SubmitButton'
+import AppForm from '../components/forms/AppForm'
+import AppFormField from '../components/forms/AppFormField'
+import * as Yup from 'yup'
 
 const discussionList = [
   {
@@ -54,7 +57,17 @@ const discussionList = [
   }
 ]
 
+const validationSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Your discussion need a title')
+    .max(100),
+  content: Yup.string()
+    .required('Post something...')
+    .max(500)
+})
+
 const ForumDiscussionsScreen = props => {
+  const contentEl = useRef(null)
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path="Forum" />
@@ -64,17 +77,47 @@ const ForumDiscussionsScreen = props => {
         style={styles.image}
       />
       <Text style={styles.text}>The Burnout Forum</Text>
-      <View style={styles.button}>
-        <AppButton
-          onPress={() => console.log('create new discussion')}
-          title="+ New Discussion"
-        />
-      </View>
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
         scrollEnabled={true}
       >
+        <AppForm
+          style={styles.form}
+          initialValues={{ title: '', content: '' }}
+          onSubmit={values => console.log(values)}
+          validationSchema={validationSchema}
+        >
+          <AppFormField
+            backgroundColor={colors.transparent02}
+            name="title"
+            autoCapitalize="none"
+            placeholder="Give this discussion a title"
+            autoCorrect={false}
+            textContentType="none"
+            textColor={colors.dark}
+            nextEl={contentEl}
+          />
+          <AppFormField
+            innerRef={contentEl}
+            backgroundColor={colors.transparent02}
+            name="content"
+            autoCapitalize="none"
+            placeholder="Write your post here"
+            autoCorrect={false}
+            textContentType="none"
+            numberOfLines={4}
+            textAlignVertical="top"
+            bigFocusDisplay
+            textColor={colors.dark}
+            multiline
+            isLast
+          />
+          <SubmitButton
+            onPress={() => console.log('create new discussion')}
+            title="Publish"
+          />
+        </AppForm>
         {discussionList.map(discussionItem => (
           <DiscussionItem
             key={discussionItem._id}
