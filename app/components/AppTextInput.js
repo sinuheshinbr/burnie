@@ -4,13 +4,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import defaultStyles from '../config/styles'
 
 const AppTextInput = ({
+  backgroundColor = defaultStyles.colors.transparent02,
+  disableFocusDisplay,
   icon,
+  iconColor = defaultStyles.colors.medium,
+  innerRef,
+  isFocused,
   nextEl,
   textColor = defaultStyles.colors.white,
-  innerRef,
-  iconColor = defaultStyles.colors.medium,
-  isFocused,
-  backgroundColor = defaultStyles.colors.transparent02,
   ...otherProps
 }) => {
   return (
@@ -19,7 +20,11 @@ const AppTextInput = ({
         style={[
           styles.focusDisplay,
           {
-            backgroundColor: isFocused ? defaultStyles.colors.primary : null
+            backgroundColor: disableFocusDisplay
+              ? null
+              : isFocused
+              ? defaultStyles.colors.primary
+              : null
           }
         ]}
       />
@@ -33,6 +38,7 @@ const AppTextInput = ({
       )}
       <TextInput
         ref={innerRef}
+        numberOfLines={4}
         onFocus={() => setIsFocused(true)}
         placeholderTextColor={defaultStyles.colors.medium}
         style={[defaultStyles.text, styles.text, { color: textColor }]}

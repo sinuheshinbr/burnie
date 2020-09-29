@@ -13,7 +13,7 @@ const DiscussionItem = ({
   comments = 0,
   likes = 0,
   views = 0,
-  elapsedHours
+  elapsedHours = null
 }) => {
   let elapsedTime = convertHours(elapsedHours)
   let normalizedComments = normalizeNumber(comments)
@@ -58,7 +58,7 @@ const DiscussionItem = ({
               <Text style={styles.iconText}>{normalizedViews}</Text>
             </View>
           </View>
-          <View style={styles.elapsedTime}>
+          <View style={styles.elapsedTimeContainer}>
             <Text style={styles.iconText}>
               {elapsedTime && `${elapsedTime} ago`}
             </Text>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1
   },
-  elapsedTime: {
+  elapsedTimeContainer: {
     width: '40%',
     alignItems: 'flex-end',
     justifyContent: 'flex-end'

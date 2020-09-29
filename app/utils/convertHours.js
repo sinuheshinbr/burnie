@@ -1,5 +1,7 @@
 const convertHours = elapsedHours => {
-  if (elapsedHours < 24) return `${elapsedHours}h`
+  if (elapsedHours === null) return
+  if (typeof elapsedHours !== 'number') return
+  if (elapsedHours < 24) return `${elapsedHours.toFixed(0)}h`
   if (elapsedHours < 48) return `1 day`
   if (elapsedHours < 168) return `${Math.floor(elapsedHours / 24)} days`
   if (elapsedHours < 336) return `1 week`

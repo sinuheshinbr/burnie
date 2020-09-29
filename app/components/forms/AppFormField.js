@@ -4,12 +4,13 @@ import AppTextInput from '../AppTextInput'
 import ErrorMessage from './ErrorMessage'
 
 const AppFormField = ({
-  name,
-  textColor,
+  disableFocusDisplay,
   errorColor,
-  nextEl,
   innerRef,
   isLast,
+  name,
+  nextEl,
+  textColor,
   ...otherProps
 }) => {
   const [isFocused, setIsFocused] = useState(false)
@@ -23,6 +24,7 @@ const AppFormField = ({
   return (
     <>
       <AppTextInput
+        disableFocusDisplay={disableFocusDisplay}
         nextEl={nextEl}
         textColor={textColor}
         innerRef={innerRef}
