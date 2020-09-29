@@ -4,6 +4,7 @@ import AppText from '../AppText'
 import colors from '../../config/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import convertHours from '../../utils/convertHours'
+import normalizeNumber from '../../utils/normalizeNumber'
 
 const DiscussionItem = ({
   _id,
@@ -15,6 +16,9 @@ const DiscussionItem = ({
   elapsedHours
 }) => {
   let elapsedTime = convertHours(elapsedHours)
+  let normalizedComments = normalizeNumber(comments)
+  let normalizedLikes = normalizeNumber(likes)
+  let normalizedViews = normalizeNumber(views)
   return (
     <TouchableHighlight
       underlayColor={colors.light}
@@ -35,9 +39,7 @@ const DiscussionItem = ({
                 size={16}
                 name="message-outline"
               />
-              <Text style={styles.iconText}>
-                {comments > 99 ? '99+' : comments}
-              </Text>
+              <Text style={styles.iconText}>{normalizedComments}</Text>
             </View>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
@@ -45,7 +47,7 @@ const DiscussionItem = ({
                 size={16}
                 name="heart-outline"
               />
-              <Text style={styles.iconText}> {likes > 99 ? '99+' : likes}</Text>
+              <Text style={styles.iconText}> {normalizedLikes}</Text>
             </View>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
@@ -53,7 +55,7 @@ const DiscussionItem = ({
                 size={16}
                 name="eye-outline"
               />
-              <Text style={styles.iconText}>{views > 99 ? '99+' : views}</Text>
+              <Text style={styles.iconText}>{normalizedViews}</Text>
             </View>
           </View>
           <View style={styles.elapsedTime}>
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '25%'
+    width: '30%'
   },
   iconText: {
     fontSize: 16,

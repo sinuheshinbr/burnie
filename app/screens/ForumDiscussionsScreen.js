@@ -39,7 +39,7 @@ const discussionList = [
     title: 'I need to have sex!',
     author: 'Mr. Jones',
     comments: 98,
-    views: 3222,
+    views: 12300000,
     likes: 155,
     elapsedHours: 500
   },
@@ -47,7 +47,7 @@ const discussionList = [
     _id: '8asud9n12jn12lk309aswd',
     title: 'What are your biggest concerns right now?',
     author: 'tobias180901',
-    comments: 123,
+    comments: 1498568,
     views: 456,
     likes: 1,
     elapsedHours: 20000
