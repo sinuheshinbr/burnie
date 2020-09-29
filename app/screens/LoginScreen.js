@@ -67,6 +67,7 @@ const LoginScreen = props => {
               placeholder="Password"
               secureTextEntry
               textContentType="password"
+              isLast
             />
             <SubmitButton title="Login" color="secondary" />
           </AppForm>

@@ -117,6 +117,7 @@ const ConfigurationScreen = () => {
               placeholder="Confirm password"
               secureTextEntry
               textContentType="password"
+              isLast
             />
           </AppForm>
         </View>
