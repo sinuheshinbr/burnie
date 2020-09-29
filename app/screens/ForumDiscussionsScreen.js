@@ -7,6 +7,53 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AppButton from '../components/AppButton'
 import DiscussionItem from '../components/forum/DiscussionItem'
 
+const discussionList = [
+  {
+    _id: 'uhasuhSA123j123jm13',
+    title: 'PPE materials',
+    author: 'Tobias',
+    comments: 1535,
+    likes: 3,
+    elapsedHours: 1
+  },
+  {
+    _id: '65a54das654das45d46asd',
+    title: 'Experimental medications for COVID',
+    author: 'denissw9',
+    comments: 15,
+    views: 322,
+    likes: 54,
+    elapsedHours: 25
+  },
+  {
+    _id: '123jn23m123k123k123n1',
+    title: 'Working hours.. and extra compensation?',
+    author: 'Tobias',
+    comments: 32,
+    views: 3222,
+    likes: 32,
+    elapsedHours: 5000
+  },
+  {
+    _id: '1893ji123129803jm12ik3m',
+    title: 'I need to have sex!',
+    author: 'Mr. Jones',
+    comments: 98,
+    views: 3222,
+    likes: 155,
+    elapsedHours: 500
+  },
+  {
+    _id: '8asud9n12jn12lk309aswd',
+    title: 'What are your biggest concerns right now?',
+    author: 'tobias180901',
+    comments: 123,
+    views: 456,
+    likes: 1,
+    elapsedHours: 20000
+  }
+]
+
 const ForumDiscussionsScreen = props => {
   return (
     <Screen style={styles.screen}>
@@ -28,28 +75,18 @@ const ForumDiscussionsScreen = props => {
         contentContainerStyle={styles.container}
         scrollEnabled={true}
       >
-        <DiscussionItem
-          title="PPE materials"
-          author="Tobias"
-          onPress={() => console.log('open discussion')}
-          comments={5}
-          likes={3}
-        />
-        <DiscussionItem
-          title="Experimental medications for COVID"
-          author="denissw9"
-          onPress={() => console.log('open discussion')}
-        />
-        <DiscussionItem
-          title="Working hours.. and extra compensation?"
-          author="Tobias"
-          onPress={() => console.log('open discussion')}
-        />
-        <DiscussionItem
-          title="What are your biggest concerns right now?"
-          author="tobias180901"
-          onPress={() => console.log('open discussion')}
-        />
+        {discussionList.map(discussionItem => (
+          <DiscussionItem
+            key={discussionItem._id}
+            title={discussionItem.title}
+            author={discussionItem.author}
+            _id={discussionItem._id}
+            elapsedHours={discussionItem.elapsedHours}
+            views={discussionItem.views}
+            likes={discussionItem.likes}
+            comments={discussionItem.comments}
+          />
+        ))}
       </KeyboardAwareScrollView>
     </Screen>
   )
