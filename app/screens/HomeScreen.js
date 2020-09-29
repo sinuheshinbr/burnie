@@ -10,13 +10,13 @@ import {
   ForumCard
 } from '../components/profile'
 
-const AccountScreen = () => {
+const HomeScreen = () => {
   return (
     <Screen style={styles.screen}>
+      <ProfileMenu />
       <ScrollView style={styles.container}>
-        <ProfileMenu />
         <Profile
-          title="Mosh Hamedani"
+          name="Mosh Hamedani"
           occupation="Neurosurgeon"
           city="São Paulo"
           image={require('../assets/mosh.jpg')}
@@ -30,12 +30,10 @@ const AccountScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 20
-  },
+  container: {},
   screen: {
     backgroundColor: colors.light
   }
 })
 
-export default AccountScreen
+export default HomeScreen

@@ -5,7 +5,7 @@ import defaultStyles from '../config/styles'
 
 const AppText = ({ children, style, numberOfLines }) => {
   return (
-    <Text numberOfLines={2} style={[defaultStyles.text, style]}>
+    <Text numberOfLines={numberOfLines} style={[defaultStyles.text, style]}>
       {children}
     </Text>
   )

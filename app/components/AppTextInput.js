@@ -1,12 +1,19 @@
 import React from 'react'
 import { View, StyleSheet, TextInput } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-
 import defaultStyles from '../config/styles'
 
-const AppTextInput = ({ icon, isFocused, ...otherProps }) => {
+const AppTextInput = ({
+  icon,
+  textColor = defaultStyles.colors.white,
+  innerRef,
+  iconColor = defaultStyles.colors.medium,
+  isFocused,
+  backgroundColor = defaultStyles.colors.transparent02,
+  ...otherProps
+}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: backgroundColor }]}>
       <View
         style={[
           styles.focusDisplay,
@@ -19,14 +26,15 @@ const AppTextInput = ({ icon, isFocused, ...otherProps }) => {
         <MaterialCommunityIcons
           name={icon}
           size={20}
-          color={defaultStyles.colors.medium}
+          color={iconColor}
           style={styles.icon}
         />
       )}
       <TextInput
+        ref={innerRef}
         onFocus={() => setIsFocused(true)}
         placeholderTextColor={defaultStyles.colors.medium}
-        style={defaultStyles.text}
+        style={[defaultStyles.text, styles.text, { color: textColor }]}
         {...otherProps}
       />
     </View>
@@ -41,7 +49,6 @@ const styles = StyleSheet.create({
     top: 0
   },
   container: {
-    backgroundColor: defaultStyles.colors.transparent,
     borderRadius: 5,
     flexDirection: 'row',
     width: '100%',
@@ -51,6 +58,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10
+  },
+  text: {
+    flex: 1
   }
 })
 

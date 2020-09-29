@@ -4,7 +4,7 @@ import AppText from '../AppText'
 import colors from '../../config/colors'
 import ProfileLocation from './ProfileLocation'
 
-const Profile = ({ title, occupation, city, image }) => {
+const Profile = ({ name, occupation, city, image }) => {
   return (
     <View style={styles.container}>
       {image && (
@@ -13,7 +13,7 @@ const Profile = ({ title, occupation, city, image }) => {
         </View>
       )}
       <View style={styles.detailsContainer}>
-        <AppText style={styles.title}>{title}</AppText>
+        <AppText style={styles.name}>{name}</AppText>
         {occupation && (
           <AppText style={styles.occupation}>{occupation}</AppText>
         )}
@@ -25,25 +25,28 @@ const Profile = ({ title, occupation, city, image }) => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 15,
+    marginBottom: 15,
     alignSelf: 'center',
     flexDirection: 'row',
-    width: '70%',
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    width: '90%'
   },
   detailsContainer: {
-    marginLeft: 15,
-    justifyContent: 'center'
+    marginLeft: '5%',
+    flex: 1
   },
   image: {
     width: 90,
     height: 90,
     borderRadius: 45
   },
-  title: {
+  name: {
     color: colors.dark,
-    fontSize: 24,
-    fontWeight: '700'
+    fontSize: 22,
+    fontWeight: '700',
+    width: '100%'
   },
 
   occupation: {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import Back from '../components/Back'
-import { SubmitButton } from '../components/forms'
 import colors from '../config/colors'
 
 const PasswordResetConfirmationScreen = props => {
