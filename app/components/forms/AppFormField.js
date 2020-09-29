@@ -9,13 +9,21 @@ const AppFormField = ({
   errorColor,
   nextEl,
   innerRef,
+  isLast,
   ...otherProps
 }) => {
   const [isFocused, setIsFocused] = useState(false)
-  const { setFieldTouched, handleChange, errors, touched } = useFormikContext()
+  const {
+    setFieldTouched,
+    handleChange,
+    errors,
+    touched,
+    submitForm
+  } = useFormikContext()
   return (
     <>
       <AppTextInput
+        nextEl={nextEl}
         textColor={textColor}
         innerRef={innerRef}
         isFocused={isFocused}
@@ -23,7 +31,8 @@ const AppFormField = ({
         onBlur={() => {
           setFieldTouched(name)
           setIsFocused(false)
-          if (nextEl) nextEl.current.focus()
+
+          if (isLast) submitForm()
         }}
         onChangeText={handleChange(name)}
         {...otherProps}

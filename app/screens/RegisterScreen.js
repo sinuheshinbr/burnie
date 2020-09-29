@@ -86,6 +86,7 @@ const RegisterScreen = props => {
               placeholder="Confirm password"
               secureTextEntry
               textContentType="password"
+              isLast
             />
             <SubmitButton title="Sign Up" color="secondary" />
           </AppForm>

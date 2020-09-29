@@ -5,6 +5,7 @@ import defaultStyles from '../config/styles'
 
 const AppTextInput = ({
   icon,
+  nextEl,
   textColor = defaultStyles.colors.white,
   innerRef,
   iconColor = defaultStyles.colors.medium,
@@ -36,6 +37,9 @@ const AppTextInput = ({
         placeholderTextColor={defaultStyles.colors.medium}
         style={[defaultStyles.text, styles.text, { color: textColor }]}
         {...otherProps}
+        onSubmitEditing={() => {
+          if (nextEl) nextEl.current.focus()
+        }}
       />
     </View>
   )

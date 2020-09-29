@@ -25,7 +25,7 @@ const NotificationIcon = ({ newNotifications }) => {
 const styles = StyleSheet.create({
   container: {},
   counter: {
-    backgroundColor: colors.danger,
+    backgroundColor: colors.primary,
     minWidth: 15,
     borderRadius: 9,
     position: 'absolute',

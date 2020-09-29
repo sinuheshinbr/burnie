@@ -9,15 +9,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required()
     .email()
-    .label('E-mail'),
-  password: Yup.string()
-    .required()
-    .min(4)
-    .label('Password'),
-  passwordConfirmation: Yup.string().oneOf(
-    [Yup.ref('password'), null],
-    'Passwords must match'
-  )
+    .label('E-mail')
 })
 
 const PasswordResetScreen = props => {
@@ -46,6 +38,7 @@ const PasswordResetScreen = props => {
             keyboardType="email-address"
             placeholder="Email"
             textContentType="emailAddress"
+            isLast
           />
           <SubmitButton title="send e-mail" color="secondary" />
         </AppForm>

@@ -37,7 +37,7 @@ const ConfigurationScreen = () => {
 
   return (
     <Screen style={styles.screen}>
-      <ProfileMenu isEditing />
+      <ProfileMenu isEditing path="Configuration" />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
@@ -117,6 +117,7 @@ const ConfigurationScreen = () => {
               placeholder="Confirm password"
               secureTextEntry
               textContentType="password"
+              isLast
             />
           </AppForm>
         </View>
