@@ -1,6 +1,6 @@
 import React from 'react'
-import ConfigurationScreen from './app/screens/ConfigurationScreen'
+import ForumPostScreen from './app/screens/ForumPostScreen'
 
 export default function App() {
-  return <ConfigurationScreen />
+  return <ForumPostScreen />
 }

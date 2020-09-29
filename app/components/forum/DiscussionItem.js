@@ -3,17 +3,27 @@ import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import AppText from '../AppText'
 import colors from '../../config/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import convertHours from '../../utils/convertHours'
+import normalizeNumber from '../../utils/normalizeNumber'
 
 const DiscussionItem = ({
-  onPress,
+  _id,
   title,
   author,
   comments = 0,
   likes = 0,
-  views = 0
+  views = 0,
+  elapsedHours = null
 }) => {
+  let elapsedTime = convertHours(elapsedHours)
+  let normalizedComments = normalizeNumber(comments)
+  let normalizedLikes = normalizeNumber(likes)
+  let normalizedViews = normalizeNumber(views)
   return (
-    <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
+    <TouchableHighlight
+      underlayColor={colors.light}
+      onPress={() => console.log('open discussion id: ', _id)}
+    >
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
           <AppText numberOfLines={1} style={styles.title}>
@@ -21,30 +31,37 @@ const DiscussionItem = ({
           </AppText>
           {author && <AppText style={styles.author}>{author}</AppText>}
         </View>
-        <View style={styles.iconsContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.iconText}>{comments}</Text>
-            <MaterialCommunityIcons
-              color={colors.medium}
-              size={16}
-              name="message-outline"
-            />
+        <View style={styles.bottomLine}>
+          <View style={styles.iconsContainer}>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                color={colors.medium}
+                size={16}
+                name="message-outline"
+              />
+              <Text style={styles.iconText}>{normalizedComments}</Text>
+            </View>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                color={colors.medium}
+                size={16}
+                name="heart-outline"
+              />
+              <Text style={styles.iconText}> {normalizedLikes}</Text>
+            </View>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                color={colors.medium}
+                size={16}
+                name="eye-outline"
+              />
+              <Text style={styles.iconText}>{normalizedViews}</Text>
+            </View>
           </View>
-          <View style={styles.iconContainer}>
-            <Text style={styles.iconText}>{likes}</Text>
-            <MaterialCommunityIcons
-              color={colors.medium}
-              size={16}
-              name="heart-outline"
-            />
-          </View>
-          <View style={styles.iconContainer}>
-            <Text style={styles.iconText}>{views}</Text>
-            <MaterialCommunityIcons
-              color={colors.medium}
-              size={16}
-              name="eye-outline"
-            />
+          <View style={styles.elapsedTimeContainer}>
+            <Text style={styles.iconText}>
+              {elapsedTime && `${elapsedTime} ago`}
+            </Text>
           </View>
         </View>
       </View>
@@ -56,7 +73,10 @@ const styles = StyleSheet.create({
   author: {
     color: colors.medium
   },
-
+  bottomLine: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   container: {
     flexDirection: 'column',
     padding: 15,
@@ -68,20 +88,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1
   },
+  elapsedTimeContainer: {
+    width: '40%',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end'
+  },
   iconsContainer: {
     flexDirection: 'row',
     marginTop: 5,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flex: 1
   },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '10%',
-    justifyContent: 'space-between'
+    width: '30%'
   },
   iconText: {
     fontSize: 16,
-    color: colors.medium
+    color: colors.medium,
+    marginLeft: 5
   },
   title: {
     fontWeight: '700',
