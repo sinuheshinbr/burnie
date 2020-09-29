@@ -6,11 +6,11 @@ import ListItemSeparator from '../ListItemSeparator'
 import IconButton from '../IconButton'
 import NotificationIcon from './NotificationIcon'
 
-const ProfileMenu = ({ isEditing }) => {
+const ProfileMenu = ({ isEditing, path = '' }) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.text}>Burnie</Text>
+        <Text style={styles.text}>{path}</Text>
         <View style={styles.icons}>
           <NotificationIcon newNotifications={100} />
           {!isEditing && (
@@ -18,9 +18,11 @@ const ProfileMenu = ({ isEditing }) => {
               <Entypo name="cog" size={25} color={colors.medium} />
             </IconButton>
           )}
-          <IconButton onPress={() => console.log('Confirm and save')}>
-            <AntDesign name="checkcircleo" size={25} color={colors.medium} />
-          </IconButton>
+          {isEditing && (
+            <IconButton onPress={() => console.log('Confirm and save')}>
+              <AntDesign name="checkcircleo" size={25} color={colors.medium} />
+            </IconButton>
+          )}
         </View>
       </View>
       <ListItemSeparator />
