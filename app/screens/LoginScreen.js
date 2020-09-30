@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import AppCheckBox from '../components/AppCheckBox'
 import defaultStyles from '../config/styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -18,7 +19,7 @@ const validationSchema = Yup.object().shape({
     .label('Password')
 })
 
-const LoginScreen = props => {
+const LoginScreen = ({ navigation }) => {
   const passwordEl = useRef(null)
   return (
     <ImageBackground
@@ -41,7 +42,10 @@ const LoginScreen = props => {
           <AppForm
             style={styles.form}
             initialValues={{ email: '', password: '' }}
-            onSubmit={values => console.log(values)}
+            onSubmit={values => {
+              console.log(values)
+              navigation.navigate('AppNavigator')
+            }}
             validationSchema={validationSchema}
           >
             <AppFormField
@@ -69,13 +73,17 @@ const LoginScreen = props => {
               textContentType="password"
               isLast
             />
-            <SubmitButton title="Login" color="secondary" />
+            <SubmitButton title="Login" />
           </AppForm>
           <View style={styles.rememberContainer}>
             <View style={styles.checkBox}>
               <AppCheckBox title="Remember-me" />
             </View>
-            <Text style={styles.resetPassword}>Forgot your password?</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('PasswordResetScreen')}
+            >
+              <Text style={styles.resetPassword}>Forgot your password?</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -90,12 +98,15 @@ const styles = StyleSheet.create({
   checkBox: {
     marginLeft: -5
   },
+  container: {
+    padding: 20
+  },
   logo: {
     width: 100,
     height: 100
   },
   logoContainer: {
-    marginTop: 90,
+    marginTop: '20%',
     alignItems: 'center'
   },
   resetPassword: {
@@ -105,11 +116,10 @@ const styles = StyleSheet.create({
     letterSpacing: 1
   },
   formContainer: {
-    padding: 20,
     width: '100%'
   },
   rememberContainer: {
-    marginTop: 20,
+    marginTop: '5%',
     height: 70,
     justifyContent: 'space-between'
   },

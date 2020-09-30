@@ -1,13 +1,15 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
 import colors from '../../config/colors'
 
-const Card = ({ title = '', minHeight, children }) => {
+const Card = ({ onPress, title = '', minHeight, children }) => {
   return (
-    <View style={[styles.container, { minHeight }]}>
-      <Text style={styles.header}>{title}</Text>
-      {children}
-    </View>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.container, { minHeight }]}>
+        <Text style={styles.header}>{title}</Text>
+        {children}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 

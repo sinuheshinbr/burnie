@@ -10,7 +10,7 @@ import {
   ForumCard
 } from '../components/profile'
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <ProfileMenu />
@@ -23,7 +23,9 @@ const HomeScreen = () => {
         />
         <FeelingsCard />
         <DataCard />
-        <ForumCard />
+        <ForumCard
+          onPress={() => navigation.navigate('ForumDiscussionsScreen')}
+        />
       </ScrollView>
     </Screen>
   )

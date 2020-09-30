@@ -8,6 +8,8 @@ import AppForm from '../components/forms/AppForm'
 import * as Yup from 'yup'
 import AppFormField from '../components/forms/AppFormField'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AppButton from '../components/AppButton'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -29,7 +31,8 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
-const ConfigurationScreen = () => {
+const ConfigurationScreen = ({ navigation }) => {
+  const formRef = useRef(null)
   const cityEl = useRef(null)
   const emailEl = useRef(null)
   const passwordEl = useRef(null)
@@ -37,7 +40,13 @@ const ConfigurationScreen = () => {
 
   return (
     <Screen style={styles.screen}>
-      <ProfileMenu isEditing path="Configuration" />
+      <ProfileMenu
+        onSave={() => {
+          if (formRef.current) formRef.current.handleSubmit()
+        }}
+        isEditing
+        path="Edit Profile"
+      />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
@@ -46,6 +55,7 @@ const ConfigurationScreen = () => {
         <SelectPhoto image={require('../assets/mosh.jpg')} />
         <View style={styles.formContainer}>
           <AppForm
+            innerRef={formRef}
             initialValues={{
               name: '',
               city: '',
@@ -53,7 +63,10 @@ const ConfigurationScreen = () => {
               password: '',
               passwordConfirmation: ''
             }}
-            onSubmit={values => console.log(values)}
+            onSubmit={values => {
+              console.log(values)
+              navigation.navigate('HomeScreen')
+            }}
             validationSchema={validationSchema}
           >
             <AppFormField
@@ -120,6 +133,20 @@ const ConfigurationScreen = () => {
               isLast
             />
           </AppForm>
+          <View style={styles.logout}>
+            <AppButton
+              onPress={() => navigation.navigate('WelcomeScreen')}
+              textColor={colors.mediumLight}
+              title="Logout"
+              color="transparent08"
+            >
+              <MaterialCommunityIcons
+                color={colors.mediumLight}
+                size={25}
+                name="logout"
+              />
+            </AppButton>
+          </View>
         </View>
       </KeyboardAwareScrollView>
     </Screen>
@@ -133,6 +160,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 50
+  },
+  logout: {
+    marginTop: 20
   },
   screen: {
     backgroundColor: colors.light

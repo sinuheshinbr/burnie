@@ -5,12 +5,13 @@ import { Text, StyleSheet } from 'react-native'
 import ListItemSeparator from '../ListItemSeparator'
 import colors from '../../config/colors'
 
-const ForumCard = props => {
+const ForumCard = ({ onPress }) => {
   return (
-    <Card title={'Forum:'}>
+    <Card onPress={onPress} title={'Forum:'}>
       <ListItemSeparator />
 
       <Post
+        onPress={() => console.log('Post pressed')}
         elapsedTime="1h"
         title="Experimental medications for COVID"
         content="I think you need to be passionate about this job if you wanna make it work. Can't think about everything you are giving up or it will not make sense. If you truly love it then I think there is not better reward in life"
