@@ -75,16 +75,16 @@ const LoginScreen = ({ navigation }) => {
             />
             <SubmitButton title="Login" />
           </AppForm>
-          <View style={styles.rememberContainer}>
-            <View style={styles.checkBox}>
-              <AppCheckBox title="Remember-me" />
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PasswordResetScreen')}
-            >
-              <Text style={styles.resetPassword}>Forgot your password?</Text>
-            </TouchableOpacity>
-          </View>
+          {/*<View style={styles.rememberContainer}>*/}
+            {/*<View style={styles.checkBox}>*/}
+              {/*<AppCheckBox title="Remember-me" />*/}
+            {/*</View>*/}
+            {/*<TouchableOpacity*/}
+              {/*onPress={() => navigation.navigate('PasswordResetScreen')}*/}
+            {/*>*/}
+              {/*<Text style={styles.resetPassword}>Forgot your password?</Text>*/}
+            {/*</TouchableOpacity>*/}
+          {/*</View>*/}
         </View>
       </KeyboardAwareScrollView>
     </ImageBackground>

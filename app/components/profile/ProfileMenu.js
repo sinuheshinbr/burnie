@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Image } from 'react-native'
 import { Entypo, AntDesign } from '@expo/vector-icons'
 import colors from '../../config/colors'
 import ListItemSeparator from '../ListItemSeparator'
@@ -10,10 +10,18 @@ import { useNavigation } from '@react-navigation/native'
 const ProfileMenu = ({ isEditing, path = '', onSave }) => {
   const navigation = useNavigation()
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <Text style={styles.text}>{path}</Text>
-        <View style={styles.icons}>
+    <View style={styles.mainContainer}>
+      <View style={styles.secondaryContainer}>
+        <View style={styles.simpleView}>
+          <Text style={styles.text}>{path}</Text>
+        </View>
+        <View style={styles.simpleViewCenter}>
+          <Image
+            source={require('../../assets/burnie-logo.png')}
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.viewComplex}>
           <NotificationIcon newNotifications={100} />
           {!isEditing && (
             <IconButton
@@ -35,26 +43,36 @@ const ProfileMenu = ({ isEditing, path = '', onSave }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginTop: 20
+  mainContainer: {
+    alignItems: 'center'
   },
-  icons: {
-    flexDirection: 'row',
-    width: '20%',
-    justifyContent: 'space-between'
-  },
-  wrapper: {
-    width: '90%',
-    alignSelf: 'center',
+  secondaryContainer : {
+    width: '95%',
+    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'center'
+  },
+  simpleView: {
+    width: '33%'
+  },
+  simpleViewCenter : {
+    width: '33%',
+    alignItems: 'center'
+  },
+  viewComplex: {
+    width: '33%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   text: {
     fontSize: 20,
     color: colors.medium
-  }
+  },
+  image : {
+    width: 50,
+    height: 50,
+  },
 })
 
 export default ProfileMenu

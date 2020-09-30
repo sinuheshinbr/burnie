@@ -71,11 +71,6 @@ const ForumDiscussionsScreen = props => {
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path="Forum" />
-      <Image
-        elevation={5}
-        source={require('../assets/burnie-logo.png')}
-        style={styles.image}
-      />
       <Text style={styles.text}>The Burnout Forum</Text>
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
