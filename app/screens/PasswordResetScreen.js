@@ -3,7 +3,6 @@ import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { AppFormField, AppForm, SubmitButton } from '../components/forms'
 import colors from '../config/colors'
 import * as Yup from 'yup'
-import Back from '../components/Back'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -12,7 +11,7 @@ const validationSchema = Yup.object().shape({
     .label('E-mail')
 })
 
-const PasswordResetScreen = props => {
+const PasswordResetScreen = ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.background}
@@ -21,10 +20,12 @@ const PasswordResetScreen = props => {
       <View style={styles.formContainer}>
         <AppForm
           initialValues={{ email: '' }}
-          onSubmit={values => console.log(values)}
+          onSubmit={values => {
+            console.log(values)
+            navigation.navigate('PasswordResetConfirmationScreen')
+          }}
           validationSchema={validationSchema}
         >
-          <Back />
           <View>
             <Text style={styles.text}>Type your e-mail to reset password:</Text>
           </View>
@@ -40,7 +41,7 @@ const PasswordResetScreen = props => {
             textContentType="emailAddress"
             isLast
           />
-          <SubmitButton title="send e-mail" color="secondary" />
+          <SubmitButton title="send e-mail" />
         </AppForm>
       </View>
     </ImageBackground>
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    marginTop: 80,
+    marginTop: '50%',
     color: colors.light,
     fontSize: 18,
     fontWeight: '800',

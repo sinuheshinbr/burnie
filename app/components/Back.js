@@ -2,10 +2,11 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { StyleSheet, Text, View } from 'react-native'
 import colors from '../config/colors'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const Back = () => {
+const Back = ({ onPress }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <AntDesign
         name="caretleft"
         size={20}
@@ -13,7 +14,7 @@ const Back = () => {
         style={styles.icon}
       />
       <Text style={styles.text}>Back</Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 

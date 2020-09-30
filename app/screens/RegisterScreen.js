@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
-const RegisterScreen = props => {
+const RegisterScreen = ({ navigation }) => {
   const passwordEl = useRef(null)
   const passwordConfirmEl = useRef(null)
 
@@ -47,7 +47,12 @@ const RegisterScreen = props => {
               password: '',
               passwordConfirmation: ''
             }}
-            onSubmit={values => console.log(values)}
+            onSubmit={values => {
+              console.log(values)
+              navigation.navigate('AppNavigator', {
+                screen: 'ConfigurationScreen'
+              })
+            }}
             validationSchema={validationSchema}
           >
             <AppFormField
@@ -88,7 +93,7 @@ const RegisterScreen = props => {
               textContentType="password"
               isLast
             />
-            <SubmitButton title="Sign Up" color="secondary" />
+            <SubmitButton title="Sign Up" />
           </AppForm>
         </View>
       </KeyboardAwareScrollView>

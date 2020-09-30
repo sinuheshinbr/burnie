@@ -3,14 +3,14 @@ import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import Back from '../components/Back'
 import colors from '../config/colors'
 
-const PasswordResetConfirmationScreen = props => {
+const PasswordResetConfirmationScreen = ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.background}
       source={require('../assets/background.jpg')}
     >
       <View style={styles.container}>
-        <Back />
+        <Back onPress={() => navigation.navigate('WelcomeScreen')} />
         <View>
           <Text style={styles.text}>
             We have e-mailed you your password reset link!

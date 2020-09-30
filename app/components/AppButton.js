@@ -1,14 +1,29 @@
 import React from 'react'
-import { StyleSheet, Text, Platform, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  Platform,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import colors from '../config/colors'
 
-const AppButton = ({ title, onPress, color = 'secondary' }) => {
+const AppButton = ({
+  title,
+  textColor = colors.white,
+  onPress,
+  color = 'secondary',
+  children
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.button, { backgroundColor: colors[color] }]}
     >
-      <Text style={styles.text}>{title}</Text>
+      <View style={styles.container}>
+        {children}
+        <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+      </View>
     </TouchableOpacity>
   )
 }
@@ -22,13 +37,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10
   },
+  container: {
+    flexDirection: 'row'
+  },
   text: {
-    color: colors.white,
     fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Avenir',
     fontSize: 20,
     textTransform: 'uppercase',
     fontWeight: '600',
-    letterSpacing: 2
+    letterSpacing: 2,
+    marginLeft: 10
   }
 })
 

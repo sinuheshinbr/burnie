@@ -5,8 +5,10 @@ import colors from '../../config/colors'
 import ListItemSeparator from '../ListItemSeparator'
 import IconButton from '../IconButton'
 import NotificationIcon from './NotificationIcon'
+import { useNavigation } from '@react-navigation/native'
 
-const ProfileMenu = ({ isEditing, path = '' }) => {
+const ProfileMenu = ({ isEditing, path = '', onSave }) => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -14,12 +16,14 @@ const ProfileMenu = ({ isEditing, path = '' }) => {
         <View style={styles.icons}>
           <NotificationIcon newNotifications={100} />
           {!isEditing && (
-            <IconButton onPress={() => console.log('cog pressed')}>
+            <IconButton
+              onPress={() => navigation.navigate('ConfigurationScreen')}
+            >
               <Entypo name="cog" size={25} color={colors.medium} />
             </IconButton>
           )}
           {isEditing && (
-            <IconButton onPress={() => console.log('Confirm and save')}>
+            <IconButton onPress={onSave}>
               <AntDesign name="checkcircleo" size={25} color={colors.medium} />
             </IconButton>
           )}
