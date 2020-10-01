@@ -1,9 +1,11 @@
 import React from 'react'
-import { Dimensions } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Card from './Card'
+import colors from '../../config/colors'
 
-const Chart = ({ data, title }) => {
+const Chart = ({ data, title, canScrollRight, canScrollLeft }) => {
   const chartConfig = {
     backgroundGradientFrom: '#fff',
     backgroundGradientFromOpacity: 0,
@@ -15,6 +17,22 @@ const Chart = ({ data, title }) => {
 
   return (
     <Card width="45%" marginRight="2.5%" marginLeft="2.5%" title={title}>
+      {canScrollRight && (
+        <MaterialCommunityIcons
+          name="chevron-right"
+          size={35}
+          color={colors.medium}
+          style={styles.iconRight}
+        />
+      )}
+      {canScrollLeft && (
+        <MaterialCommunityIcons
+          name="chevron-left"
+          size={35}
+          color={colors.medium}
+          style={styles.iconLeft}
+        />
+      )}
       <LineChart
         withVerticalLines={false}
         withHorizontalLabels={true}
@@ -28,7 +46,7 @@ const Chart = ({ data, title }) => {
           if (x == 0) return '😭'
           return ''
         }}
-        width={Dimensions.get('window').width * 0.8}
+        width={Dimensions.get('window').width * 0.75}
         height={180}
         chartConfig={chartConfig}
         bezier
@@ -36,5 +54,17 @@ const Chart = ({ data, title }) => {
     </Card>
   )
 }
+
+const styles = StyleSheet.create({
+  iconRight: {
+    position: 'absolute',
+    top: '45%',
+    left: '95%'
+  },
+  iconLeft: {
+    position: 'absolute',
+    top: '45%'
+  }
+})
 
 export default Chart
