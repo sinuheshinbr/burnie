@@ -2,10 +2,23 @@ import React from 'react'
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
 import colors from '../../config/colors'
 
-const Card = ({ onPress, title = '', minHeight, children }) => {
+const Card = ({
+  onPress,
+  title = '',
+  minHeight,
+  marginRight,
+  marginLeft,
+  children,
+  width = '90%'
+}) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.container, { minHeight }]}>
+      <View
+        style={[
+          styles.container,
+          { minHeight, width, marginRight, marginLeft }
+        ]}
+      >
         <Text style={styles.header}>{title}</Text>
         {children}
       </View>
@@ -16,7 +29,6 @@ const Card = ({ onPress, title = '', minHeight, children }) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 15,
-    width: '90%',
     alignSelf: 'center',
     elevation: 5,
     backgroundColor: colors.white,
