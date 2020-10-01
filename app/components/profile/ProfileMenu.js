@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center'
   },
-  secondaryContainer : {
+  secondaryContainer: {
     width: '95%',
     marginTop: 20,
     flexDirection: 'row',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   simpleView: {
     width: '33%'
   },
-  simpleViewCenter : {
+  simpleViewCenter: {
     width: '33%',
     alignItems: 'center'
   },
@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.medium
   },
-  image : {
-    width: 50,
-    height: 50,
-  },
+  image: {
+    width: 40,
+    height: 40
+  }
 })
 
 export default ProfileMenu

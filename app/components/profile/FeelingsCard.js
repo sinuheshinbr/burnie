@@ -1,11 +1,15 @@
 import React from 'react'
 import EmojiScale from './EmojiScale'
 import Card from './Card'
+import YouAreFeeling from './YouAreFeeling'
 
-const FeelingsCard = () => {
+const FeelingsCard = ({ feelingToday, selectFeeling }) => {
   return (
-    <Card title="How are you feeling today?">
-      <EmojiScale />
+    <Card
+      title={feelingToday ? 'Today you are:' : 'How are you feeling today?'}
+    >
+      {!feelingToday && <EmojiScale selectFeeling={selectFeeling} />}
+      {feelingToday && <YouAreFeeling feelingToday={feelingToday} />}
     </Card>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, ScrollView } from 'react-native'
 import Screen from '../components/Screen'
 import colors from '../config/colors'
@@ -11,9 +11,15 @@ import {
 } from '../components/profile'
 
 const HomeScreen = ({ navigation }) => {
+  const [feelingToday, setFeelingToday] = useState(null)
+
+  const selectFeeling = feeling => {
+    setFeelingToday(feeling)
+  }
+
   return (
     <Screen style={styles.screen}>
-      <ProfileMenu />
+      <ProfileMenu path="Home" />
       <ScrollView style={styles.container}>
         <Profile
           name="Mosh Hamedani"
@@ -21,7 +27,10 @@ const HomeScreen = ({ navigation }) => {
           city="São Paulo"
           image={require('../assets/mosh.jpg')}
         />
-        <FeelingsCard />
+        <FeelingsCard
+          feelingToday={feelingToday}
+          selectFeeling={selectFeeling}
+        />
         <DataCard />
         <ForumCard
           onPress={() => navigation.navigate('ForumDiscussionsScreen')}
