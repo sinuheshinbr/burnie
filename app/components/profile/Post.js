@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   elapsedTime: {
     color: colors.medium,
-    width: '20%',
+    width: '35%',
     textAlign: 'right'
   },
   image: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '700',
     color: 'black',
-    width: '70%'
+    width: '65%'
   },
   titleContainer: {
     flexDirection: 'row',

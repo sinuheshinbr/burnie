@@ -4,11 +4,14 @@ import Post from './Post'
 import { Text, StyleSheet } from 'react-native'
 import ListItemSeparator from '../ListItemSeparator'
 import colors from '../../config/colors'
+import hoursFromDate from '../../utils/hoursFromDate'
+import convertHours from '../../utils/convertHours'
+import { useNavigation } from '@react-navigation/native'
 
 const posts = [
   {
     _id: '89hasdeu9as98hdasjda',
-    createdAt: new Date('2020-09-30T13:24:00'),
+    createdAt: new Date('2020-10-01T16:05:00'),
     title: 'Experimental medications for COVID',
     content:
       "I think you need to be passionate about this job if you wanna make it work. Can't think about everything you are giving up or it will not make sense. If you truly love it then I think there is not better reward in life",
@@ -49,14 +52,18 @@ const posts = [
 ]
 
 const ForumCard = ({ onPress }) => {
+  const navigation = useNavigation()
+
   return (
     <Card onPress={onPress} title={'Forum:'}>
       <ListItemSeparator />
       {posts.map(post => (
         <Post
           key={post._id}
-          onPress={() => console.log('Navigate to post id: ', post._id)}
-          elapsedTime={post.createdAt.toDateString()}
+          onPress={() =>
+            navigation.navigate('ForumPostScreen', { _id: post._id })
+          }
+          elapsedTime={convertHours(hoursFromDate(post.createdAt))}
           title={post.title}
           content={post.content}
           image={post.authorAvatarUrl}

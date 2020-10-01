@@ -3,8 +3,8 @@ import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import AppText from '../AppText'
 import colors from '../../config/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import convertHours from '../../utils/convertHours'
 import normalizeNumber from '../../utils/normalizeNumber'
+import { useNavigation } from '@react-navigation/native'
 
 const DiscussionItem = ({
   _id,
@@ -13,16 +13,16 @@ const DiscussionItem = ({
   comments = 0,
   likes = 0,
   views = 0,
-  elapsedHours = null
+  elapsedTime = null
 }) => {
-  let elapsedTime = convertHours(elapsedHours)
+  const navigation = useNavigation()
   let normalizedComments = normalizeNumber(comments)
   let normalizedLikes = normalizeNumber(likes)
   let normalizedViews = normalizeNumber(views)
   return (
     <TouchableHighlight
       underlayColor={colors.light}
-      onPress={() => console.log('open discussion id: ', _id)}
+      onPress={() => navigation.navigate('ForumPostScreen', { _id })}
     >
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
@@ -59,9 +59,7 @@ const DiscussionItem = ({
             </View>
           </View>
           <View style={styles.elapsedTimeContainer}>
-            <Text style={styles.iconText}>
-              {elapsedTime && `${elapsedTime} ago`}
-            </Text>
+            <Text style={styles.iconText}>{elapsedTime}</Text>
           </View>
         </View>
       </View>

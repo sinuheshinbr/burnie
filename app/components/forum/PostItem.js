@@ -2,9 +2,7 @@ import React from 'react'
 import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import AppText from '../AppText'
 import colors from '../../config/colors'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import convertHours from '../../utils/convertHours'
-import normalizeNumber from '../../utils/normalizeNumber'
 
 const DiscussionItem = ({ _id, author, content = '', elapsedHours = null }) => {
   let elapsedTime = convertHours(elapsedHours)

@@ -69,16 +69,26 @@ const validationSchema = Yup.object().shape({
     .max(500)
 })
 
-const ForumPostScreen = props => {
+const ForumPostScreen = ({ route }) => {
+  console.log(route.params._id)
   return (
     <Screen style={styles.screen}>
-      <ProfileMenu path={`Forum > ${discussion[0].title}`} />
+      <ProfileMenu path={`Forum`} />
       <Text style={styles.title}>{discussion[0].title}</Text>
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
         scrollEnabled={true}
       >
+        {postList.map(post => (
+          <PostItem
+            key={post._id}
+            author={post.author}
+            _id={post._id}
+            content={post.content}
+            elapsedHours={post.elapsedHours}
+          />
+        ))}
         <AppForm
           style={styles.form}
           initialValues={{ post: '' }}
@@ -104,15 +114,6 @@ const ForumPostScreen = props => {
             title="Publish"
           />
         </AppForm>
-        {postList.map(post => (
-          <PostItem
-            key={post._id}
-            author={post.author}
-            _id={post._id}
-            content={post.content}
-            elapsedHours={post.elapsedHours}
-          />
-        ))}
       </KeyboardAwareScrollView>
     </Screen>
   )

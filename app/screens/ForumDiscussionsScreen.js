@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { StyleSheet, Image, Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import Screen from '../components/Screen'
 import { ProfileMenu } from '../components/profile'
 import colors from '../config/colors'
@@ -9,6 +9,8 @@ import SubmitButton from '../components/forms/SubmitButton'
 import AppForm from '../components/forms/AppForm'
 import AppFormField from '../components/forms/AppFormField'
 import * as Yup from 'yup'
+import convertHours from '../utils/convertHours'
+import hoursFromDate from '../utils/hoursFromDate'
 
 const discussionList = [
   {
@@ -17,7 +19,7 @@ const discussionList = [
     author: 'Tobias',
     comments: 1535,
     likes: 3,
-    elapsedHours: 1
+    createdAt: new Date('2020-10-01T13:24:59')
   },
   {
     _id: '65a54das654das45d46asd',
@@ -26,7 +28,7 @@ const discussionList = [
     comments: 15,
     views: 322,
     likes: 54,
-    elapsedHours: 25
+    createdAt: new Date('2020-08-01T01:00:16')
   },
   {
     _id: '123jn23m123k123k123n1',
@@ -35,16 +37,16 @@ const discussionList = [
     comments: 32,
     views: 3222,
     likes: 32,
-    elapsedHours: 5000
+    createdAt: new Date('2014-01-05T09:24:59')
   },
   {
     _id: '1893ji123129803jm12ik3m',
-    title: 'I need to have sex!',
+    title: 'I need to relax and stay with my family!',
     author: 'Mr. Jones',
     comments: 98,
     views: 12300000,
     likes: 155,
-    elapsedHours: 500
+    createdAt: new Date('2020-09-11T09:24:59')
   },
   {
     _id: '8asud9n12jn12lk309aswd',
@@ -53,7 +55,7 @@ const discussionList = [
     comments: 1498568,
     views: 456,
     likes: 1,
-    elapsedHours: 20000
+    createdAt: new Date('1999-01-05T09:24:59')
   }
 ]
 
@@ -77,6 +79,19 @@ const ForumDiscussionsScreen = props => {
         contentContainerStyle={styles.container}
         scrollEnabled={true}
       >
+        {discussionList.map(discussionItem => (
+          <DiscussionItem
+            key={discussionItem._id}
+            title={discussionItem.title}
+            author={discussionItem.author}
+            _id={discussionItem._id}
+            elapsedTime={convertHours(hoursFromDate(discussionItem.createdAt))}
+            views={discussionItem.views}
+            likes={discussionItem.likes}
+            comments={discussionItem.comments}
+          />
+        ))}
+        <Text style={styles.text}>New Discussion: </Text>
         <AppForm
           style={styles.form}
           initialValues={{ title: '', content: '' }}
@@ -113,18 +128,6 @@ const ForumDiscussionsScreen = props => {
             title="Publish"
           />
         </AppForm>
-        {discussionList.map(discussionItem => (
-          <DiscussionItem
-            key={discussionItem._id}
-            title={discussionItem.title}
-            author={discussionItem.author}
-            _id={discussionItem._id}
-            elapsedHours={discussionItem.elapsedHours}
-            views={discussionItem.views}
-            likes={discussionItem.likes}
-            comments={discussionItem.comments}
-          />
-        ))}
       </KeyboardAwareScrollView>
     </Screen>
   )
