@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
-import Swipable from 'react-native-gesture-handler/Swipeable'
+import { StyleSheet, ScrollView, View } from 'react-native'
 
 import Screen from '../components/Screen'
 import colors from '../config/colors'
@@ -23,12 +22,14 @@ const HomeScreen = ({ navigation }) => {
     <Screen style={styles.screen}>
       <ProfileMenu path="Home" />
       <ScrollView style={styles.container}>
-        <Profile
-          name="Mosh Hamedani"
-          occupation="Neurosurgeon"
-          city="São Paulo"
-          image={require('../assets/mosh.jpg')}
-        />
+        <View style={styles.profile}>
+          <Profile
+            name="Mosh Hamedani lets try a very big name"
+            occupation="Neurosurgeon"
+            city="São Paulo"
+            image={require('../assets/mosh.jpg')}
+          />
+        </View>
         <FeelingsCard
           feelingToday={feelingToday}
           selectFeeling={selectFeeling}
@@ -43,7 +44,9 @@ const HomeScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  profile: {
+    alignSelf: 'center'
+  },
   screen: {
     backgroundColor: colors.light
   }
