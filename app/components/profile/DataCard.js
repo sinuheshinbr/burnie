@@ -5,54 +5,42 @@ import Card from './Card'
 
 const DataCard = props => {
   const data = {
-    labels: [
-      '20/09/2020',
-      '21/09/2020',
-      '22/09/2020',
-      '23/09/2020',
-      '24/09/2020',
-      '25/09/2020'
-    ],
+    labels: ['20/09', '21/09', '22/09', '23/09', '24/09', '25/09'],
     datasets: [
       {
-        data: [
-          Math.floor(Math.random() * 5) - 2,
-          Math.floor(Math.random() * 5) - 2,
-          Math.floor(Math.random() * 5) - 2,
-          Math.floor(Math.random() * 5) - 2,
-          Math.floor(Math.random() * 5) - 2,
-          Math.floor(Math.random() * 5) - 2,
-          Math.floor(Math.random() * 5) - 2
-        ]
+        data: [0, 1, 2, 3, 4]
       }
     ]
+  }
+
+  const chartConfig = {
+    backgroundGradientFrom: '#fff',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#fff',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(59, 180, 228, ${1})`,
+    useShadowColorFromDataset: true
   }
 
   return (
     <Card title="Your last week">
       <LineChart
+        withVerticalLines={false}
+        withHorizontalLabels={true}
         withVerticalLabels={false}
         data={data}
+        formatYLabel={x => {
+          if (x == 4) return '😍'
+          if (x == 3) return '🙂'
+          if (x == 2) return '😑'
+          if (x == 1) return '🙁'
+          if (x == 0) return '😭'
+          return ''
+        }}
         width={Dimensions.get('window').width * 0.8}
-        height={120}
-        withVerticalLines={false}
-        yLabelsOffset={30}
-        chartConfig={{
-          backgroundGradientFrom: '#fff',
-          backgroundGradientTo: '#fff',
-          decimalPlaces: 0,
-          // color: (opacity = 1) => `rgba(58, 239, 159, ${1})`,
-          color: (opacity = 1) => `rgba(59, 180, 228, ${1})`,
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${0.7})`,
-          propsForDots: {
-            r: '5'
-          }
-        }}
+        height={180}
+        chartConfig={chartConfig}
         bezier
-        style={{
-          marginVertical: 10,
-          borderRadius: 6
-        }}
       />
     </Card>
   )
