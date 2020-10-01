@@ -6,22 +6,24 @@ import ListItemSeparator from '../ListItemSeparator'
 import IconButton from '../IconButton'
 import NotificationIcon from './NotificationIcon'
 import { useNavigation } from '@react-navigation/native'
+import Back from '../Back'
 
 const ProfileMenu = ({ isEditing, path = '', onSave }) => {
   const navigation = useNavigation()
   return (
     <View style={styles.mainContainer}>
       <View style={styles.secondaryContainer}>
-        <View style={styles.simpleView}>
-          <Text style={styles.text}>{path}</Text>
+        <View style={styles.leftView}>
+          <Back onPress={() => navigation.goBack()} color={colors.medium} />
         </View>
-        <View style={styles.simpleViewCenter}>
+        <View style={styles.centerView}>
           <Image
             source={require('../../assets/burnie-logo.png')}
             style={styles.image}
           />
+          <Text style={styles.text}>{path}</Text>
         </View>
-        <View style={styles.viewComplex}>
+        <View style={styles.rightView}>
           <NotificationIcon newNotifications={100} />
           {!isEditing && (
             <IconButton
@@ -46,6 +48,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center'
   },
+  image: {
+    width: 40,
+    height: 40,
+    marginRight: 10
+  },
   secondaryContainer: {
     width: '95%',
     marginTop: 20,
@@ -53,25 +60,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  simpleView: {
+  leftView: {
     width: '33%'
   },
-  simpleViewCenter: {
+  centerView: {
     width: '33%',
-    alignItems: 'center'
-  },
-  viewComplex: {
-    width: '33%',
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   text: {
     fontSize: 20,
     color: colors.medium
   },
-  image: {
-    width: 40,
-    height: 40
+  rightView: {
+    width: '33%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   }
 })
 

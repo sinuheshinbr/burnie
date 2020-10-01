@@ -4,6 +4,7 @@ import { AppFormField, AppForm, SubmitButton } from '../components/forms'
 import colors from '../config/colors'
 import * as Yup from 'yup'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Back from '../components/Back'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,6 +34,11 @@ const RegisterScreen = ({ navigation }) => {
         contentContainerStyle={styles.container}
         scrollEnabled={false}
       >
+        <Back
+          marginTop="5%"
+          color={colors.mediumLight}
+          onPress={() => navigation.navigate('WelcomeScreen')}
+        />
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
@@ -105,12 +111,15 @@ const styles = StyleSheet.create({
   background: {
     flex: 1
   },
+  container: {
+    padding: 20
+  },
   logo: {
     width: 100,
     height: 100
   },
   logoContainer: {
-    marginTop: 90,
+    marginTop: '5%',
     alignItems: 'center'
   },
   formContainer: {

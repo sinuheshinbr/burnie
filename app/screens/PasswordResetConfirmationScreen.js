@@ -10,7 +10,10 @@ const PasswordResetConfirmationScreen = ({ navigation }) => {
       source={require('../assets/background.jpg')}
     >
       <View style={styles.container}>
-        <Back onPress={() => navigation.navigate('WelcomeScreen')} />
+        <Back
+          marginTop="5%"
+          onPress={() => navigation.navigate('WelcomeScreen')}
+        />
         <View>
           <Text style={styles.text}>
             We have e-mailed you your password reset link!

@@ -1,12 +1,18 @@
 import React, { useRef } from 'react'
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import { AppFormField, AppForm, SubmitButton } from '../components/forms'
 import colors from '../config/colors'
 import * as Yup from 'yup'
-import AppCheckBox from '../components/AppCheckBox'
 import defaultStyles from '../config/styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import Back from '../components/Back'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -31,6 +37,11 @@ const LoginScreen = ({ navigation }) => {
         contentContainerStyle={styles.container}
         scrollEnabled={false}
       >
+        <Back
+          marginTop="5%"
+          color={colors.mediumLight}
+          onPress={() => navigation.navigate('WelcomeScreen')}
+        />
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
@@ -75,16 +86,13 @@ const LoginScreen = ({ navigation }) => {
             />
             <SubmitButton title="Login" />
           </AppForm>
-          {/*<View style={styles.rememberContainer}>*/}
-            {/*<View style={styles.checkBox}>*/}
-              {/*<AppCheckBox title="Remember-me" />*/}
-            {/*</View>*/}
-            {/*<TouchableOpacity*/}
-              {/*onPress={() => navigation.navigate('PasswordResetScreen')}*/}
-            {/*>*/}
-              {/*<Text style={styles.resetPassword}>Forgot your password?</Text>*/}
-            {/*</TouchableOpacity>*/}
-          {/*</View>*/}
+          <View style={styles.rememberContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('PasswordResetScreen')}
+            >
+              <Text style={styles.resetPassword}>Forgot your password?</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAwareScrollView>
     </ImageBackground>
@@ -95,9 +103,6 @@ const styles = StyleSheet.create({
   background: {
     flex: 1
   },
-  checkBox: {
-    marginLeft: -5
-  },
   container: {
     padding: 20
   },
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   logoContainer: {
-    marginTop: '20%',
+    marginTop: '5%',
     alignItems: 'center'
   },
   resetPassword: {

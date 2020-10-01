@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   logoContainer: {
-    marginTop: 90,
+    marginTop: '35%',
     alignItems: 'center'
   },
   tagline: {

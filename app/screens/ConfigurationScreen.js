@@ -45,7 +45,7 @@ const ConfigurationScreen = ({ navigation }) => {
           if (formRef.current) formRef.current.handleSubmit()
         }}
         isEditing
-        path="Edit Profile"
+        path="Profile"
       />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
