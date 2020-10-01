@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, ScrollView } from 'react-native'
+import Swipable from 'react-native-gesture-handler/Swipeable'
+
 import Screen from '../components/Screen'
 import colors from '../config/colors'
 import {
