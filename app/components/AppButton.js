@@ -13,12 +13,13 @@ const AppButton = ({
   textColor = colors.white,
   onPress,
   color = 'secondary',
-  children
+  children,
+  width = '100%'
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, { backgroundColor: colors[color] }]}
+      style={[styles.button, { backgroundColor: colors[color], width }]}
     >
       <View style={styles.container}>
         {children}
@@ -30,12 +31,12 @@ const AppButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
-    height: 60,
-    borderRadius: 5,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 10
+    marginVertical: 10,
+    alignSelf: 'center'
   },
   container: {
     flexDirection: 'row'

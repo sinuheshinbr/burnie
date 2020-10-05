@@ -13,6 +13,7 @@ import * as Yup from 'yup'
 import defaultStyles from '../config/styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Back from '../components/Back'
+import AppButton from '../components/AppButton'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -37,11 +38,6 @@ const LoginScreen = ({ navigation }) => {
         contentContainerStyle={styles.container}
         scrollEnabled={false}
       >
-        <Back
-          marginTop="5%"
-          color={colors.mediumLight}
-          onPress={() => navigation.navigate('WelcomeScreen')}
-        />
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
@@ -84,15 +80,21 @@ const LoginScreen = ({ navigation }) => {
               textContentType="password"
               isLast
             />
-            <SubmitButton title="Login" />
+            <View style={styles.rememberContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PasswordResetScreen')}
+              >
+                <Text style={styles.resetPassword}>Forgot your password?</Text>
+              </TouchableOpacity>
+            </View>
+            <SubmitButton width="80%" title="Login" />
+            <AppButton
+              onPress={() => navigation.navigate('RegisterScreen')}
+              color={colors.transparent00}
+              width="80%"
+              title="Register"
+            />
           </AppForm>
-          <View style={styles.rememberContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PasswordResetScreen')}
-            >
-              <Text style={styles.resetPassword}>Forgot your password?</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </KeyboardAwareScrollView>
     </ImageBackground>
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   logoContainer: {
-    marginTop: '5%',
+    marginTop: '25%',
     alignItems: 'center'
   },
   resetPassword: {
@@ -124,9 +126,8 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   rememberContainer: {
-    marginTop: '5%',
-    height: 70,
-    justifyContent: 'space-between'
+    alignSelf: 'flex-end',
+    marginBottom: '7.5%'
   },
   tagline: {
     color: colors.white,

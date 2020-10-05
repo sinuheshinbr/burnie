@@ -37,7 +37,7 @@ const RegisterScreen = ({ navigation }) => {
         <Back
           marginTop="5%"
           color={colors.mediumLight}
-          onPress={() => navigation.navigate('WelcomeScreen')}
+          onPress={() => navigation.navigate('LoginScreen')}
         />
         <View style={styles.logoContainer}>
           <Image
@@ -99,7 +99,7 @@ const RegisterScreen = ({ navigation }) => {
               textContentType="password"
               isLast
             />
-            <SubmitButton title="Sign Up" />
+            <SubmitButton width="80%" title="Sign Up" />
           </AppForm>
         </View>
       </KeyboardAwareScrollView>
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   formContainer: {
-    padding: 20,
     width: '100%'
   },
   tagline: {

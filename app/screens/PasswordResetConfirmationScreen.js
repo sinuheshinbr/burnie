@@ -12,7 +12,7 @@ const PasswordResetConfirmationScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Back
           marginTop="5%"
-          onPress={() => navigation.navigate('WelcomeScreen')}
+          onPress={() => navigation.navigate('LoginScreen')}
         />
         <View>
           <Text style={styles.text}>

@@ -135,7 +135,8 @@ const ConfigurationScreen = ({ navigation }) => {
           </AppForm>
           <View style={styles.logout}>
             <AppButton
-              onPress={() => navigation.navigate('WelcomeScreen')}
+              onPress={() => navigation.navigate('LoginScreen')}
+              width="80%"
               textColor={colors.mediumLight}
               title="Logout"
               color="transparent08"

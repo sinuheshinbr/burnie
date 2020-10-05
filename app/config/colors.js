@@ -1,4 +1,5 @@
 export default {
+  transparent00: 'rgba(52, 52, 52, 0)',
   transparent02: 'rgba(52, 52, 52, 0.2)',
   transparent08: 'rgba(52, 52, 52, 0.8)',
   primary: '#3aef9f',
