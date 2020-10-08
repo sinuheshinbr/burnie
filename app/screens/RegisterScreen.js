@@ -99,7 +99,7 @@ const RegisterScreen = ({ navigation }) => {
               textContentType="password"
               isLast
             />
-            <SubmitButton width="80%" title="Sign Up" />
+            <SubmitButton title="Sign Up" />
           </AppForm>
         </View>
       </KeyboardAwareScrollView>

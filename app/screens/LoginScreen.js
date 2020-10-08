@@ -56,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
             validationSchema={validationSchema}
           >
             <AppFormField
-              errorColor={colors.light}
+              errorColor={colors.white}
               backgroundColor={colors.transparent08}
               name="email"
               autoCapitalize="none"
@@ -80,6 +80,13 @@ const LoginScreen = ({ navigation }) => {
               textContentType="password"
               isLast
             />
+
+            <SubmitButton title="Login" />
+            <AppButton
+              onPress={() => navigation.navigate('RegisterScreen')}
+              color={colors.transparent00}
+              title="Register"
+            />
             <View style={styles.rememberContainer}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('PasswordResetScreen')}
@@ -87,13 +94,6 @@ const LoginScreen = ({ navigation }) => {
                 <Text style={styles.resetPassword}>Forgot your password?</Text>
               </TouchableOpacity>
             </View>
-            <SubmitButton width="80%" title="Login" />
-            <AppButton
-              onPress={() => navigation.navigate('RegisterScreen')}
-              color={colors.transparent00}
-              width="80%"
-              title="Register"
-            />
           </AppForm>
         </View>
       </KeyboardAwareScrollView>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     height: 100
   },
   logoContainer: {
-    marginTop: '25%',
+    marginTop: '20%',
     alignItems: 'center'
   },
   resetPassword: {
@@ -126,8 +126,12 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   rememberContainer: {
-    alignSelf: 'flex-end',
-    marginBottom: '7.5%'
+    alignSelf: 'center',
+    marginTop: '10%',
+    borderWidth: 2,
+    borderColor: colors.light,
+    borderRadius: 5,
+    padding: 6
   },
   tagline: {
     color: colors.white,
