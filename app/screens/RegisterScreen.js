@@ -5,6 +5,9 @@ import colors from '../config/colors'
 import * as Yup from 'yup'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Back from '../components/Back'
+import ErrorMessage from '../components/ErrorMessage'
+import usersApi from '../api/users'
+import useApi from '../hooks/useApi'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -21,8 +24,22 @@ const validationSchema = Yup.object().shape({
 })
 
 const RegisterScreen = ({ navigation }) => {
+  const { request: createUser, error, data } = useApi(usersApi.createUser)
   const passwordEl = useRef(null)
   const passwordConfirmEl = useRef(null)
+
+  const handleSubmit = async values => {
+    const response = await createUser(values)
+    if (response) {
+      navigation.navigate('AppNavigator', {
+        screen: 'ConfigurationScreen',
+        params: {
+          email: response.data.email,
+          id: response.data._id
+        }
+      })
+    }
+  }
 
   return (
     <ImageBackground
@@ -46,6 +63,7 @@ const RegisterScreen = ({ navigation }) => {
           />
           <Text style={styles.tagline}>Burnie</Text>
         </View>
+        {error && <ErrorMessage error={data} />}
         <View style={styles.formContainer}>
           <AppForm
             initialValues={{
@@ -54,10 +72,7 @@ const RegisterScreen = ({ navigation }) => {
               passwordConfirmation: ''
             }}
             onSubmit={values => {
-              console.log(values)
-              navigation.navigate('AppNavigator', {
-                screen: 'ConfigurationScreen'
-              })
+              handleSubmit(values)
             }}
             validationSchema={validationSchema}
           >

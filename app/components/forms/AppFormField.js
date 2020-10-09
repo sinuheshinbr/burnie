@@ -19,11 +19,13 @@ const AppFormField = ({
     handleChange,
     errors,
     touched,
-    submitForm
+    submitForm,
+    values
   } = useFormikContext()
   return (
     <>
       <AppTextInput
+        value={values[name]}
         disableFocusDisplay={disableFocusDisplay}
         nextEl={nextEl}
         textColor={textColor}

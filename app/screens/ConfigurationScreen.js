@@ -10,6 +10,8 @@ import AppFormField from '../components/forms/AppFormField'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AppButton from '../components/AppButton'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import usersApi from '../api/users'
+import useApi from '../hooks/useApi'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -31,12 +33,19 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
-const ConfigurationScreen = ({ navigation }) => {
+const ConfigurationScreen = ({ navigation, route }) => {
+  const { request: updateUser, error, data } = useApi(usersApi.updateUser)
   const formRef = useRef(null)
   const cityEl = useRef(null)
   const emailEl = useRef(null)
-  const passwordEl = useRef(null)
-  const passwordConfirmEl = useRef(null)
+  const { email, id } = route.params
+
+  // const saveUser = async values => {
+  //   console.log(id)
+  //   console.log(values)
+  //   const response = await updateUser(id, values)
+  //   if (response) return navigation.navigate('HomeScreen')
+  // }
 
   return (
     <Screen style={styles.screen}>
@@ -59,9 +68,7 @@ const ConfigurationScreen = ({ navigation }) => {
             initialValues={{
               name: '',
               city: '',
-              email: '',
-              password: '',
-              passwordConfirmation: ''
+              email: email
             }}
             onSubmit={values => {
               console.log(values)
@@ -104,39 +111,12 @@ const ConfigurationScreen = ({ navigation }) => {
               keyboardType="email-address"
               placeholder="Email"
               textContentType="emailAddress"
-              nextEl={passwordEl}
-            />
-            <AppFormField
-              textColor={colors.dark}
-              innerRef={passwordEl}
-              name="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              iconColor={colors.medium}
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-              nextEl={passwordConfirmEl}
-            />
-            <AppFormField
-              textColor={colors.dark}
-              innerRef={passwordConfirmEl}
-              name="passwordConfirmation"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              iconColor={colors.medium}
-              placeholder="Confirm password"
-              secureTextEntry
-              textContentType="password"
               isLast
             />
           </AppForm>
           <View style={styles.logout}>
             <AppButton
               onPress={() => navigation.navigate('LoginScreen')}
-              width="80%"
               textColor={colors.mediumLight}
               title="Logout"
               color="transparent08"

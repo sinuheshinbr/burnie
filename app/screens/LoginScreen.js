@@ -128,8 +128,6 @@ const styles = StyleSheet.create({
   rememberContainer: {
     alignSelf: 'center',
     marginTop: '10%',
-    borderWidth: 2,
-    borderColor: colors.light,
     borderRadius: 5,
     padding: 6
   },
