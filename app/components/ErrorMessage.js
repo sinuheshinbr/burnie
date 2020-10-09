@@ -2,10 +2,10 @@ import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import colors from '../config/colors'
 
-const ErrorMessage = ({ error }) => {
+const ErrorMessage = ({ error, color = colors.white, backgroundColor }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{error}</Text>
+    <View style={[styles.container, { backgroundColor }]}>
+      <Text style={[styles.text, { color }]}>{error}</Text>
     </View>
   )
 }
@@ -14,13 +14,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     margin: 5,
-    backgroundColor: colors.whiteTransparent02,
     height: 30,
     justifyContent: 'center',
     borderRadius: 5
   },
   text: {
-    color: colors.white,
     fontSize: 20
   }
 })

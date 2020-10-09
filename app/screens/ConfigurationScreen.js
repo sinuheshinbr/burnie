@@ -12,25 +12,15 @@ import AppButton from '../components/AppButton'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import usersApi from '../api/users'
 import useApi from '../hooks/useApi'
+import ErrorMessage from '../components/ErrorMessage'
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required()
-    .label('Name'),
-  city: Yup.string()
-    .required()
-    .label('City'),
+  name: Yup.string().label('Name'),
+  city: Yup.string().label('City'),
   email: Yup.string()
     .required()
     .email()
-    .label('E-mail'),
-  password: Yup.string()
-    .required()
-    .min(4)
-    .label('Password'),
-  passwordConfirmation: Yup.string()
-    .required('Password confirmation is a required field')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .label('E-mail')
 })
 
 const ConfigurationScreen = ({ navigation, route }) => {
@@ -40,18 +30,16 @@ const ConfigurationScreen = ({ navigation, route }) => {
   const emailEl = useRef(null)
   const { email, id } = route.params
 
-  // const saveUser = async values => {
-  //   console.log(id)
-  //   console.log(values)
-  //   const response = await updateUser(id, values)
-  //   if (response) return navigation.navigate('HomeScreen')
-  // }
+  const handleSubmit = async values => {
+    const response = await updateUser(id, values)
+    if (response) navigation.navigate('HomeScreen')
+  }
 
   return (
     <Screen style={styles.screen}>
       <ProfileMenu
         onSave={() => {
-          if (formRef.current) formRef.current.handleSubmit()
+          formRef.current.handleSubmit()
         }}
         isEditing
         path="Profile"
@@ -63,6 +51,7 @@ const ConfigurationScreen = ({ navigation, route }) => {
       >
         <SelectPhoto image={require('../assets/mosh.jpg')} />
         <View style={styles.formContainer}>
+          {error && <ErrorMessage color={colors.danger} error={data} />}
           <AppForm
             innerRef={formRef}
             initialValues={{
@@ -70,10 +59,7 @@ const ConfigurationScreen = ({ navigation, route }) => {
               city: '',
               email: email
             }}
-            onSubmit={values => {
-              console.log(values)
-              navigation.navigate('HomeScreen')
-            }}
+            onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
             <AppFormField

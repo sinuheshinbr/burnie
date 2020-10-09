@@ -12,6 +12,7 @@ export default useApi = apiFunc => {
 
     if (!response.ok) {
       setError(true)
+      if (response.data.message) return setData(response.data.message)
       return setData(response.data)
     }
 

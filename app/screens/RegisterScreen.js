@@ -63,7 +63,9 @@ const RegisterScreen = ({ navigation }) => {
           />
           <Text style={styles.tagline}>Burnie</Text>
         </View>
-        {error && <ErrorMessage error={data} />}
+        {error && (
+          <ErrorMessage backgroundColor={colors.transparent02} error={data} />
+        )}
         <View style={styles.formContainer}>
           <AppForm
             initialValues={{
