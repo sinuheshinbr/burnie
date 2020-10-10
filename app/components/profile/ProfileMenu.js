@@ -8,13 +8,15 @@ import NotificationIcon from './NotificationIcon'
 import { useNavigation } from '@react-navigation/native'
 import Back from '../Back'
 
-const ProfileMenu = ({ isEditing, path = '', onSave }) => {
+const ProfileMenu = ({ isEditing, path = '', onSave, displayBack = true }) => {
   const navigation = useNavigation()
   return (
     <View style={styles.mainContainer}>
       <View style={styles.secondaryContainer}>
         <View style={styles.leftView}>
-          <Back onPress={() => navigation.goBack()} color={colors.medium} />
+          {displayBack && (
+            <Back onPress={() => navigation.goBack()} color={colors.medium} />
+          )}
         </View>
         <View style={styles.centerView}>
           <Image

@@ -10,9 +10,20 @@ export default useApi = apiFunc => {
     const response = await apiFunc(...args)
     setLoading(false)
 
+    if (!response) {
+      setData('Connection problem... try again later')
+      return { ok: false }
+    }
+
     if (!response.ok) {
       setError(true)
-      if (response.data.message) return setData(response.data.message)
+      if (response.status === 400) return setData(response.data)
+      if (response.status === 404)
+        return setData(
+          `Could not reach the server, please contact support and report the following error: ${response.data.error}`
+        )
+      console.log(response)
+      if (response.problem) return setData(response.problem)
       return setData(response.data)
     }
 

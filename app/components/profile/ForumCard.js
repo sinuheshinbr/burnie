@@ -55,7 +55,7 @@ const ForumCard = ({ onPress }) => {
   const navigation = useNavigation()
 
   return (
-    <Card onPress={onPress} title={'Forum:'}>
+    <Card onPress={onPress} title={'Forum'}>
       <ListItemSeparator />
       {posts.map(post => (
         <Post

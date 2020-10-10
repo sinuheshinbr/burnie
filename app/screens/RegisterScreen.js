@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import { AppFormField, AppForm, SubmitButton } from '../components/forms'
 import colors from '../config/colors'
 import * as Yup from 'yup'
@@ -8,6 +8,7 @@ import Back from '../components/Back'
 import ErrorMessage from '../components/ErrorMessage'
 import usersApi from '../api/users'
 import useApi from '../hooks/useApi'
+import Background from '../components/Background'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -42,10 +43,7 @@ const RegisterScreen = ({ navigation }) => {
   }
 
   return (
-    <ImageBackground
-      style={styles.background}
-      source={require('../assets/background.jpg')}
-    >
+    <Background>
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
@@ -120,14 +118,11 @@ const RegisterScreen = ({ navigation }) => {
           </AppForm>
         </View>
       </KeyboardAwareScrollView>
-    </ImageBackground>
+    </Background>
   )
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1
-  },
   container: {
     padding: 20
   },

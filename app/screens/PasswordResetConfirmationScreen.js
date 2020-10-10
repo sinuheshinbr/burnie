@@ -1,14 +1,12 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Back from '../components/Back'
 import colors from '../config/colors'
+import Background from '../components/Background'
 
 const PasswordResetConfirmationScreen = ({ navigation }) => {
   return (
-    <ImageBackground
-      style={styles.background}
-      source={require('../assets/background.jpg')}
-    >
+    <Background>
       <View style={styles.container}>
         <Back
           marginTop="5%"
@@ -20,14 +18,11 @@ const PasswordResetConfirmationScreen = ({ navigation }) => {
           </Text>
         </View>
       </View>
-    </ImageBackground>
+    </Background>
   )
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1
-  },
   container: {
     padding: 20,
     width: '100%'

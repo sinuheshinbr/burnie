@@ -32,7 +32,7 @@ const ConfigurationScreen = ({ navigation, route }) => {
 
   const handleSubmit = async values => {
     const response = await updateUser(id, values)
-    if (response) navigation.navigate('HomeScreen')
+    if (response.ok) navigation.navigate('HomeScreen')
   }
 
   return (
@@ -43,6 +43,7 @@ const ConfigurationScreen = ({ navigation, route }) => {
         }}
         isEditing
         path="Profile"
+        displayBack={false}
       />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}

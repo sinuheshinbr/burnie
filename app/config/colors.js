@@ -4,6 +4,7 @@ export default {
   transparent08: 'rgba(52, 52, 52, 0.8)',
   whiteTransparent02: 'rgba(255, 255, 255, 0.2)',
   whiteTransparent04: 'rgba(255, 255, 255, 0.4)',
+  background: '#2d3c53',
   primary: '#3aef9f',
   secondary: '#3bb4e4',
   black: '#000',
