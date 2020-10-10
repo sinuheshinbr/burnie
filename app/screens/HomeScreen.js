@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
-
 import Screen from '../components/Screen'
 import colors from '../config/colors'
 import {
@@ -10,8 +9,11 @@ import {
   DataCard,
   ForumCard
 } from '../components/profile'
+import AuthContext from '../auth/context'
 
 const HomeScreen = ({ navigation }) => {
+  const { user } = useContext(AuthContext)
+  const { name, occupation, city, avatarUrl } = user
   const [feelingToday, setFeelingToday] = useState(null)
 
   const selectFeeling = feeling => {
@@ -24,10 +26,10 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <View style={styles.profile}>
           <Profile
-            name="Mosh Hamedani lets try a very big name"
-            occupation="Neurosurgeon"
-            city="São Paulo"
-            image={require('../assets/mosh.jpg')}
+            name={name ? name : 'Username'}
+            occupation={occupation ? occupation : 'Occupation'}
+            city={city ? city : 'City'}
+            image={require('../assets/image-placeholder.png')}
           />
         </View>
         <FeelingsCard

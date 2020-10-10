@@ -3,7 +3,8 @@ import getEnvVars from '../../environment'
 const { apiUrl } = getEnvVars()
 
 const apiClient = create({
-  baseURL: apiUrl
+  baseURL: apiUrl,
+  timeout: 2000
 })
 
 export default apiClient

@@ -39,16 +39,4 @@ const Chart = ({ data, title, pages, currentPage }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  iconRight: {
-    position: 'absolute',
-    top: '45%',
-    left: '95%'
-  },
-  iconLeft: {
-    position: 'absolute',
-    top: '45%'
-  }
-})
-
 export default Chart
