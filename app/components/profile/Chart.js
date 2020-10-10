@@ -1,11 +1,10 @@
 import React from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Card from './Card'
-import colors from '../../config/colors'
+import ChartPageIndicator from './ChartPageIndicator'
 
-const Chart = ({ data, title, canScrollRight, canScrollLeft }) => {
+const Chart = ({ data, title, pages, currentPage }) => {
   const chartConfig = {
     backgroundGradientFrom: '#fff',
     backgroundGradientFromOpacity: 0,
@@ -17,22 +16,7 @@ const Chart = ({ data, title, canScrollRight, canScrollLeft }) => {
 
   return (
     <Card width="45%" marginRight="2.5%" marginLeft="2.5%" title={title}>
-      {canScrollRight && (
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={35}
-          color={colors.medium}
-          style={styles.iconRight}
-        />
-      )}
-      {canScrollLeft && (
-        <MaterialCommunityIcons
-          name="chevron-left"
-          size={35}
-          color={colors.medium}
-          style={styles.iconLeft}
-        />
-      )}
+      <ChartPageIndicator pages={pages} currentPage={currentPage} />
       <LineChart
         withVerticalLines={false}
         withHorizontalLabels={true}

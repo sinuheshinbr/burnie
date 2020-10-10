@@ -42,7 +42,6 @@ const ConfigurationScreen = ({ navigation }) => {
         }}
         isEditing
         path="Profile"
-        displayBack={false}
       />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}

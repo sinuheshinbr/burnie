@@ -14,8 +14,8 @@ const DataCard = props => {
       pagingEnabled
       contentContainerStyle={{ width: '200%' }}
     >
-      <Chart canScrollRight title="Your Last Week" data={week} />
-      <Chart canScrollLeft title="Your Last Month" data={month} />
+      <Chart pages={2} currentPage={1} title="Your Last Week" data={week} />
+      <Chart pages={2} currentPage={2} title="Your Last Month" data={month} />
     </ScrollView>
   )
 }
