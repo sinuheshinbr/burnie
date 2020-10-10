@@ -12,7 +12,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = async values => {
     const response = await login(values)
-    if (response.ok) navigation.navigate('AppNavigator')
+    if (response?.ok) navigation.navigate('AppNavigator')
   }
 
   return (

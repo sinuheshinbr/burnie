@@ -25,6 +25,9 @@ const passwordResetForm = ({ navigation, error, data, handleSubmit }) => {
         <View>
           <Text style={styles.text}>Type your e-mail to reset password:</Text>
         </View>
+        {error && (
+          <ErrorMessage backgroundColor={colors.transparent02} error={data} />
+        )}
         <AppFormField
           errorColor={colors.light}
           backgroundColor={colors.transparent08}
@@ -39,9 +42,6 @@ const passwordResetForm = ({ navigation, error, data, handleSubmit }) => {
         />
         <SubmitButton title="send e-mail" />
       </AppForm>
-      {error && (
-        <ErrorMessage marginTop={30} color={colors.white} error={data} />
-      )}
     </View>
   )
 }

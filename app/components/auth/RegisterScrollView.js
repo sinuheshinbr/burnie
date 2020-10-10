@@ -1,11 +1,11 @@
 import React, { useRef } from 'react'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AppFormField, AppForm, SubmitButton } from '../forms'
-import ErrorMessage from '../ErrorMessage'
-import { Image, Text, View, TouchableOpacity, StyleSheet } from 'react-native'
-import AppButton from '../AppButton'
-import colors from '../../config/colors'
 import * as Yup from 'yup'
+import { View, StyleSheet, Image, Text } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Back from '../../components/Back'
+import ErrorMessage from '../../components/ErrorMessage'
+import { AppFormField, AppForm, SubmitButton } from '../../components/forms'
+import colors from '../../config/colors'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -15,11 +15,15 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .required()
     .min(4)
-    .label('Password')
+    .label('Password'),
+  passwordConfirmation: Yup.string()
+    .required('Password confirmation is a required field')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
-const LoginScrollView = ({ navigation, error, data, handleSubmit }) => {
+const RegisterScrollView = ({ navigation, error, data, handleSubmit }) => {
   const passwordEl = useRef(null)
+  const passwordConfirmEl = useRef(null)
 
   return (
     <KeyboardAwareScrollView
@@ -27,6 +31,11 @@ const LoginScrollView = ({ navigation, error, data, handleSubmit }) => {
       contentContainerStyle={styles.container}
       scrollEnabled={false}
     >
+      <Back
+        marginTop="5%"
+        color={colors.mediumLight}
+        onPress={() => navigation.navigate('LoginScreen')}
+      />
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
@@ -37,15 +46,20 @@ const LoginScrollView = ({ navigation, error, data, handleSubmit }) => {
       {error && (
         <ErrorMessage backgroundColor={colors.transparent02} error={data} />
       )}
-      <View behavior="padding" style={styles.formContainer}>
+      <View style={styles.formContainer}>
         <AppForm
-          style={styles.form}
-          initialValues={{ email: '', password: '' }}
-          onSubmit={handleSubmit}
+          initialValues={{
+            email: '',
+            password: '',
+            passwordConfirmation: ''
+          }}
+          onSubmit={values => {
+            handleSubmit(values)
+          }}
           validationSchema={validationSchema}
         >
           <AppFormField
-            errorColor={colors.white}
+            errorColor={colors.light}
             backgroundColor={colors.transparent08}
             name="email"
             autoCapitalize="none"
@@ -67,22 +81,22 @@ const LoginScrollView = ({ navigation, error, data, handleSubmit }) => {
             placeholder="Password"
             secureTextEntry
             textContentType="password"
+            nextEl={passwordConfirmEl}
+          />
+          <AppFormField
+            innerRef={passwordConfirmEl}
+            errorColor={colors.light}
+            backgroundColor={colors.transparent08}
+            name="passwordConfirmation"
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            placeholder="Confirm password"
+            secureTextEntry
+            textContentType="password"
             isLast
           />
-
-          <SubmitButton title="Login" />
-          <AppButton
-            onPress={() => navigation.navigate('RegisterScreen')}
-            color={colors.transparent00}
-            title="Register"
-          />
-          <View style={styles.rememberContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PasswordResetScreen')}
-            >
-              <Text style={styles.resetPassword}>Forgot your password?</Text>
-            </TouchableOpacity>
-          </View>
+          <SubmitButton title="Sign Up" />
         </AppForm>
       </View>
     </KeyboardAwareScrollView>
@@ -98,23 +112,11 @@ const styles = StyleSheet.create({
     height: 100
   },
   logoContainer: {
-    marginTop: '20%',
+    marginTop: '5%',
     alignItems: 'center'
-  },
-  resetPassword: {
-    color: colors.light,
-    fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Avenir',
-    fontSize: 16,
-    letterSpacing: 1
   },
   formContainer: {
     width: '100%'
-  },
-  rememberContainer: {
-    alignSelf: 'center',
-    marginTop: '10%',
-    borderRadius: 5,
-    padding: 6
   },
   tagline: {
     color: colors.white,
@@ -123,5 +125,4 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   }
 })
-
-export default LoginScrollView
+export default RegisterScrollView

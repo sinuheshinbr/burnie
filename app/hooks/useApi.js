@@ -19,11 +19,10 @@ export default useApi = apiFunc => {
       setError(true)
       if (response.status === 400) return setData(response.data)
       if (response.status === 404)
-        return setData(
-          `Could not reach the server, please contact support and report the following error: ${response.data.error}`
-        )
+        return setData('Internal error please contact support')
       console.log(response)
-      if (response.problem) return setData(response.problem)
+      if (response.problem === 'NETWORK_ERROR')
+        return setData('Connection problem... try again later')
       return setData(response.data)
     }
 

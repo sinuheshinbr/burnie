@@ -12,7 +12,7 @@ const PasswordResetScreen = ({ navigation }) => {
 
   const handleSubmit = async email => {
     const response = await resetPassword(email)
-    if (response.ok) navigation.navigate('PasswordResetConfirmationScreen')
+    if (response?.ok) navigation.navigate('PasswordResetConfirmationScreen')
   }
 
   return (

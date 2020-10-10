@@ -23,12 +23,11 @@ const validationSchema = Yup.object().shape({
     .label('E-mail')
 })
 
-const ConfigurationScreen = ({ navigation, route }) => {
+const ConfigurationScreen = ({ navigation }) => {
   const { request: updateUser, error, data } = useApi(usersApi.updateUser)
   const formRef = useRef(null)
   const cityEl = useRef(null)
   const emailEl = useRef(null)
-  const { email, id } = route.params
 
   const handleSubmit = async values => {
     const response = await updateUser(id, values)
@@ -58,7 +57,7 @@ const ConfigurationScreen = ({ navigation, route }) => {
             initialValues={{
               name: '',
               city: '',
-              email: email
+              email: ''
             }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
