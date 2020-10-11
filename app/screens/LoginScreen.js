@@ -16,7 +16,6 @@ const LoginScreen = ({ navigation }) => {
     if (!response.ok) return
     const user = jwtDecode(response.data)
     authContext.setUser(user)
-    // navigation.navigate('AppNavigator')
   }
 
   return (
