@@ -75,6 +75,8 @@ const LoginScrollView = ({ navigation, error, data, handleSubmit }) => {
             onPress={() => navigation.navigate('RegisterScreen')}
             color={colors.transparent00}
             title="Register"
+            borderWidth={1}
+            borderColor={colors.light}
           />
           <View style={styles.rememberContainer}>
             <TouchableOpacity

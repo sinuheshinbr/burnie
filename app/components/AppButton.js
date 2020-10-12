@@ -14,12 +14,17 @@ const AppButton = ({
   onPress,
   color = 'secondary',
   children,
-  width = '100%'
+  width = '100%',
+  borderWidth = 0,
+  borderColor
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, { backgroundColor: colors[color], width }]}
+      style={[
+        styles.button,
+        { backgroundColor: colors[color], width, borderWidth, borderColor }
+      ]}
     >
       <View style={styles.container}>
         {children}

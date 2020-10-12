@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react'
+import React, { useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as Yup from 'yup'
@@ -11,7 +11,6 @@ import AppButton from '../AppButton'
 import SelectPhoto from '../edit-profile/SelectPhoto'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import colors from '../../config/colors'
-import AuthContext from '../../auth/context'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().label('Name'),
@@ -22,8 +21,7 @@ const validationSchema = Yup.object().shape({
     .label('E-mail')
 })
 
-const EditProfile = ({ navigation, error, data, handleSubmit }) => {
-  const { user, setUser } = useContext(AuthContext)
+const EditProfile = ({ error, data, handleSubmit, handleLogout, user }) => {
   const { name = '', city = '', email = '' } = user
   const formRef = useRef(null)
   const cityEl = useRef(null)
@@ -96,7 +94,7 @@ const EditProfile = ({ navigation, error, data, handleSubmit }) => {
           </AppForm>
           <View style={styles.logout}>
             <AppButton
-              onPress={() => setUser(null)}
+              onPress={handleLogout}
               textColor={colors.mediumLight}
               title="Logout"
               color="transparent08"
