@@ -13,19 +13,21 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import colors from '../../config/colors'
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().label('Name'),
   city: Yup.string().label('City'),
   email: Yup.string()
     .required()
     .email()
-    .label('E-mail')
+    .label('E-mail'),
+  name: Yup.string().label('Name'),
+  occupation: Yup.string().label('Occupation')
 })
 
 const EditProfile = ({ error, data, handleSubmit, handleLogout, user }) => {
-  const { name = '', city = '', email = '' } = user
+  const { city = '', email = '', name = '', occupation = '' } = user
   const formRef = useRef(null)
   const cityEl = useRef(null)
   const emailEl = useRef(null)
+  const occupationEl = useRef(null)
 
   return (
     <Screen style={styles.screen}>
@@ -47,9 +49,10 @@ const EditProfile = ({ error, data, handleSubmit, handleLogout, user }) => {
           <AppForm
             innerRef={formRef}
             initialValues={{
-              name: name,
-              city: city,
-              email: email
+              name,
+              city,
+              email,
+              occupation
             }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
@@ -76,6 +79,19 @@ const EditProfile = ({ error, data, handleSubmit, handleLogout, user }) => {
               keyboardType="default"
               placeholder="City"
               textContentType="addressCity"
+              nextEl={occupationEl}
+            />
+            <AppFormField
+              textColor={colors.dark}
+              innerRef={occupationEl}
+              name="occupation"
+              autoCapitalize="words"
+              autoCorrect={false}
+              icon="briefcase-outline"
+              iconColor={colors.medium}
+              keyboardType="default"
+              placeholder="Occupation"
+              textContentType="jobTitle"
               nextEl={emailEl}
             />
             <AppFormField

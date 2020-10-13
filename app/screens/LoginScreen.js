@@ -18,7 +18,6 @@ const LoginScreen = ({ navigation }) => {
     const user = jwtDecode(response.data)
     authContext.setUser(user)
     authStorage.storeToken(response.data)
-    console.log(response.data)
   }
 
   return (

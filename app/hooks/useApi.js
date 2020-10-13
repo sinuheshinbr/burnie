@@ -16,8 +16,10 @@ export default useApi = apiFunc => {
     }
 
     if (!response.ok) {
+      console.log('response:', response)
       setError(true)
       if (response.status === 400) return setData(response.data)
+      if (response.status === 401) return setData(response.data.error)
       if (response.status === 404)
         return setData('Internal error please contact support')
       if (response.status === null)
