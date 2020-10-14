@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 
 import ActivityIndicator from '../components/ActivityIndicator'
 import AuthContext from '../auth/context'
@@ -9,14 +9,24 @@ import useApi from '../hooks/useApi'
 import usersApi from '../api/users'
 
 const ConfigurationScreen = ({ navigation }) => {
+  let isMounted = true
   const authContext = useContext(AuthContext)
   const { user, setUser } = authContext
-  const { _id } = user
+  const { _id, avatarUrl } = user
+  const defaultImage = require('../assets/image-placeholder.png')
+  const [image, setImage] = useState({
+    uri: avatarUrl ? avatarUrl : defaultImage
+  })
   const { request: updateUser, error, data, loading } = useApi(
     usersApi.updateUser
   )
 
+  useEffect(() => {
+    return () => (isMounted = false)
+  }, [])
+
   const handleSubmit = async values => {
+    values.avatarUrl = image.uri
     const token = await authStorage.getToken()
     const response = await updateUser(_id, values, token)
     if (!response?.ok) return
@@ -41,6 +51,9 @@ const ConfigurationScreen = ({ navigation }) => {
           handleSubmit={handleSubmit}
           user={user}
           handleLogout={handleLogout}
+          image={image}
+          setImage={setImage}
+          isMounted={isMounted}
         />
       )}
     </>

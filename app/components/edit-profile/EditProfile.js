@@ -22,7 +22,16 @@ const validationSchema = Yup.object().shape({
   occupation: Yup.string().label('Occupation')
 })
 
-const EditProfile = ({ error, data, handleSubmit, handleLogout, user }) => {
+const EditProfile = ({
+  error,
+  data,
+  handleSubmit,
+  handleLogout,
+  image,
+  isMounted,
+  setImage,
+  user
+}) => {
   const { city = '', email = '', name = '', occupation = '' } = user
   const formRef = useRef(null)
   const cityEl = useRef(null)
@@ -43,7 +52,12 @@ const EditProfile = ({ error, data, handleSubmit, handleLogout, user }) => {
         contentContainerStyle={styles.container}
         scrollEnabled={true}
       >
-        <SelectPhoto image={require('../../assets/mosh.jpg')} />
+        <SelectPhoto
+          image={image}
+          isMounted={isMounted}
+          setImage={setImage}
+          user={user}
+        />
         <View style={styles.formContainer}>
           {error && <ErrorMessage color={colors.danger} error={data} />}
           <AppForm
@@ -132,7 +146,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '90%',
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 50
   },
   logout: {

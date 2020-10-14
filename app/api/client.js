@@ -4,7 +4,7 @@ const { apiUrl } = getEnvVars()
 
 const apiClient = create({
   baseURL: apiUrl,
-  timeout: 2000
+  timeout: 10000
 })
 
 export default apiClient

@@ -16,7 +16,6 @@ export default useApi = apiFunc => {
     }
 
     if (!response.ok) {
-      console.log('response:', response)
       setError(true)
       if (response.status === 400) return setData(response.data)
       if (response.status === 401) return setData(response.data.error)

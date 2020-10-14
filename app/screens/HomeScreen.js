@@ -12,6 +12,7 @@ import {
 import AuthContext from '../auth/context'
 
 const HomeScreen = ({ navigation }) => {
+  const defaultImage = require('../assets/image-placeholder.png')
   const { user } = useContext(AuthContext)
   const { name, occupation, city, avatarUrl } = user
   const [feelingToday, setFeelingToday] = useState(null)
@@ -29,7 +30,9 @@ const HomeScreen = ({ navigation }) => {
             name={name ? name : 'Username'}
             occupation={occupation ? occupation : 'Occupation'}
             city={city ? city : 'City'}
-            image={require('../assets/image-placeholder.png')}
+            image={{
+              uri: avatarUrl ? `${avatarUrl}?${Math.random()}` : defaultImage
+            }}
           />
         </View>
         <FeelingsCard

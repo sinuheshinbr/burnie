@@ -2,15 +2,40 @@ import client from './client'
 
 const endpoint = '/users'
 
-const createHeader = jwt => {
-  return { headers: { Authorization: jwt } }
+const createOptions = (jwt, contentType, onUploadProgress = () => {}) => {
+  return {
+    headers: {
+      Authorization: jwt,
+      'content-type': contentType
+    },
+    onUploadProgress: progress => {
+      onUploadProgress(progress.loaded / progress.total)
+    }
+  }
 }
 
-const createUser = userData => client.post(endpoint, userData)
-const updateUser = (id, userData, jwt) =>
-  client.post(`${endpoint}/${id}`, userData, createHeader(jwt))
+const createUser = async userData => {
+  return await client.post(endpoint, userData)
+}
+
+const updateUser = async (id, userData, jwt) => {
+  return await client.post(
+    `${endpoint}/${id}`,
+    userData,
+    createOptions(jwt, 'application/json')
+  )
+}
+
+const uploadImage = async (id, jsonBase64, jwt, onUploadProgress) => {
+  return await client.post(
+    `${endpoint}/images/${id}`,
+    jsonBase64,
+    createOptions(jwt, 'application/json', onUploadProgress)
+  )
+}
 
 export default {
   createUser,
-  updateUser
+  updateUser,
+  uploadImage
 }
