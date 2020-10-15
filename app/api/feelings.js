@@ -1,6 +1,6 @@
 import client from './client'
 
-const endpoint = '/feels'
+const endpoint = '/feelings'
 
 const createOptions = (jwt, contentType, onUploadProgress = () => {}) => {
   return {
@@ -14,7 +14,7 @@ const createOptions = (jwt, contentType, onUploadProgress = () => {}) => {
   }
 }
 
-const createFeel = async (id, feeling, jwt) => {
+const createFeeling = async (id, feeling, jwt) => {
   return await client.post(
     `${endpoint}/${id}`,
     JSON.stringify({ feeling, id }),
@@ -22,14 +22,15 @@ const createFeel = async (id, feeling, jwt) => {
   )
 }
 
-const getFeels = async (id, jwt) => {
+const getFeelings = async (id, jwt) => {
   return await client.get(
     `${endpoint}/${id}`,
+    null,
     createOptions(jwt, 'application/json')
   )
 }
 
 export default {
-  createFeel,
-  getFeels
+  createFeeling,
+  getFeelings
 }

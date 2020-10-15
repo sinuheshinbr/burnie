@@ -17,7 +17,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = async values => {
     const response = await createUser(values)
-    if (!response.ok) return
+    if (!response?.ok) return
     const user = jwtDecode(response.data)
     authContext.setUser(user)
     authStorage.storeToken(response.data)

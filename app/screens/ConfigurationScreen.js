@@ -14,9 +14,10 @@ const ConfigurationScreen = ({ navigation }) => {
   const { user, setUser } = authContext
   const { _id, avatarUrl } = user
   const defaultImage = require('../assets/image-placeholder.png')
-  const [image, setImage] = useState({
-    uri: avatarUrl ? avatarUrl : defaultImage
-  })
+  const [progress, setProgress] = useState()
+  const [image, setImage] = useState(
+    avatarUrl ? { uri: avatarUrl } : defaultImage
+  )
   const { request: updateUser, error, data, loading } = useApi(
     usersApi.updateUser
   )
@@ -26,6 +27,8 @@ const ConfigurationScreen = ({ navigation }) => {
   }, [])
 
   const handleSubmit = async values => {
+    if (progress && progress < 1) return
+
     values.avatarUrl = image.uri
     const jwt = await authStorage.getToken()
     const response = await updateUser(_id, values, jwt)
@@ -46,6 +49,8 @@ const ConfigurationScreen = ({ navigation }) => {
       <ActivityIndicator visible={loading} />
       {!loading && (
         <EditProfile
+          progress={progress}
+          setProgress={setProgress}
           error={error}
           data={data}
           handleSubmit={handleSubmit}

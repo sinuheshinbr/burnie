@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import Emoji from 'react-native-emoji'
 
-const YouAreFeeling = ({ feelingToday }) => {
+const YouAreFeeling = ({ todayFeeling }) => {
   const emojiNames = {
     1: 'sob',
     2: 'sweat',
@@ -12,7 +12,7 @@ const YouAreFeeling = ({ feelingToday }) => {
   }
   return (
     <View style={styles.container}>
-      <Emoji name={emojiNames[feelingToday]} style={styles.emoji} />
+      <Emoji name={emojiNames[todayFeeling]} style={styles.emoji} />
     </View>
   )
 }

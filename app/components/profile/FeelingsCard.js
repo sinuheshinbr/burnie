@@ -1,33 +1,44 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 
 import AuthContext from '../../auth/context'
 import authStorage from '../../auth/storage'
 import Card from './Card'
 import EmojiScale from './EmojiScale'
-import feelsApi from '../../api/feels'
+import feelsApi from '../../api/feelings'
 import useApi from '../../hooks/useApi'
 import YouAreFeeling from './YouAreFeeling'
+import ActivitySpinner from '../../components/ActivitySpinner'
 
-const FeelingsCard = () => {
-  const [feelingToday, setFeelingToday] = useState(null)
+const FeelingsCard = ({ todayFeeling, setTodayFeeling, loading }) => {
   const authContext = useContext(AuthContext)
   const { user } = authContext
   const { _id } = user
 
-  const { request: createFeel, error } = useApi(feelsApi.createFeel)
+  const { request: createFeeling } = useApi(feelsApi.createFeeling)
 
   const selectFeeling = async feeling => {
     const jwt = await authStorage.getToken()
-    setFeelingToday(feeling)
-    createFeel(_id, feeling, jwt)
+    setTodayFeeling(feeling)
+    createFeeling(_id, feeling, jwt)
   }
 
   return (
     <Card
-      title={feelingToday ? 'Today you are:' : 'How are you feeling today?'}
+      title={
+        loading
+          ? 'Please wait...'
+          : todayFeeling
+          ? 'Today you are:'
+          : 'How are you feeling today?'
+      }
     >
-      {!feelingToday && <EmojiScale selectFeeling={selectFeeling} />}
-      {feelingToday && <YouAreFeeling feelingToday={feelingToday} />}
+      {loading && <ActivitySpinner />}
+      {!loading && !todayFeeling && (
+        <EmojiScale selectFeeling={selectFeeling} />
+      )}
+      {!loading && todayFeeling && (
+        <YouAreFeeling todayFeeling={todayFeeling} />
+      )}
     </Card>
   )
 }

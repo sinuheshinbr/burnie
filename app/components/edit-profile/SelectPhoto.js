@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker'
 import { Entypo } from '@expo/vector-icons'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
 
 import AuthContext from '../../auth/context'
@@ -10,11 +10,10 @@ import useApi from '../../hooks/useApi'
 import usersApi from '../../api/users'
 import ProgressBar from './ProgressBar'
 
-const SelectPhoto = ({ image, isMounted, setImage }) => {
+const SelectPhoto = ({ image, isMounted, setImage, progress, setProgress }) => {
   const authContext = useContext(AuthContext)
   const { user } = authContext
   const { _id } = user
-  const [progress, setProgress] = useState()
   const [visible, setVisible] = useState(false)
   const { request: uploadImage } = useApi(usersApi.uploadImage)
 
@@ -35,15 +34,17 @@ const SelectPhoto = ({ image, isMounted, setImage }) => {
     }
 
     if (!result.cancelled) {
-      setProgress(0)
-      setVisible(true)
-      setImage({ uri: result.uri })
+      if (isMounted) {
+        setProgress(0)
+        setVisible(true)
+        setImage({ uri: result.uri })
+      }
       const response = await uploadImage(_id, jsonBase64, token, progress => {
-        if (!isMounted) return
-        setProgress(progress)
+        if (isMounted) setProgress(progress * 0.9)
       })
       if (!response?.ok || !isMounted) return
       setImage({ uri: response.data })
+      setProgress(progress => progress + 0.1)
     }
   }
 

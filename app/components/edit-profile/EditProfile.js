@@ -30,7 +30,9 @@ const EditProfile = ({
   image,
   isMounted,
   setImage,
-  user
+  user,
+  progress,
+  setProgress
 }) => {
   const { city = '', email = '', name = '', occupation = '' } = user
   const formRef = useRef(null)
@@ -53,6 +55,8 @@ const EditProfile = ({
         scrollEnabled={true}
       >
         <SelectPhoto
+          progress={progress}
+          setProgress={setProgress}
           image={image}
           isMounted={isMounted}
           setImage={setImage}
