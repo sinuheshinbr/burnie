@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
 import Screen from '../components/Screen'
 import colors from '../config/colors'
@@ -15,11 +15,6 @@ const HomeScreen = ({ navigation }) => {
   const defaultImage = require('../assets/image-placeholder.png')
   const { user } = useContext(AuthContext)
   const { name, occupation, city, avatarUrl } = user
-  const [feelingToday, setFeelingToday] = useState(null)
-
-  const selectFeeling = feeling => {
-    setFeelingToday(feeling)
-  }
 
   return (
     <Screen style={styles.screen}>
@@ -35,10 +30,7 @@ const HomeScreen = ({ navigation }) => {
             }}
           />
         </View>
-        <FeelingsCard
-          feelingToday={feelingToday}
-          selectFeeling={selectFeeling}
-        />
+        <FeelingsCard />
         <DataCard />
         <ForumCard
           onPress={() => navigation.navigate('ForumDiscussionsScreen')}

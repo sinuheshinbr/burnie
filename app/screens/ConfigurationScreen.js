@@ -27,8 +27,8 @@ const ConfigurationScreen = ({ navigation }) => {
 
   const handleSubmit = async values => {
     values.avatarUrl = image.uri
-    const token = await authStorage.getToken()
-    const response = await updateUser(_id, values, token)
+    const jwt = await authStorage.getToken()
+    const response = await updateUser(_id, values, jwt)
     if (!response?.ok) return
     const user = jwtDecode(response.data)
     authContext.setUser(user)

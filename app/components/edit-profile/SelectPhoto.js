@@ -42,7 +42,7 @@ const SelectPhoto = ({ image, isMounted, setImage }) => {
         if (!isMounted) return
         setProgress(progress)
       })
-      if (!response.ok || !isMounted) return
+      if (!response?.ok || !isMounted) return
       setImage({ uri: response.data })
     }
   }

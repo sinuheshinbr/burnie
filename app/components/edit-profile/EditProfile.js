@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as Yup from 'yup'
 import Screen from '../Screen'
