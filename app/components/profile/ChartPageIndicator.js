@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     alignSelf: 'center',
-    top: '90%'
+    top: '90%',
+    marginTop: 7
   }
 })
 

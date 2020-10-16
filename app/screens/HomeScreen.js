@@ -15,10 +15,19 @@ import {
 } from '../components/profile'
 import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
+import getFeelingsFrom from '../utils/getFeelingsFrom'
 
 const HomeScreen = ({ navigation }) => {
   const [todayFeeling, setTodayFeeling] = useState()
-  const [loadingToday, setLoadingToday] = useState(true)
+  const [lastWeekFeelings, setLastWeekFeelings] = useState()
+  const [lastMonthFeelings, setLastMonthFeelings] = useState()
+  const [
+    lastMonthContributionFeelings,
+    setLastMonthContributionFeelings
+  ] = useState()
+  const [loadingFeelings, setLoadingFeelings] = useState(true)
+  const [hideWeekPointsAtIndex, setHideWeekPointsAtIndex] = useState([])
+  const [hideMonthPointsAtIndex, setHideMonthPointsAtIndex] = useState([])
   const defaultImage = require('../assets/image-placeholder.png')
   const { user } = useContext(AuthContext)
   const { _id, name, occupation, city, avatarUrl } = user
@@ -29,19 +38,35 @@ const HomeScreen = ({ navigation }) => {
     const jwt = await authStorage.getToken()
     const response = await getFeelings(_id, jwt)
     if (!response?.ok) return
-    setLoadingToday(false)
 
     const feelings = response.data.map(daily => ({
       feeling: daily.feeling,
-      elapsedDays: moment().diff(new Date(daily.date), 'days')
+      date: moment(daily.date).format('DD-MM-YYYY')
     }))
 
-    const todayFeelingObject = feelings.filter(object => {
-      return object.elapsedDays === 0
-    })
+    setTodayFeeling(getFeelingsFrom.today(feelings))
 
-    if (todayFeelingObject[0]?.feeling)
-      setTodayFeeling(todayFeelingObject[0].feeling)
+    setLastWeekFeelings(
+      getFeelingsFrom.lastPeriod(feelings, 7).lastPeriodFeelings
+    )
+
+    setHideWeekPointsAtIndex(
+      getFeelingsFrom.lastPeriod(feelings, 7).emptyIndexes
+    )
+
+    setLastMonthFeelings(
+      getFeelingsFrom.lastPeriod(feelings, 30).lastPeriodFeelings
+    )
+
+    setLastMonthContributionFeelings(
+      getFeelingsFrom.lastPeriod(feelings, 30, true)
+    )
+
+    setHideMonthPointsAtIndex(
+      getFeelingsFrom.lastPeriod(feelings, 30).emptyIndexes
+    )
+
+    setLoadingFeelings(false)
   }
 
   useEffect(() => {
@@ -50,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <Screen style={styles.screen}>
-      <ProfileMenu path="Home" />
+      <ProfileMenu displayBack={false} path="Home" />
       <ScrollView style={styles.container}>
         <View style={styles.profile}>
           <Profile
@@ -61,11 +86,19 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
         <FeelingsCard
-          loading={loadingToday}
+          loading={loadingFeelings}
           todayFeeling={todayFeeling}
           setTodayFeeling={setTodayFeeling}
         />
-        <DataCard />
+        <DataCard
+          lastMonthContributionFeelings={lastMonthContributionFeelings}
+          pages={3}
+          hideMonthPointsAtIndex={hideMonthPointsAtIndex}
+          hideWeekPointsAtIndex={hideWeekPointsAtIndex}
+          loading={loadingFeelings}
+          lastWeekFeelings={lastWeekFeelings}
+          lastMonthFeelings={lastMonthFeelings}
+        />
         <ForumCard
           onPress={() => navigation.navigate('ForumDiscussionsScreen')}
         />

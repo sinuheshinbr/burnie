@@ -70,7 +70,6 @@ const validationSchema = Yup.object().shape({
 })
 
 const ForumPostScreen = ({ route }) => {
-  console.log(route.params._id)
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path={`Forum`} />
