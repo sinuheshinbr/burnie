@@ -1,16 +1,15 @@
-import React, { useRef } from 'react'
-import { StyleSheet, Text } from 'react-native'
-import Screen from '../components/Screen'
-import { ProfileMenu } from '../components/profile'
-import colors from '../config/colors'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import DiscussionItem from '../components/forum/DiscussionItem'
-import SubmitButton from '../components/forms/SubmitButton'
-import AppForm from '../components/forms/AppForm'
-import AppFormField from '../components/forms/AppFormField'
-import * as Yup from 'yup'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+
+import colors from '../config/colors'
 import convertHours from '../utils/convertHours'
+import DiscussionItem from '../components/forum/DiscussionItem'
 import hoursFromDate from '../utils/hoursFromDate'
+import IconButton from '../components/IconButton'
+import { ProfileMenu } from '../components/profile'
+import Screen from '../components/Screen'
 
 const discussionList = [
   {
@@ -59,17 +58,7 @@ const discussionList = [
   }
 ]
 
-const validationSchema = Yup.object().shape({
-  title: Yup.string()
-    .required('Your discussion need a title')
-    .max(100),
-  content: Yup.string()
-    .required('Post something...')
-    .max(500)
-})
-
-const ForumDiscussionsScreen = props => {
-  const contentEl = useRef(null)
+const ForumDiscussionsScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path="Forum" />
@@ -91,49 +80,33 @@ const ForumDiscussionsScreen = props => {
             comments={discussionItem.comments}
           />
         ))}
-        <Text style={styles.text}>New Discussion: </Text>
-        <AppForm
-          style={styles.form}
-          initialValues={{ title: '', content: '' }}
-          onSubmit={values => console.log(values)}
-          validationSchema={validationSchema}
-        >
-          <AppFormField
-            backgroundColor={colors.transparent02}
-            name="title"
-            autoCapitalize="none"
-            placeholder="Give this discussion a title"
-            autoCorrect={false}
-            textContentType="none"
-            textColor={colors.dark}
-            nextEl={contentEl}
-          />
-          <AppFormField
-            innerRef={contentEl}
-            backgroundColor={colors.transparent02}
-            name="content"
-            autoCapitalize="none"
-            placeholder="Write your post here"
-            autoCorrect={false}
-            textContentType="none"
-            numberOfLines={4}
-            textAlignVertical="top"
-            bigFocusDisplay
-            textColor={colors.dark}
-            multiline
-            isLast
-          />
-          <SubmitButton
-            onPress={() => console.log('create new discussion')}
-            title="Publish"
-          />
-        </AppForm>
       </KeyboardAwareScrollView>
+      <View style={styles.newDiscussionButton}>
+        <IconButton
+          height={60}
+          width={60}
+          onPress={() => navigation.navigate('NewDiscussionFormScreen')}
+        >
+          <MaterialCommunityIcons
+            name="plus-circle-outline"
+            size={60}
+            color={colors.primary}
+          />
+        </IconButton>
+      </View>
     </Screen>
   )
 }
 
 const styles = StyleSheet.create({
+  newDiscussionButton: {
+    height: 70,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 5,
+    marginTop: 5
+  },
   button: {
     width: '90%',
     alignSelf: 'center',
@@ -141,8 +114,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '90%',
-    alignSelf: 'center',
-    paddingBottom: 30
+    alignSelf: 'center'
   },
   image: {
     marginTop: 30,

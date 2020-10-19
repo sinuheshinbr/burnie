@@ -26,7 +26,7 @@ const AppContributionGraph = ({ title, pages, currentPage, loading, data }) => {
         <ContributionGraph
           horizontal={false}
           squareSize={30}
-          style={{ transform: [{ translateX: +10 }, { translateY: +10 }] }}
+          style={{ transform: [{ translateY: +10 }] }}
           showMonthLabels={false}
           values={data}
           endDate={new Date('2020-10-16')}

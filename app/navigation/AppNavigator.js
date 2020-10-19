@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen'
 import ConfigurationScreen from '../screens/ConfigurationScreen'
 import ForumDiscussionsScreen from '../screens/ForumDiscussionsScreen'
 import ForumPostScreen from '../screens/ForumPostScreen'
+import NewDiscussionFormScreen from '../screens/NewDiscussionFormScreen'
 
 const Stack = createStackNavigator()
 
@@ -17,6 +18,10 @@ const AppNavigator = () => (
       component={ForumDiscussionsScreen}
     />
     <Stack.Screen name="ForumPostScreen" component={ForumPostScreen} />
+    <Stack.Screen
+      name="NewDiscussionFormScreen"
+      component={NewDiscussionFormScreen}
+    />
   </Stack.Navigator>
 )
 
