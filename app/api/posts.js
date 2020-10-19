@@ -1,6 +1,6 @@
 import client from './client'
 
-const endpoint = '/discussions'
+const endpoint = '/posts'
 
 const createOptions = (jwt, contentType) => {
   return {
@@ -11,15 +11,15 @@ const createOptions = (jwt, contentType) => {
   }
 }
 
-const createDiscussion = async (id, title, content, jwt) => {
+const createPost = async (id, title, content, jwt, parent) => {
   return await client.post(
     `${endpoint}/${id}`,
-    JSON.stringify({ title, content, id }),
+    JSON.stringify({ title, content, id, parent }),
     createOptions(jwt, 'application/json')
   )
 }
 
-const getDiscussions = async (id, jwt) => {
+const getPosts = async (id, jwt) => {
   return await client.get(
     `${endpoint}/${id}`,
     null,
@@ -28,6 +28,6 @@ const getDiscussions = async (id, jwt) => {
 }
 
 export default {
-  createDiscussion,
-  getDiscussions
+  createPost,
+  getPosts
 }

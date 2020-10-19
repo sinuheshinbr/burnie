@@ -29,7 +29,7 @@ const AppContributionGraph = ({ title, pages, currentPage, loading, data }) => {
           style={{ transform: [{ translateY: +10 }] }}
           showMonthLabels={false}
           values={data}
-          endDate={new Date('2020-10-16')}
+          endDate={new Date()}
           numDays={30}
           width={Dimensions.get('window').width * 0.85}
           height={190}

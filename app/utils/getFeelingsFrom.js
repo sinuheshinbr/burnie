@@ -29,7 +29,7 @@ getFeelingsFrom = {
         3,
         5
       )}-${object.date.substring(0, 2)}`,
-      count: -object.feeling
+      count: 4 - object.feeling
     }))
 
     if (isContribution) return contributionGraphObjects
