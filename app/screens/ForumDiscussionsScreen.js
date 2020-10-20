@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, FlatList, RefreshControl } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
@@ -12,11 +12,13 @@ import IconButton from '../components/IconButton'
 import { ProfileMenu } from '../components/profile'
 import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
+import ActivitySpinner from '../components/ActivitySpinner'
 
 const ForumDiscussionsScreen = ({ navigation }) => {
+  const [refreshing, setRefreshing] = React.useState(false)
   const [load, setLoad] = useState(false)
   const [posts, setPosts] = useState([])
-  const { request: getPosts } = useApi(postsApi.getPosts)
+  const { request: getPosts, loading } = useApi(postsApi.getPosts)
   const { user } = useContext(AuthContext)
   const { _id } = user
 
@@ -25,6 +27,10 @@ const ForumDiscussionsScreen = ({ navigation }) => {
     const response = await getPosts(_id, jwt)
     if (!response?.ok) return
     setPosts(response.data)
+  }
+
+  const onRefresh = () => {
+    console.log('refreshing...')
   }
 
   useEffect(() => {
@@ -40,21 +46,23 @@ const ForumDiscussionsScreen = ({ navigation }) => {
     <Screen style={styles.screen}>
       <ProfileMenu path="Forum" />
       <Text style={styles.text}>The Burnout Forum</Text>
-      <KeyboardAwareScrollView
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        contentContainerStyle={styles.container}
-        scrollEnabled={true}
-      >
-        {posts.map(post => (
+      <FlatList
+        data={posts}
+        renderItem={({ item }) => (
           <DiscussionItem
-            key={post._id}
-            title={post.title}
-            content={post.content}
-            author={post.user.name ?? ''}
-            _id={post._id}
+            key={item._id}
+            title={item.title}
+            content={item.content}
+            author={item.user.name ?? ''}
+            _id={item._id}
           />
-        ))}
-      </KeyboardAwareScrollView>
+        )}
+        keyExtractor={post => post._id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={styles.container}
+      />
       <View style={styles.newDiscussionButton}>
         <IconButton
           height={60}

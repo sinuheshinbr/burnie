@@ -5,19 +5,19 @@ import Emoji from 'react-native-emoji'
 const EmojiScale = ({ selectFeeling }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => selectFeeling(1)} style={styles.button}>
+      <TouchableOpacity onPress={() => selectFeeling(0)} style={styles.button}>
         <Emoji name="sob" style={styles.emoji} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => selectFeeling(2)} style={styles.button}>
+      <TouchableOpacity onPress={() => selectFeeling(1)} style={styles.button}>
         <Emoji name="sweat" style={styles.emoji} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => selectFeeling(3)} style={styles.button}>
+      <TouchableOpacity onPress={() => selectFeeling(2)} style={styles.button}>
         <Emoji name="expressionless" style={styles.emoji} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => selectFeeling(4)} style={styles.button}>
+      <TouchableOpacity onPress={() => selectFeeling(3)} style={styles.button}>
         <Emoji name="slightly_smiling_face" style={styles.emoji} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => selectFeeling(5)} style={styles.button}>
+      <TouchableOpacity onPress={() => selectFeeling(4)} style={styles.button}>
         <Emoji name="heart_eyes" style={styles.emoji} />
       </TouchableOpacity>
     </View>
