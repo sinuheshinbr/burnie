@@ -14,6 +14,7 @@ import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
 
 const ForumDiscussionsScreen = ({ navigation }) => {
+  const [load, setLoad] = useState(false)
   const [posts, setPosts] = useState([])
   const { request: getPosts } = useApi(postsApi.getPosts)
   const { user } = useContext(AuthContext)
@@ -23,13 +24,17 @@ const ForumDiscussionsScreen = ({ navigation }) => {
     const jwt = await authStorage.getToken()
     const response = await getPosts(_id, jwt)
     if (!response?.ok) return
-    console.log(response.data)
     setPosts(response.data)
   }
 
   useEffect(() => {
     onLoad()
-  }, [])
+    const unsubscribe = navigation.addListener('focus', () => {
+      setLoad(!load)
+    })
+
+    return unsubscribe
+  }, [load, navigation])
 
   return (
     <Screen style={styles.screen}>
