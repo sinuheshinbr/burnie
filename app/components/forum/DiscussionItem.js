@@ -13,7 +13,8 @@ const DiscussionItem = ({
   comments = 0,
   likes = 0,
   views = 0,
-  elapsedTime = null
+  elapsedTime = null,
+  content
 }) => {
   const navigation = useNavigation()
   let normalizedComments = normalizeNumber(comments)
@@ -29,6 +30,11 @@ const DiscussionItem = ({
           <AppText numberOfLines={1} style={styles.title}>
             {title}
           </AppText>
+          {content && (
+            <AppText numberOfLines={1} style={styles.author}>
+              {content}
+            </AppText>
+          )}
           {author && <AppText style={styles.author}>{author}</AppText>}
         </View>
         <View style={styles.bottomLine}>

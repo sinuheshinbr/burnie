@@ -49,6 +49,7 @@ const ForumDiscussionsScreen = ({ navigation }) => {
           <DiscussionItem
             key={post._id}
             title={post.title}
+            content={post.content}
             author={post.user.name ?? ''}
             _id={post._id}
           />

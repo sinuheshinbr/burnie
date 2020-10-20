@@ -18,6 +18,7 @@ const ForumDiscussionsScreen = ({ navigation }) => {
 
   const handleSubmit = async ({ title, content }) => {
     const jwt = await authStorage.getToken()
+    console.log(jwt)
     const response = await createPost(_id, title, content, jwt)
     if (!response?.ok) return
     navigation.navigate('ForumDiscussionsScreen', { newPost: response.data })

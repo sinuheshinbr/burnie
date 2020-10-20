@@ -88,8 +88,9 @@ const ForumPostScreen = ({ route }) => {
             elapsedHours={post.elapsedHours}
           />
         ))}
+      </KeyboardAwareScrollView>
+      <View style={styles.form}>
         <AppForm
-          style={styles.form}
           initialValues={{ post: '' }}
           onSubmit={values => console.log(values)}
           validationSchema={validationSchema}
@@ -113,7 +114,7 @@ const ForumPostScreen = ({ route }) => {
             title="Publish"
           />
         </AppForm>
-      </KeyboardAwareScrollView>
+      </View>
     </Screen>
   )
 }
@@ -122,7 +123,13 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     alignSelf: 'center',
-    paddingBottom: 30
+    paddingBottom: 20
+  },
+  form: {
+    width: '90%',
+    alignSelf: 'center',
+    paddingTop: 10,
+    paddingBottom: 10
   },
   image: {
     marginTop: 30,
