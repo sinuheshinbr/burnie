@@ -1,6 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { StyleSheet, Text, View, FlatList, RefreshControl } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  RefreshControl,
+  Dimensions
+} from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import AuthContext from '../auth/context'
@@ -15,7 +21,6 @@ import useApi from '../hooks/useApi'
 import ActivitySpinner from '../components/ActivitySpinner'
 
 const ForumDiscussionsScreen = ({ navigation }) => {
-  const [refreshing, setRefreshing] = React.useState(false)
   const [load, setLoad] = useState(false)
   const [posts, setPosts] = useState([])
   const { request: getPosts, loading } = useApi(postsApi.getPosts)
@@ -27,10 +32,6 @@ const ForumDiscussionsScreen = ({ navigation }) => {
     const response = await getPosts(_id, jwt)
     if (!response?.ok) return
     setPosts(response.data)
-  }
-
-  const onRefresh = () => {
-    console.log('refreshing...')
   }
 
   useEffect(() => {
@@ -46,23 +47,27 @@ const ForumDiscussionsScreen = ({ navigation }) => {
     <Screen style={styles.screen}>
       <ProfileMenu path="Forum" />
       <Text style={styles.text}>The Burnout Forum</Text>
-      <FlatList
-        data={posts}
-        renderItem={({ item }) => (
-          <DiscussionItem
-            key={item._id}
-            title={item.title}
-            content={item.content}
-            author={item.user.name ?? ''}
-            _id={item._id}
-          />
-        )}
-        keyExtractor={post => post._id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        contentContainerStyle={styles.container}
-      />
+      {loading && (
+        <ActivitySpinner height={Dimensions.get('window').height * 0.687} />
+      )}
+      {!loading && (
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => (
+            <DiscussionItem
+              key={item._id}
+              title={item.title}
+              content={item.content}
+              author={item.user.name ?? ''}
+              _id={item._id}
+              onPress={() => navigation.navigate('ForumPostScreen', { item })}
+            />
+          )}
+          keyExtractor={post => post._id}
+          refreshControl={<RefreshControl onRefresh={onLoad} />}
+          contentContainerStyle={styles.container}
+        />
+      )}
       <View style={styles.newDiscussionButton}>
         <IconButton
           height={60}
@@ -82,26 +87,19 @@ const ForumDiscussionsScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   newDiscussionButton: {
-    height: 70,
+    height: '7.5%',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5,
-    marginTop: 5
+    marginBottom: '2.5%',
+    marginTop: '2.5%'
   },
   button: {
     width: '90%',
-    alignSelf: 'center',
-    marginBottom: 20
+    alignSelf: 'center'
   },
   container: {
     width: '90%',
-    alignSelf: 'center'
-  },
-  image: {
-    marginTop: 30,
-    width: 70,
-    height: 70,
     alignSelf: 'center'
   },
   screen: {
@@ -112,7 +110,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     color: colors.medium,
-    marginTop: 20
+    marginTop: '2.5%',
+    height: '7.5%'
   }
 })
 

@@ -19,9 +19,9 @@ const createPost = async (id, title, content, jwt, parent) => {
   )
 }
 
-const getPosts = async (id, jwt) => {
+const getPosts = async (id, jwt, post) => {
   return await client.get(
-    `${endpoint}/${id}`,
+    `${endpoint}/${id}/${post}`,
     null,
     createOptions(jwt, 'application/json')
   )

@@ -4,34 +4,29 @@ import AppText from '../AppText'
 import colors from '../../config/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import normalizeNumber from '../../utils/normalizeNumber'
-import { useNavigation } from '@react-navigation/native'
 
 const DiscussionItem = ({
-  _id,
   title,
   author,
   comments = 0,
   likes = 0,
   views = 0,
   elapsedTime = null,
-  content
+  content,
+  onPress
 }) => {
-  const navigation = useNavigation()
   let normalizedComments = normalizeNumber(comments)
   let normalizedLikes = normalizeNumber(likes)
   let normalizedViews = normalizeNumber(views)
   return (
-    <TouchableHighlight
-      underlayColor={colors.light}
-      onPress={() => navigation.navigate('ForumPostScreen', { _id })}
-    >
+    <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
           <AppText numberOfLines={1} style={styles.title}>
             {title}
           </AppText>
           {content && (
-            <AppText numberOfLines={1} style={styles.author}>
+            <AppText numberOfLines={2} style={styles.content}>
               {content}
             </AppText>
           )}
@@ -75,7 +70,8 @@ const DiscussionItem = ({
 
 const styles = StyleSheet.create({
   author: {
-    color: colors.medium
+    color: colors.medium,
+    marginTop: 10
   },
   bottomLine: {
     flexDirection: 'row',
@@ -87,6 +83,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 8,
     marginTop: 10
+  },
+  content: {
+    color: colors.medium
   },
   detailsContainer: {
     justifyContent: 'center',

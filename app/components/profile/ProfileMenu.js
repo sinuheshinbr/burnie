@@ -48,7 +48,8 @@ const ProfileMenu = ({ isEditing, path = '', onSave, displayBack = true }) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    height: '10%'
   },
   image: {
     width: 40,
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   },
   secondaryContainer: {
     width: '95%',
-    marginTop: 20,
+    marginTop: '5%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'

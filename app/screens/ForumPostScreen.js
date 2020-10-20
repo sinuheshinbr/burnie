@@ -1,67 +1,19 @@
-import React from 'react'
+import * as Yup from 'yup'
+import React, { useContext, useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Screen from '../components/Screen'
-import { ProfileMenu } from '../components/profile'
-import colors from '../config/colors'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import SubmitButton from '../components/forms/SubmitButton'
-import PostItem from '../components/forum/PostItem'
+
 import AppForm from '../components/forms/AppForm'
 import AppFormField from '../components/forms/AppFormField'
-import * as Yup from 'yup'
-
-const discussion = [
-  {
-    _id: 'uhasuhSA123j123jm13',
-    title: 'PPE materials',
-    author: 'Tobias',
-    content:
-      'At the beginning of the COVID 19 pandemic many hospitals were lacking of personal protection equipment. Here, the situation is currently improving. How is the situation in your country? '
-  }
-]
-
-const postList = [
-  {
-    _id: 'uh2u13hi1u23hiu1h31n3mnsa',
-    discussionId: 'uhasuhSA123j123jm13',
-    author: 'philippa schwartz',
-    elapsedHours: 1.1,
-    content:
-      "We're still struggling in UK - some parts are dealing better than others - but it is not a problem that is solved completely."
-  },
-  {
-    _id: '99uasd90dsafiawe23k',
-    discussionId: 'uhasuhSA123j123jm13',
-    author: 'david298b',
-    elapsedHours: 50,
-    content:
-      "Yeah we get times when we're doing just about ok...but then we're really low on stock again"
-  },
-  {
-    _id: '8899UACJI12jkjk342m21k3',
-    discussionId: 'uhasuhSA123j123jm13',
-    author: 'pedrosantos',
-    elapsedHours: 500,
-    content:
-      'In the beginning we had stop performing elective surgeries, here in Brazil. However in the last 1 month or so things have gone back to normal. '
-  },
-  {
-    _id: '98ASUJN123JMsd9a8ujadsk',
-    discussionId: 'uhasuhSA123j123jm13',
-    author: 'Julia_32',
-    elapsedHours: 1500,
-    content:
-      'We had huge issue in the beginning of the pandemic, however we were lucky and stopped the first wave early. However, we are at the beginning the second wave right now and seeing a huge flow of patients. No issues with PPE right now. However, some of the material is of really bad quality. '
-  },
-  {
-    _id: '8jasdjansd98h92çkldmalsmd09',
-    discussionId: 'uhasuhSA123j123jm13',
-    author: 'brad-mar',
-    elapsedHours: 50000,
-    content:
-      'Oh yes. Huge problem here. No appropriate PPE, we have to use the same material for a very long time. '
-  }
-]
+import colors from '../config/colors'
+import PostItem from '../components/forum/PostItem'
+import { ProfileMenu } from '../components/profile'
+import Screen from '../components/Screen'
+import SubmitButton from '../components/forms/SubmitButton'
+import useApi from '../hooks/useApi'
+import postsApi from '../api/posts'
+import AuthContext from '../auth/context'
+import authStorage from '../auth/storage'
 
 const validationSchema = Yup.object().shape({
   post: Yup.string()
@@ -69,30 +21,79 @@ const validationSchema = Yup.object().shape({
     .max(500)
 })
 
-const ForumPostScreen = ({ route }) => {
+const ForumPostScreen = ({ navigation, route }) => {
+  const [load, setLoad] = useState(false)
+  const [posts, setPosts] = useState([])
+  const authContext = useContext(AuthContext)
+  const { user } = authContext
+  const { _id } = user
+
+  const { item } = route.params
+
+  const createPost = useApi(postsApi.createPost)
+  const getPosts = useApi(postsApi.getPosts)
+
+  const onLoad = async () => {
+    const jwt = await authStorage.getToken()
+    const response = await getPosts.request(_id, jwt, item._id)
+    if (!response?.ok) return
+    setPosts(response.data)
+  }
+
+  const handleSubmit = async values => {
+    const jwt = await authStorage.getToken()
+    const response = await createPost.request(
+      _id,
+      null,
+      values.post,
+      jwt,
+      item._id
+    )
+    if (!response.ok) return
+
+    setPosts([...posts, response.data[0]])
+    console.log(posts)
+  }
+
+  useEffect(() => {
+    onLoad()
+    const unsubscribe = navigation.addListener('focus', () => {
+      setLoad(!load)
+    })
+
+    return unsubscribe
+  }, [load, navigation])
+
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path={`Forum`} />
-      <Text style={styles.title}>{discussion[0].title}</Text>
+      <Text style={styles.title}>{item.title}</Text>
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
         scrollEnabled={true}
       >
-        {postList.map(post => (
+        <PostItem
+          key={item._id}
+          author={item.user.name ?? ''}
+          _id={item._id}
+          content={item.content}
+          image={item.user.avatarUrl}
+        />
+        {posts.map(post => (
           <PostItem
             key={post._id}
-            author={post.author}
+            author={post.user?.name}
             _id={post._id}
             content={post.content}
-            elapsedHours={post.elapsedHours}
+            image={post.user?.avatarUrl}
           />
         ))}
       </KeyboardAwareScrollView>
       <View style={styles.form}>
         <AppForm
           initialValues={{ post: '' }}
-          onSubmit={values => console.log(values)}
+          onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
           <AppFormField
@@ -109,10 +110,7 @@ const ForumPostScreen = ({ route }) => {
             multiline
             isLast
           />
-          <SubmitButton
-            onPress={() => console.log('create new discussion')}
-            title="Publish"
-          />
+          <SubmitButton title="Publish" />
         </AppForm>
       </View>
     </Screen>

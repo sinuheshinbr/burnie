@@ -1,18 +1,26 @@
 import React from 'react'
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
+import { View, StyleSheet, Text, Image } from 'react-native'
 import AppText from '../AppText'
 import colors from '../../config/colors'
 import convertHours from '../../utils/convertHours'
 
-const DiscussionItem = ({ _id, author, content = '', elapsedHours = null }) => {
+const DiscussionItem = ({
+  _id,
+  author,
+  content = '',
+  elapsedHours = null,
+  image
+}) => {
   let elapsedTime = convertHours(elapsedHours)
+  const defaultImage = require('../../assets/image-placeholder.png')
   return (
-    <TouchableHighlight
-      underlayColor={colors.light}
-      onPress={() => console.log('open discussion id: ', _id)}
-    >
-      <View style={styles.container}>
-        <View style={styles.detailsContainer}>
+    <View style={styles.container}>
+      <Image
+        source={image ? { uri: image } : defaultImage}
+        style={styles.image}
+      />
+      <View style={styles.detailsContainer}>
+        <View style={styles.header}>
           <AppText numberOfLines={1} style={styles.author}>
             {author}
           </AppText>
@@ -22,11 +30,12 @@ const DiscussionItem = ({ _id, author, content = '', elapsedHours = null }) => {
             </Text>
           </View>
         </View>
+
         <View style={styles.contentContainer}>
           <AppText style={styles.content}>{content}</AppText>
         </View>
       </View>
-    </TouchableHighlight>
+    </View>
   )
 }
 
@@ -36,19 +45,24 @@ const styles = StyleSheet.create({
     color: colors.medium
   },
   container: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     padding: 15,
     backgroundColor: colors.white,
     borderRadius: 8,
-    marginTop: 10
+    marginTop: 10,
+    flex: 1
   },
   content: {
     color: colors.medium
   },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  contentContainer: {
     flex: 1
+  },
+  detailsContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    flex: 1,
+    marginLeft: 15
   },
   elapsedTime: {
     color: colors.medium
@@ -57,6 +71,14 @@ const styles = StyleSheet.create({
     width: '40%',
     alignItems: 'flex-end',
     justifyContent: 'flex-end'
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25
+  },
+  header: {
+    flexDirection: 'row'
   }
 })
 

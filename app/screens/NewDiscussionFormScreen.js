@@ -9,6 +9,7 @@ import NewDiscussionForm from '../components/forum/NewDiscussionForm'
 import { ProfileMenu } from '../components/profile'
 import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
+import ActivityIndicator from '../components/ActivityIndicator'
 
 const ForumDiscussionsScreen = ({ navigation }) => {
   const authContext = useContext(AuthContext)
@@ -18,24 +19,24 @@ const ForumDiscussionsScreen = ({ navigation }) => {
 
   const handleSubmit = async ({ title, content }) => {
     const jwt = await authStorage.getToken()
-    console.log(jwt)
     const response = await createPost(_id, title, content, jwt)
     if (!response?.ok) return
-    navigation.navigate('ForumDiscussionsScreen', { newPost: response.data })
+    navigation.navigate('ForumDiscussionsScreen')
   }
 
   return (
-    <Screen style={styles.screen}>
+    <>
+      <ActivityIndicator visible={loading} />
       {!loading && (
-        <>
+        <Screen style={styles.screen}>
           <ProfileMenu path="Forum" />
           <NewDiscussionForm
             handleSubmit={handleSubmit}
             navigation={navigation}
           />
-        </>
+        </Screen>
       )}
-    </Screen>
+    </>
   )
 }
 
