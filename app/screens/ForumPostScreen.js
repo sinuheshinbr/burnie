@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import React, { useContext, useState, useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import AppForm from '../components/forms/AppForm'
@@ -21,8 +21,7 @@ const validationSchema = Yup.object().shape({
     .max(500)
 })
 
-const ForumPostScreen = ({ navigation, route }) => {
-  const [load, setLoad] = useState(false)
+const ForumPostScreen = ({ route }) => {
   const [posts, setPosts] = useState([])
   const authContext = useContext(AuthContext)
   const { user } = authContext
@@ -40,7 +39,7 @@ const ForumPostScreen = ({ navigation, route }) => {
     setPosts(response.data)
   }
 
-  const handleSubmit = async values => {
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     const jwt = await authStorage.getToken()
     const response = await createPost.request(
       _id,
@@ -52,17 +51,14 @@ const ForumPostScreen = ({ navigation, route }) => {
     if (!response.ok) return
 
     setPosts([...posts, response.data[0]])
-    console.log(posts)
+    Keyboard.dismiss()
+    setSubmitting(false)
+    resetForm()
   }
 
   useEffect(() => {
     onLoad()
-    const unsubscribe = navigation.addListener('focus', () => {
-      setLoad(!load)
-    })
-
-    return unsubscribe
-  }, [load, navigation])
+  }, [])
 
   return (
     <Screen style={styles.screen}>
@@ -79,6 +75,7 @@ const ForumPostScreen = ({ navigation, route }) => {
           _id={item._id}
           content={item.content}
           image={item.user.avatarUrl}
+          createdAt={item.createdAt}
         />
         {posts.map(post => (
           <PostItem
@@ -87,14 +84,19 @@ const ForumPostScreen = ({ navigation, route }) => {
             _id={post._id}
             content={post.content}
             image={post.user?.avatarUrl}
+            createdAt={post.createdAt}
           />
         ))}
       </KeyboardAwareScrollView>
       <View style={styles.form}>
         <AppForm
+          validateOnChange={false}
+          validateOnBlur={false}
+          submitButtonTitle="publish"
           initialValues={{ post: '' }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
+          displaySubmitButton
         >
           <AppFormField
             backgroundColor={colors.transparent02}
@@ -108,9 +110,7 @@ const ForumPostScreen = ({ navigation, route }) => {
             disableFocusDisplay
             textColor={colors.dark}
             multiline
-            isLast
           />
-          <SubmitButton title="Publish" />
         </AppForm>
       </View>
     </Screen>

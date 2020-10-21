@@ -21,7 +21,7 @@ const ForumDiscussionsScreen = ({ navigation }) => {
     const jwt = await authStorage.getToken()
     const response = await createPost(_id, title, content, jwt)
     if (!response?.ok) return
-    navigation.navigate('ForumDiscussionsScreen')
+    navigation.navigate('ForumDiscussionsScreen', { newPost: response.data })
   }
 
   return (

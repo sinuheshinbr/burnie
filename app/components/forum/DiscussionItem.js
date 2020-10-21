@@ -1,8 +1,10 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import moment from 'moment'
 import React from 'react'
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
+
 import AppText from '../AppText'
 import colors from '../../config/colors'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import normalizeNumber from '../../utils/normalizeNumber'
 
 const DiscussionItem = ({
@@ -11,10 +13,11 @@ const DiscussionItem = ({
   comments = 0,
   likes = 0,
   views = 0,
-  elapsedTime = null,
+  createdAt,
   content,
   onPress
 }) => {
+  const elapsedTime = moment(createdAt).fromNow()
   let normalizedComments = normalizeNumber(comments)
   let normalizedLikes = normalizeNumber(likes)
   let normalizedViews = normalizeNumber(views)
@@ -30,7 +33,9 @@ const DiscussionItem = ({
               {content}
             </AppText>
           )}
-          {author && <AppText style={styles.author}>{author}</AppText>}
+          {author && (
+            <AppText style={styles.author}>Posted by: {author}</AppText>
+          )}
         </View>
         <View style={styles.bottomLine}>
           <View style={styles.iconsContainer}>
@@ -71,7 +76,8 @@ const DiscussionItem = ({
 const styles = StyleSheet.create({
   author: {
     color: colors.medium,
-    marginTop: 10
+    marginTop: 10,
+    fontSize: 15
   },
   bottomLine: {
     flexDirection: 'row',
@@ -114,7 +120,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: '700',
-    color: colors.medium
+    color: colors.medium,
+    fontSize: 20
   }
 })
 

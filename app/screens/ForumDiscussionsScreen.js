@@ -20,8 +20,7 @@ import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
 import ActivitySpinner from '../components/ActivitySpinner'
 
-const ForumDiscussionsScreen = ({ navigation }) => {
-  const [load, setLoad] = useState(false)
+const ForumDiscussionsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([])
   const { request: getPosts, loading } = useApi(postsApi.getPosts)
   const { user } = useContext(AuthContext)
@@ -36,12 +35,11 @@ const ForumDiscussionsScreen = ({ navigation }) => {
 
   useEffect(() => {
     onLoad()
-    const unsubscribe = navigation.addListener('focus', () => {
-      setLoad(!load)
-    })
+  }, [])
 
-    return unsubscribe
-  }, [load, navigation])
+  useEffect(() => {
+    if (route.params) setPosts([route.params?.newPost[0], ...posts])
+  }, [route])
 
   return (
     <Screen style={styles.screen}>
@@ -60,6 +58,7 @@ const ForumDiscussionsScreen = ({ navigation }) => {
               content={item.content}
               author={item.user.name ?? ''}
               _id={item._id}
+              createdAt={item.createdAt}
               onPress={() => navigation.navigate('ForumPostScreen', { item })}
             />
           )}

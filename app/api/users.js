@@ -28,7 +28,7 @@ const updateUser = async (id, userData, jwt) => {
 
 const uploadImage = async (id, jsonBase64, jwt, onUploadProgress) => {
   return await client.post(
-    `${endpoint}/images/${id}`,
+    `${endpoint}/${id}/images`,
     jsonBase64,
     createOptions(jwt, 'application/json', onUploadProgress)
   )

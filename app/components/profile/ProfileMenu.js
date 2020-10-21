@@ -49,7 +49,7 @@ const ProfileMenu = ({ isEditing, path = '', onSave, displayBack = true }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
-    height: '10%'
+    height: '10.5%'
   },
   image: {
     width: 40,

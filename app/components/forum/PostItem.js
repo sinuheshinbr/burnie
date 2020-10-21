@@ -1,18 +1,14 @@
+import moment from 'moment'
 import React from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
+
 import AppText from '../AppText'
 import colors from '../../config/colors'
-import convertHours from '../../utils/convertHours'
 
-const DiscussionItem = ({
-  _id,
-  author,
-  content = '',
-  elapsedHours = null,
-  image
-}) => {
-  let elapsedTime = convertHours(elapsedHours)
+const DiscussionItem = ({ author, content = '', createdAt, image }) => {
+  const elapsedTime = moment(createdAt).fromNow()
   const defaultImage = require('../../assets/image-placeholder.png')
+
   return (
     <View style={styles.container}>
       <Image
@@ -20,19 +16,15 @@ const DiscussionItem = ({
         style={styles.image}
       />
       <View style={styles.detailsContainer}>
-        <View style={styles.header}>
-          <AppText numberOfLines={1} style={styles.author}>
-            {author}
-          </AppText>
-          <View style={styles.elapsedTimeContainer}>
-            <Text style={styles.elapsedTime}>
-              {elapsedTime && `${elapsedTime} ago`}
-            </Text>
-          </View>
-        </View>
+        <AppText numberOfLines={1} style={styles.author}>
+          {author ? author : 'Annonymous'}
+        </AppText>
 
         <View style={styles.contentContainer}>
           <AppText style={styles.content}>{content}</AppText>
+        </View>
+        <View style={styles.elapsedTimeContainer}>
+          <Text style={styles.elapsedTime}>{elapsedTime}</Text>
         </View>
       </View>
     </View>
@@ -46,29 +38,31 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    padding: 15,
+    padding: '3%',
     backgroundColor: colors.white,
     borderRadius: 8,
-    marginTop: 10,
+    marginTop: '3%',
     flex: 1
   },
   content: {
     color: colors.medium
   },
   contentContainer: {
+    marginTop: '1%',
     flex: 1
   },
   detailsContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     flex: 1,
-    marginLeft: 15
+    marginLeft: '5%'
   },
   elapsedTime: {
     color: colors.medium
   },
   elapsedTimeContainer: {
-    width: '40%',
+    marginTop: '1%',
+    width: '100%',
     alignItems: 'flex-end',
     justifyContent: 'flex-end'
   },
@@ -76,9 +70,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25
-  },
-  header: {
-    flexDirection: 'row'
   }
 })
 
