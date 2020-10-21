@@ -5,6 +5,7 @@ import AuthContext from '../auth/context'
 import authStorage from '../auth/storage'
 import colors from '../config/colors'
 import feelingsApi from '../api/feelings'
+import postsApi from '../api/posts'
 import moment from 'moment'
 import {
   Profile,
@@ -18,6 +19,7 @@ import useApi from '../hooks/useApi'
 import getFeelingsFrom from '../utils/getFeelingsFrom'
 
 const HomeScreen = ({ navigation }) => {
+  const [posts, setPosts] = useState([])
   const [todayFeeling, setTodayFeeling] = useState()
   const [lastWeekFeelings, setLastWeekFeelings] = useState()
   const [lastMonthFeelings, setLastMonthFeelings] = useState()
@@ -26,47 +28,56 @@ const HomeScreen = ({ navigation }) => {
     setLastMonthContributionFeelings
   ] = useState()
   const [loadingFeelings, setLoadingFeelings] = useState(true)
+  const [loadingPosts, setLoadingPosts] = useState(true)
   const [hideWeekPointsAtIndex, setHideWeekPointsAtIndex] = useState([])
   const [hideMonthPointsAtIndex, setHideMonthPointsAtIndex] = useState([])
   const defaultImage = require('../assets/image-placeholder.png')
   const { user } = useContext(AuthContext)
   const { _id, name, occupation, city, avatarUrl } = user
 
-  const { request: getFeelings } = useApi(feelingsApi.getFeelings)
+  const getFeelings = useApi(feelingsApi.getFeelings)
+  const getPosts = useApi(postsApi.getPosts)
 
   const onLoad = async () => {
     const jwt = await authStorage.getToken()
-    const response = await getFeelings(_id, jwt)
-    if (!response?.ok) return
 
-    const feelings = response.data.map(daily => ({
-      feeling: daily.feeling,
-      date: moment(daily.date).format('DD-MM-YYYY')
-    }))
+    const feelingsResponse = await getFeelings.request(_id, jwt)
+    if (feelingsResponse?.ok) {
+      const feelings = feelingsResponse.data.map(daily => ({
+        feeling: daily.feeling,
+        date: moment(daily.date).format('DD-MM-YYYY')
+      }))
 
-    setTodayFeeling(getFeelingsFrom.today(feelings))
+      setTodayFeeling(getFeelingsFrom.today(feelings))
 
-    setLastWeekFeelings(
-      getFeelingsFrom.lastPeriod(feelings, 7).lastPeriodFeelings
-    )
+      setLastWeekFeelings(
+        getFeelingsFrom.lastPeriod(feelings, 7).lastPeriodFeelings
+      )
 
-    setHideWeekPointsAtIndex(
-      getFeelingsFrom.lastPeriod(feelings, 7).emptyIndexes
-    )
+      setHideWeekPointsAtIndex(
+        getFeelingsFrom.lastPeriod(feelings, 7).emptyIndexes
+      )
 
-    setLastMonthFeelings(
-      getFeelingsFrom.lastPeriod(feelings, 30).lastPeriodFeelings
-    )
+      setLastMonthFeelings(
+        getFeelingsFrom.lastPeriod(feelings, 30).lastPeriodFeelings
+      )
 
-    setLastMonthContributionFeelings(
-      getFeelingsFrom.lastPeriod(feelings, 30, true)
-    )
+      setLastMonthContributionFeelings(
+        getFeelingsFrom.lastPeriod(feelings, 30, true)
+      )
 
-    setHideMonthPointsAtIndex(
-      getFeelingsFrom.lastPeriod(feelings, 30).emptyIndexes
-    )
+      setHideMonthPointsAtIndex(
+        getFeelingsFrom.lastPeriod(feelings, 30).emptyIndexes
+      )
 
-    setLoadingFeelings(false)
+      setLoadingFeelings(false)
+    }
+
+    const postsResponse = await getPosts.request(_id, jwt, 'all')
+    if (postsResponse.ok) {
+      setPosts(postsResponse.data)
+      setLoadingPosts(false)
+    }
   }
 
   useEffect(() => {
@@ -101,6 +112,8 @@ const HomeScreen = ({ navigation }) => {
         />
         <ForumCard
           onPress={() => navigation.navigate('ForumDiscussionsScreen')}
+          loading={loadingPosts}
+          posts={posts}
         />
       </ScrollView>
     </Screen>
