@@ -42,13 +42,7 @@ const EditProfile = ({
 
   return (
     <Screen style={styles.screen}>
-      <ProfileMenu
-        onSave={() => {
-          formRef.current.handleSubmit()
-        }}
-        isEditing
-        path="Profile"
-      />
+      <ProfileMenu isEditing path="Profile" />
       <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         contentContainerStyle={styles.container}
@@ -65,6 +59,8 @@ const EditProfile = ({
         <View style={styles.formContainer}>
           {error && <ErrorMessage color={colors.danger} error={data} />}
           <AppForm
+            displaySubmitButton
+            submitButtonTitle="save"
             innerRef={formRef}
             initialValues={{
               name,

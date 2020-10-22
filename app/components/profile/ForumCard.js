@@ -15,11 +15,7 @@ const ForumCard = ({ onPress, loading, posts }) => {
   const defaultImage = require('../../assets/image-placeholder.png')
 
   return (
-    <Card
-      onPress={onPress}
-      title={loading ? 'Please wait...' : 'Forum'}
-      minHeight={400}
-    >
+    <Card onPress={onPress} title={loading ? 'Please wait...' : 'Forum'}>
       <View style={styles.container}>
         <ListItemSeparator />
         {loading && <ActivitySpinner height={400} />}

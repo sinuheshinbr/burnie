@@ -11,10 +11,25 @@ const createOptions = (jwt, contentType) => {
   }
 }
 
-const createPost = async (id, title, content, jwt, parent) => {
+const createPost = async (
+  id,
+  title,
+  content,
+  jwt,
+  parent,
+  parentUserName,
+  parentAvatarUrl
+) => {
   return await client.post(
     `${endpoint}/${id}`,
-    JSON.stringify({ title, content, id, parent }),
+    JSON.stringify({
+      title,
+      content,
+      id,
+      parent,
+      parentUserName,
+      parentAvatarUrl
+    }),
     createOptions(jwt, 'application/json')
   )
 }

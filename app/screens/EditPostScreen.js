@@ -22,7 +22,13 @@ const EditPostScreen = ({ navigation, route }) => {
     const jwt = await authStorage.getToken()
     const response = await editPost(userId, _id, title, content, jwt)
     if (!response?.ok) return
-    navigation.navigate('ForumDiscussionsScreen', { editedPost: response.data })
+    if (response.data.parent)
+      return navigation.navigate('ForumPostScreen', {
+        editedPost: response.data
+      })
+    return navigation.navigate('ForumDiscussionsScreen', {
+      editedPost: response.data
+    })
   }
 
   return (

@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
     .max(500)
 })
 
-const ForumPostScreen = ({ route }) => {
+const ForumPostScreen = ({ route, navigation }) => {
   let isMounted = true
   const [refreshing, setRefreshing] = useState(false)
   const [posts, setPosts] = useState([])
@@ -48,27 +48,34 @@ const ForumPostScreen = ({ route }) => {
     parentId = item.parent._id
   }
 
+  let title = ''
+
   let firstPost = {}
   if (item.title) {
     ;(firstPost._id = item._id),
+      (firstPost.userId = item.user._id),
       (firstPost.author = item.user.name),
       (firstPost.content = item.content),
       (firstPost.image = item.user.avatarUrl),
-      (firstPost.createdAt = item.createdAt)
+      (firstPost.createdAt = item.createdAt),
+      (title = item.title)
   } else {
     ;(firstPost._id = item.parent._id),
-      (firstPost.author = item.parent.user.name),
+      (firstPost.author = item.parentUserName),
       (firstPost.content = item.parent.content),
-      (firstPost.image = item.parent.user.avatarUrl),
-      (firstPost.createdAt = item.parent.createdAt)
+      (firstPost.image = item.parentAvatarUrl),
+      (firstPost.createdAt = item.parent.createdAt),
+      (title = item.parent.title)
   }
 
   const onLoad = async () => {
     const jwt = await authStorage.getToken()
     const response = await getPosts.request(_id, jwt, parentId)
     if (!response?.ok) return
-    if (isMounted) setPosts(response.data)
-    if (isMounted) setRefreshing(false)
+    if (isMounted) {
+      setPosts(response.data)
+      setRefreshing(false)
+    }
   }
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -78,7 +85,9 @@ const ForumPostScreen = ({ route }) => {
       null,
       values.post,
       jwt,
-      item._id
+      item._id,
+      item.user.name,
+      item.user.avatarUrl
     )
     if (!response.ok) return
 
@@ -95,10 +104,28 @@ const ForumPostScreen = ({ route }) => {
     return () => (isMounted = false)
   }, [])
 
+  useEffect(() => {
+    if (route.params?.editedPost && isMounted) {
+      const remainingPosts = posts.filter(
+        post => post._id !== route.params.editedPost._id
+      )
+
+      const editedPostArray = posts.filter(
+        post => post._id === route.params.editedPost._id
+      )
+
+      const editedPost = editedPostArray[0]
+
+      editedPost.title = route.params.editedPost.title
+      editedPost.content = route.params.editedPost.content
+      setPosts([...remainingPosts, editedPost])
+    }
+  }, [route])
+
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path={`Forum`} />
-      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.title}>{title}</Text>
       <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
@@ -111,6 +138,10 @@ const ForumPostScreen = ({ route }) => {
           scrollEnabled={true}
         >
           <PostItem
+            canEditPost={_id === firstPost.userId}
+            parent={parentId}
+            title={title}
+            navigation={navigation}
             key={firstPost._id}
             author={firstPost.author}
             _id={firstPost._id}
@@ -121,6 +152,10 @@ const ForumPostScreen = ({ route }) => {
           {getPosts.loading && <ActivitySpinner />}
           {posts.map(post => (
             <PostItem
+              canEditPost={_id === post.user._id}
+              navigation={navigation}
+              parent={parentId}
+              title={title}
               key={post._id}
               author={post.user?.name}
               _id={post._id}

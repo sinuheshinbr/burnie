@@ -1,16 +1,53 @@
 import moment from 'moment'
 import React from 'react'
-import { View, StyleSheet, Text, Image } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableWithoutFeedback
+} from 'react-native'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import AppText from '../AppText'
 import colors from '../../config/colors'
 
-const DiscussionItem = ({ author, content = '', createdAt, image }) => {
+const PostItem = ({
+  _id,
+  title,
+  parent,
+  author,
+  content = '',
+  createdAt,
+  image,
+  canEditPost = true,
+  navigation
+}) => {
   const elapsedTime = moment(createdAt).fromNow()
   const defaultImage = require('../../assets/image-placeholder.png')
 
   return (
     <View style={styles.container}>
+      {canEditPost && (
+        <View style={styles.editIcon}>
+          <TouchableWithoutFeedback
+            onPress={() =>
+              navigation.navigate('EditPostScreen', {
+                _id,
+                title,
+                content,
+                parent
+              })
+            }
+          >
+            <MaterialCommunityIcons
+              color={colors.medium}
+              size={20}
+              name="pencil-outline"
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      )}
       <Image
         source={image ? { uri: image } : defaultImage}
         style={styles.image}
@@ -52,10 +89,16 @@ const styles = StyleSheet.create({
     flex: 1
   },
   detailsContainer: {
+    zIndex: -1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     flex: 1,
     marginLeft: '5%'
+  },
+  editIcon: {
+    position: 'absolute',
+    left: '97%',
+    top: '12%'
   },
   elapsedTime: {
     color: colors.medium
@@ -73,4 +116,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default DiscussionItem
+export default PostItem

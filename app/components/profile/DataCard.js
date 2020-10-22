@@ -23,6 +23,7 @@ const DataCard = ({
       decelerationRate="fast"
       pagingEnabled
       contentContainerStyle={containerWidth}
+      showsHorizontalScrollIndicator={false}
     >
       <Chart
         hidePointsAtIndex={hideWeekPointsAtIndex}

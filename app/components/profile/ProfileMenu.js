@@ -1,14 +1,13 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
-import { Entypo, AntDesign } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 import colors from '../../config/colors'
 import ListItemSeparator from '../ListItemSeparator'
 import IconButton from '../IconButton'
-import NotificationIcon from './NotificationIcon'
 import { useNavigation } from '@react-navigation/native'
 import Back from '../Back'
 
-const ProfileMenu = ({ isEditing, path = '', onSave, displayBack = true }) => {
+const ProfileMenu = ({ isEditing, path = '', displayBack = true }) => {
   const navigation = useNavigation()
   return (
     <View style={styles.mainContainer}>
@@ -26,17 +25,11 @@ const ProfileMenu = ({ isEditing, path = '', onSave, displayBack = true }) => {
           <Text style={styles.text}>{path}</Text>
         </View>
         <View style={styles.rightView}>
-          <NotificationIcon newNotifications={100} />
           {!isEditing && (
             <IconButton
               onPress={() => navigation.navigate('ConfigurationScreen')}
             >
               <Entypo name="cog" size={25} color={colors.medium} />
-            </IconButton>
-          )}
-          {isEditing && (
-            <IconButton onPress={onSave}>
-              <AntDesign name="checkcircleo" size={25} color={colors.medium} />
             </IconButton>
           )}
         </View>
@@ -48,8 +41,7 @@ const ProfileMenu = ({ isEditing, path = '', onSave, displayBack = true }) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    alignItems: 'center',
-    height: '10.5%'
+    alignItems: 'center'
   },
   image: {
     width: 40,

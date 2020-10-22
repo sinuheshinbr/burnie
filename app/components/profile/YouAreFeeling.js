@@ -4,11 +4,11 @@ import Emoji from 'react-native-emoji'
 
 const YouAreFeeling = ({ todayFeeling }) => {
   const emojiNames = {
-    0: 'sob',
-    1: 'sweat',
-    2: 'expressionless',
-    3: 'slightly_smiling_face',
-    4: 'heart_eyes'
+    '0': 'sob',
+    '1': 'sweat',
+    '2': 'expressionless',
+    '3': 'slightly_smiling_face',
+    '4': 'heart_eyes'
   }
   return (
     <View style={styles.container}>

@@ -13,6 +13,8 @@ const AppContributionGraph = ({ title, pages, currentPage, loading, data }) => {
     color: (opacity = 1) => `rgba(255,82,82, ${opacity})`
   }
 
+  if (data && data.length === 1) data.push({ date: new Date(), count: 0 })
+
   return (
     <Card
       width={`${(100 / pages) * 0.9}%`}

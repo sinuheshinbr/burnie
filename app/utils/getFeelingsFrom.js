@@ -5,8 +5,7 @@ getFeelingsFrom = {
     const todayFeelingObject = feelings.filter(object => {
       return object.date === moment().format('DD-MM-YYYY')
     })
-    if (todayFeelingObject[0]?.feeling) return todayFeelingObject[0].feeling
-    return
+    if (todayFeelingObject[0]) return String(todayFeelingObject[0].feeling)
   },
 
   lastPeriod: function(feelings, days, isContribution = false) {
