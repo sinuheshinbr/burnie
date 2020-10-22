@@ -40,8 +40,24 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
   }, [])
 
   useEffect(() => {
-    if (route.params && isMounted)
+    if (route.params?.newPost && isMounted)
       setPosts([route.params?.newPost[0], ...posts])
+
+    if (route.params?.editedPost && isMounted) {
+      const remainingPosts = posts.filter(
+        post => post._id !== route.params.editedPost._id
+      )
+
+      const editedPostArray = posts.filter(
+        post => post._id === route.params.editedPost._id
+      )
+
+      const editedPost = editedPostArray[0]
+
+      editedPost.title = route.params.editedPost.title
+      editedPost.content = route.params.editedPost.content
+      setPosts([editedPost, ...remainingPosts])
+    }
   }, [route])
 
   return (
