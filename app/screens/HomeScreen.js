@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, ScrollView, View } from 'react-native'
+import { StyleSheet, ScrollView, View, RefreshControl } from 'react-native'
 
 import AuthContext from '../auth/context'
 import authStorage from '../auth/storage'
@@ -19,6 +19,7 @@ import useApi from '../hooks/useApi'
 import getFeelingsFrom from '../utils/getFeelingsFrom'
 
 const HomeScreen = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false)
   const [posts, setPosts] = useState([])
   const [todayFeeling, setTodayFeeling] = useState()
   const [lastWeekFeelings, setLastWeekFeelings] = useState()
@@ -78,6 +79,8 @@ const HomeScreen = ({ navigation }) => {
       setPosts(postsResponse.data)
       setLoadingPosts(false)
     }
+
+    setRefreshing(false)
   }
 
   useEffect(() => {
@@ -87,7 +90,13 @@ const HomeScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <ProfileMenu displayBack={false} path="Home" />
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onLoad} />
+        }
+      >
         <View style={styles.profile}>
           <Profile
             name={name ? name : 'Username'}
