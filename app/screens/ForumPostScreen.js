@@ -1,6 +1,13 @@
 import * as Yup from 'yup'
 import React, { useContext, useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Keyboard } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Keyboard,
+  RefreshControl,
+  ScrollView
+} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import AppForm from '../components/forms/AppForm'
@@ -9,7 +16,6 @@ import colors from '../config/colors'
 import PostItem from '../components/forum/PostItem'
 import { ProfileMenu } from '../components/profile'
 import Screen from '../components/Screen'
-import SubmitButton from '../components/forms/SubmitButton'
 import useApi from '../hooks/useApi'
 import postsApi from '../api/posts'
 import AuthContext from '../auth/context'
@@ -24,6 +30,7 @@ const validationSchema = Yup.object().shape({
 
 const ForumPostScreen = ({ route }) => {
   let isMounted = true
+  const [refreshing, setRefreshing] = useState(false)
   const [posts, setPosts] = useState([])
   const authContext = useContext(AuthContext)
   const { user } = authContext
@@ -61,6 +68,7 @@ const ForumPostScreen = ({ route }) => {
     const response = await getPosts.request(_id, jwt, parentId)
     if (!response?.ok) return
     if (isMounted) setPosts(response.data)
+    if (isMounted) setRefreshing(false)
   }
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -89,31 +97,39 @@ const ForumPostScreen = ({ route }) => {
     <Screen style={styles.screen}>
       <ProfileMenu path={`Forum`} />
       <Text style={styles.title}>{item.title}</Text>
-      <KeyboardAwareScrollView
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        contentContainerStyle={styles.container}
-        scrollEnabled={true}
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onLoad} />
+        }
       >
-        <PostItem
-          key={firstPost._id}
-          author={firstPost.author}
-          _id={firstPost._id}
-          content={firstPost.content}
-          image={firstPost.image}
-          createdAt={firstPost.createdAt}
-        />
-        {getPosts.loading && <ActivitySpinner />}
-        {posts.map(post => (
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          contentContainerStyle={styles.container}
+          scrollEnabled={true}
+        >
           <PostItem
-            key={post._id}
-            author={post.user?.name}
-            _id={post._id}
-            content={post.content}
-            image={post.user?.avatarUrl}
-            createdAt={post.createdAt}
+            key={firstPost._id}
+            author={firstPost.author}
+            _id={firstPost._id}
+            content={firstPost.content}
+            image={firstPost.image}
+            createdAt={firstPost.createdAt}
           />
-        ))}
-      </KeyboardAwareScrollView>
+          {getPosts.loading && <ActivitySpinner />}
+          {posts.map(post => (
+            <PostItem
+              key={post._id}
+              author={post.user?.name}
+              _id={post._id}
+              content={post.content}
+              image={post.user?.avatarUrl}
+              createdAt={post.createdAt}
+            />
+          ))}
+        </KeyboardAwareScrollView>
+      </ScrollView>
+
       <View style={styles.form}>
         <AppForm
           validateOnChange={false}
