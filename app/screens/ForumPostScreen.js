@@ -82,10 +82,12 @@ const ForumPostScreen = ({ route }) => {
     )
     if (!response.ok) return
 
-    if (isMounted) setPosts([...posts, response.data[0]])
-    Keyboard.dismiss()
-    if (isMounted) setSubmitting(false)
-    resetForm()
+    if (isMounted) {
+      setPosts([...posts, response.data[0]])
+      Keyboard.dismiss()
+      setSubmitting(false)
+      resetForm()
+    }
   }
 
   useEffect(() => {

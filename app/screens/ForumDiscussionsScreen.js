@@ -56,6 +56,9 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
           data={posts}
           renderItem={({ item }) => (
             <DiscussionItem
+              parent={item.parent}
+              navigation={navigation}
+              canEditPost={_id === item.user._id}
               key={item._id}
               title={item.title}
               content={item.content}

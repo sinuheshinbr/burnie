@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import HomeScreen from '../screens/HomeScreen'
 import ConfigurationScreen from '../screens/ConfigurationScreen'
+import EditPostScreen from '../screens/EditPostScreen'
 import ForumDiscussionsScreen from '../screens/ForumDiscussionsScreen'
 import ForumPostScreen from '../screens/ForumPostScreen'
 import NewDiscussionFormScreen from '../screens/NewDiscussionFormScreen'
@@ -22,6 +23,7 @@ const AppNavigator = () => (
       name="NewDiscussionFormScreen"
       component={NewDiscussionFormScreen}
     />
+    <Stack.Screen name="EditPostScreen" component={EditPostScreen} />
   </Stack.Navigator>
 )
 

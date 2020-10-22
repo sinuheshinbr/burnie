@@ -4,18 +4,28 @@ import React from 'react'
 
 import AppText from '../AppText'
 import colors from '../../config/colors'
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Text,
+  TouchableWithoutFeedback
+} from 'react-native'
 import normalizeNumber from '../../utils/normalizeNumber'
 
 const DiscussionItem = ({
-  title,
+  _id,
   author,
+  canEditPost = false,
   comments = 0,
-  likes = 0,
-  views = 0,
-  createdAt,
   content,
-  onPress
+  createdAt,
+  likes = 0,
+  navigation,
+  onPress,
+  parent,
+  title,
+  views = 0
 }) => {
   const elapsedTime = moment(createdAt).fromNow()
   let normalizedComments = normalizeNumber(comments)
@@ -24,6 +34,26 @@ const DiscussionItem = ({
   return (
     <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
       <View style={styles.container}>
+        {canEditPost && (
+          <View style={styles.editIcon}>
+            <TouchableWithoutFeedback
+              onPress={() =>
+                navigation.navigate('EditPostScreen', {
+                  _id,
+                  title,
+                  content,
+                  parent
+                })
+              }
+            >
+              <MaterialCommunityIcons
+                color={colors.medium}
+                size={20}
+                name="pencil-outline"
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        )}
         <View style={styles.detailsContainer}>
           <AppText numberOfLines={1} style={styles.title}>
             {title}
@@ -65,7 +95,9 @@ const DiscussionItem = ({
             </View>
           </View>
           <View style={styles.elapsedTimeContainer}>
-            <Text style={styles.iconText}>{elapsedTime}</Text>
+            <Text numberOfLines={1} style={styles.iconText}>
+              {elapsedTime}
+            </Text>
           </View>
         </View>
       </View>
@@ -93,12 +125,18 @@ const styles = StyleSheet.create({
   content: {
     color: colors.medium
   },
+  editIcon: {
+    position: 'absolute',
+    left: '97%',
+    top: '12%'
+  },
   detailsContainer: {
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
+    zIndex: -1
   },
   elapsedTimeContainer: {
-    width: '40%',
+    width: '45%',
     alignItems: 'flex-end',
     justifyContent: 'flex-end'
   },
