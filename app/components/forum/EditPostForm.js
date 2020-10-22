@@ -22,6 +22,8 @@ const EditPostForm = ({ handleSubmit, _id, title, content, parent }) => {
     <View style={styles.container}>
       <Text style={styles.text}>Edit Post: </Text>
       <AppForm
+        displaySubmitButton
+        submitButtonTitle="save"
         style={styles.form}
         initialValues={{ title: title, content: content }}
         onSubmit={handleSubmit}
@@ -52,7 +54,6 @@ const EditPostForm = ({ handleSubmit, _id, title, content, parent }) => {
           multiline
           isLast
         />
-        <SubmitButton title="Publish" />
       </AppForm>
     </View>
   )

@@ -16,13 +16,13 @@ const EditPostScreen = ({ navigation, route }) => {
   const authContext = useContext(AuthContext)
   const { user } = authContext
   const userId = user._id
-  const { request: createPost, loading } = useApi(postsApi.createPost)
+  const { request: editPost, loading } = useApi(postsApi.editPost)
 
   const handleSubmit = async ({ title, content }) => {
     const jwt = await authStorage.getToken()
-    const response = await createPost(userId, title, content, jwt)
+    const response = await editPost(userId, _id, title, content, jwt)
     if (!response?.ok) return
-    navigation.navigate('ForumDiscussionsScreen', { newPost: response.data })
+    navigation.navigate('ForumDiscussionsScreen')
   }
 
   return (

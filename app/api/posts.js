@@ -19,6 +19,14 @@ const createPost = async (id, title, content, jwt, parent) => {
   )
 }
 
+const editPost = async (id, post, title, content, jwt) => {
+  return await client.post(
+    `${endpoint}/${id}/${post}`,
+    JSON.stringify({ title, content }),
+    createOptions(jwt, 'application/json')
+  )
+}
+
 const getPosts = async (id, jwt, post, limit) => {
   return await client.get(
     `${endpoint}/${id}/${post}/${limit}`,
@@ -29,5 +37,6 @@ const getPosts = async (id, jwt, post, limit) => {
 
 export default {
   createPost,
-  getPosts
+  getPosts,
+  editPost
 }
