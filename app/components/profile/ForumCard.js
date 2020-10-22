@@ -27,7 +27,7 @@ const ForumCard = ({ onPress, loading, posts }) => {
           <Post
             key={post._id}
             onPress={() =>
-              navigation.navigate('ForumPostScreen', { _id: post._id })
+              navigation.navigate('ForumPostScreen', { item: post })
             }
             elapsedTime={moment(post.createdAt).fromNow()}
             title={post.title ? post.title : post.parent.title}

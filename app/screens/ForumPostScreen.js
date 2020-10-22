@@ -14,6 +14,7 @@ import useApi from '../hooks/useApi'
 import postsApi from '../api/posts'
 import AuthContext from '../auth/context'
 import authStorage from '../auth/storage'
+import ActivitySpinner from '../components/ActivitySpinner'
 
 const validationSchema = Yup.object().shape({
   post: Yup.string()
@@ -22,6 +23,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const ForumPostScreen = ({ route }) => {
+  let isMounted = true
   const [posts, setPosts] = useState([])
   const authContext = useContext(AuthContext)
   const { user } = authContext
@@ -32,11 +34,33 @@ const ForumPostScreen = ({ route }) => {
   const createPost = useApi(postsApi.createPost)
   const getPosts = useApi(postsApi.getPosts)
 
+  let parentId = ''
+  if (item.title) {
+    parentId = item._id
+  } else {
+    parentId = item.parent._id
+  }
+
+  let firstPost = {}
+  if (item.title) {
+    ;(firstPost._id = item._id),
+      (firstPost.author = item.user.name),
+      (firstPost.content = item.content),
+      (firstPost.image = item.user.avatarUrl),
+      (firstPost.createdAt = item.createdAt)
+  } else {
+    ;(firstPost._id = item.parent._id),
+      (firstPost.author = item.parent.user.name),
+      (firstPost.content = item.parent.content),
+      (firstPost.image = item.parent.user.avatarUrl),
+      (firstPost.createdAt = item.parent.createdAt)
+  }
+
   const onLoad = async () => {
     const jwt = await authStorage.getToken()
-    const response = await getPosts.request(_id, jwt, item._id)
+    const response = await getPosts.request(_id, jwt, parentId)
     if (!response?.ok) return
-    setPosts(response.data)
+    if (isMounted) setPosts(response.data)
   }
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -50,14 +74,15 @@ const ForumPostScreen = ({ route }) => {
     )
     if (!response.ok) return
 
-    setPosts([...posts, response.data[0]])
+    if (isMounted) setPosts([...posts, response.data[0]])
     Keyboard.dismiss()
-    setSubmitting(false)
+    if (isMounted) setSubmitting(false)
     resetForm()
   }
 
   useEffect(() => {
     onLoad()
+    return () => (isMounted = false)
   }, [])
 
   return (
@@ -70,13 +95,14 @@ const ForumPostScreen = ({ route }) => {
         scrollEnabled={true}
       >
         <PostItem
-          key={item._id}
-          author={item.user.name ?? ''}
-          _id={item._id}
-          content={item.content}
-          image={item.user.avatarUrl}
-          createdAt={item.createdAt}
+          key={firstPost._id}
+          author={firstPost.author}
+          _id={firstPost._id}
+          content={firstPost.content}
+          image={firstPost.image}
+          createdAt={firstPost.createdAt}
         />
+        {getPosts.loading && <ActivitySpinner />}
         {posts.map(post => (
           <PostItem
             key={post._id}
