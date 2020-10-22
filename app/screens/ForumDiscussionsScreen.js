@@ -21,6 +21,7 @@ import useApi from '../hooks/useApi'
 import ActivitySpinner from '../components/ActivitySpinner'
 
 const ForumDiscussionsScreen = ({ navigation, route }) => {
+  let isMounted = true
   const [posts, setPosts] = useState([])
   const { request: getPosts, loading } = useApi(postsApi.getPosts)
   const { user } = useContext(AuthContext)
@@ -30,15 +31,17 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
     const jwt = await authStorage.getToken()
     const response = await getPosts(_id, jwt)
     if (!response?.ok) return
-    setPosts(response.data)
+    if (isMounted) setPosts(response.data)
   }
 
   useEffect(() => {
     onLoad()
+    return () => (isMounted = false)
   }, [])
 
   useEffect(() => {
-    if (route.params) setPosts([route.params?.newPost[0], ...posts])
+    if (route.params && isMounted)
+      setPosts([route.params?.newPost[0], ...posts])
   }, [route])
 
   return (
