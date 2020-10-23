@@ -27,6 +27,7 @@ const DataCard = ({
       showsHorizontalScrollIndicator={false}
     >
       <Chart
+        todayFeeling={todayFeeling}
         hidePointsAtIndex={hideWeekPointsAtIndex}
         loading={loading}
         pages={pages}
@@ -36,6 +37,7 @@ const DataCard = ({
         dotSize={7}
       />
       <Chart
+        todayFeeling={todayFeeling}
         hidePointsAtIndex={hideMonthPointsAtIndex}
         loading={loading}
         pages={pages}

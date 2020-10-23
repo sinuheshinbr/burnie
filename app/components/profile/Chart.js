@@ -14,8 +14,10 @@ const Chart = ({
   currentPage,
   loading,
   dotSize = 5,
-  hidePointsAtIndex
+  hidePointsAtIndex,
+  todayFeeling
 }) => {
+  if (data && todayFeeling) data = [...data, todayFeeling]
   const chartConfig = {
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: '#fff',

@@ -20,7 +20,7 @@ const AppContributionGraph = ({
     color: (opacity = 1) => `rgba(255,82,82, ${opacity})`
   }
 
-  data.push({
+  data?.push({
     count: 4 - todayFeeling,
     date: new Date()
   })
