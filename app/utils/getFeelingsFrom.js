@@ -31,6 +31,16 @@ getFeelingsFrom = {
       count: 4 - object.feeling
     }))
 
+    const date = moment()
+      .subtract(days + 1, 'days')
+      .format('DD-MM-YYYY')
+
+    const dateObj = {
+      count: 0,
+      date: date
+    }
+    contributionGraphObjects.push(dateObj)
+
     if (isContribution) return contributionGraphObjects
 
     const lastPeriodFeelingsDates = lastPeriodFeelingsObjects.map(

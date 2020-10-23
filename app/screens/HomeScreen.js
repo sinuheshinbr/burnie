@@ -111,6 +111,7 @@ const HomeScreen = ({ navigation }) => {
           setTodayFeeling={setTodayFeeling}
         />
         <DataCard
+          todayFeeling={todayFeeling}
           lastMonthContributionFeelings={lastMonthContributionFeelings}
           pages={3}
           hideMonthPointsAtIndex={hideMonthPointsAtIndex}

@@ -6,14 +6,24 @@ import ActivitySpinner from '../ActivitySpinner'
 import Card from './Card'
 import ChartPageIndicator from './ChartPageIndicator'
 
-const AppContributionGraph = ({ title, pages, currentPage, loading, data }) => {
+const AppContributionGraph = ({
+  title,
+  pages,
+  currentPage,
+  loading,
+  data,
+  todayFeeling
+}) => {
   const chartConfig = {
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: '#fff',
     color: (opacity = 1) => `rgba(255,82,82, ${opacity})`
   }
 
-  if (data && data.length === 1) data.push({ date: new Date(), count: 0 })
+  data.push({
+    count: 4 - todayFeeling,
+    date: new Date()
+  })
 
   return (
     <Card

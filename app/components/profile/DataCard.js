@@ -4,6 +4,7 @@ import Chart from './Chart'
 import ContributionGraph from './ContributionGraph'
 
 const DataCard = ({
+  todayFeeling,
   lastWeekFeelings,
   loading,
   hideWeekPointsAtIndex,
@@ -43,6 +44,7 @@ const DataCard = ({
         data={lastMonthFeelings}
       />
       <ContributionGraph
+        todayFeeling={todayFeeling}
         loading={loading}
         pages={pages}
         currentPage={3}
