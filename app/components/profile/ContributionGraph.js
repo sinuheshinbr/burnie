@@ -11,7 +11,7 @@ const AppContributionGraph = ({
   pages,
   currentPage,
   loading,
-  data,
+  data = [],
   todayFeeling
 }) => {
   const chartConfig = {
@@ -20,10 +20,14 @@ const AppContributionGraph = ({
     color: (opacity = 1) => `rgba(255,82,82, ${opacity})`
   }
 
-  data?.push({
-    count: 4 - todayFeeling,
-    date: new Date()
-  })
+  if (todayFeeling)
+    data = [
+      ...data,
+      {
+        count: 4 - todayFeeling,
+        date: new Date()
+      }
+    ]
 
   return (
     <Card

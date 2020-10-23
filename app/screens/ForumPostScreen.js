@@ -30,6 +30,7 @@ const validationSchema = Yup.object().shape({
 
 const ForumPostScreen = ({ route, navigation }) => {
   let isMounted = true
+  const [firstPost, setFirstPost] = useState({})
   const [refreshing, setRefreshing] = useState(false)
   const [posts, setPosts] = useState([])
   const authContext = useContext(AuthContext)
@@ -50,24 +51,6 @@ const ForumPostScreen = ({ route, navigation }) => {
 
   let title = ''
 
-  let firstPost = {}
-  if (item.title) {
-    ;(firstPost._id = item._id),
-      (firstPost.userId = item.user._id),
-      (firstPost.author = item.user.name),
-      (firstPost.content = item.content),
-      (firstPost.image = item.user.avatarUrl),
-      (firstPost.createdAt = item.createdAt),
-      (title = item.title)
-  } else {
-    ;(firstPost._id = item.parent._id),
-      (firstPost.author = item.parentUserName),
-      (firstPost.content = item.parent.content),
-      (firstPost.image = item.parentAvatarUrl),
-      (firstPost.createdAt = item.parent.createdAt),
-      (title = item.parent.title)
-  }
-
   const onLoad = async () => {
     const jwt = await authStorage.getToken()
     const response = await getPosts.request(_id, jwt, parentId)
@@ -75,6 +58,27 @@ const ForumPostScreen = ({ route, navigation }) => {
     if (isMounted) {
       setPosts(response.data)
       setRefreshing(false)
+      if (item.title) {
+        setFirstPost({
+          _id: item._id,
+          userId: item.user._id,
+          author: item.user.name,
+          content: item.content,
+          image: item.user.avatarUrl,
+          createdAt: item.createdAt,
+          title: item.title
+        })
+      } else {
+        setFirstPost({
+          _id: item.parent._id,
+          userId: item.parent.user,
+          author: item.parentUserName,
+          content: item.parent.content,
+          image: item.parentAvatarUrl,
+          createdAt: item.parent.createdAt,
+          title: item.parent.title
+        })
+      }
     }
   }
 
@@ -109,23 +113,30 @@ const ForumPostScreen = ({ route, navigation }) => {
       const remainingPosts = posts.filter(
         post => post._id !== route.params.editedPost._id
       )
-
       const editedPostArray = posts.filter(
         post => post._id === route.params.editedPost._id
       )
-
-      const editedPost = editedPostArray[0]
-
-      editedPost.title = route.params.editedPost.title
-      editedPost.content = route.params.editedPost.content
-      setPosts([...remainingPosts, editedPost])
+      if (editedPostArray[0]) {
+        const editedPost = editedPostArray[0]
+        editedPost.title = route.params.editedPost.title
+        editedPost.content = route.params.editedPost.content
+        setPosts([...remainingPosts, editedPost])
+      } else {
+        if (isMounted) {
+          setFirstPost({
+            ...firstPost,
+            title: route.params.editedPost.title,
+            content: route.params.editedPost.content
+          })
+        }
+      }
     }
   }, [route])
 
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path={`Forum`} />
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{firstPost.title}</Text>
       <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
@@ -140,7 +151,7 @@ const ForumPostScreen = ({ route, navigation }) => {
           <PostItem
             canEditPost={_id === firstPost.userId}
             parent={parentId}
-            title={title}
+            title={firstPost.title}
             navigation={navigation}
             key={firstPost._id}
             author={firstPost.author}

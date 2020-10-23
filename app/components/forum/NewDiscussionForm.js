@@ -22,6 +22,8 @@ const NewDiscussionForm = ({ handleSubmit }) => {
     <View style={styles.container}>
       <Text style={styles.text}>New Discussion: </Text>
       <AppForm
+        displaySubmitButton
+        submitButtonTitle="publish"
         style={styles.form}
         initialValues={{ title: '', content: '' }}
         onSubmit={handleSubmit}
@@ -52,7 +54,6 @@ const NewDiscussionForm = ({ handleSubmit }) => {
           multiline
           isLast
         />
-        <SubmitButton title="Publish" />
       </AppForm>
     </View>
   )

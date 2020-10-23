@@ -4,7 +4,6 @@ import { View, StyleSheet, Text } from 'react-native'
 
 import { AppForm, AppFormField } from '../forms'
 import colors from '../../config/colors'
-import SubmitButton from '../forms/SubmitButton'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -15,7 +14,14 @@ const validationSchema = Yup.object().shape({
     .max(500)
 })
 
-const EditPostForm = ({ handleSubmit, _id, title, content, parent }) => {
+const EditPostForm = ({
+  handleSubmit,
+  _id,
+  title,
+  content,
+  parent,
+  loading
+}) => {
   const contentEl = useRef(null)
 
   return (

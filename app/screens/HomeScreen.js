@@ -22,14 +22,12 @@ const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false)
   const [posts, setPosts] = useState([])
   const [todayFeeling, setTodayFeeling] = useState()
-  const [lastWeekFeelings, setLastWeekFeelings] = useState()
-  const [lastMonthFeelings, setLastMonthFeelings] = useState()
+  const [lastWeekFeelings, setLastWeekFeelings] = useState([])
+  const [lastMonthFeelings, setLastMonthFeelings] = useState([])
   const [
     lastMonthContributionFeelings,
     setLastMonthContributionFeelings
   ] = useState()
-  const [loadingFeelings, setLoadingFeelings] = useState(true)
-  const [loadingPosts, setLoadingPosts] = useState(true)
   const [hideWeekPointsAtIndex, setHideWeekPointsAtIndex] = useState([])
   const [hideMonthPointsAtIndex, setHideMonthPointsAtIndex] = useState([])
   const defaultImage = require('../assets/image-placeholder.png')
@@ -40,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
   const getPosts = useApi(postsApi.getPosts)
 
   const onLoad = async () => {
+    setRefreshing(true)
     const jwt = await authStorage.getToken()
 
     const feelingsResponse = await getFeelings.request(_id, jwt)
@@ -70,14 +69,11 @@ const HomeScreen = ({ navigation }) => {
       setHideMonthPointsAtIndex(
         getFeelingsFrom.lastPeriod(feelings, 30).emptyIndexes
       )
-
-      setLoadingFeelings(false)
     }
 
     const postsResponse = await getPosts.request(_id, jwt, 'all')
     if (postsResponse.ok) {
       setPosts(postsResponse.data)
-      setLoadingPosts(false)
     }
 
     setRefreshing(false)
@@ -106,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
         <FeelingsCard
-          loading={loadingFeelings}
+          loading={refreshing}
           todayFeeling={todayFeeling}
           setTodayFeeling={setTodayFeeling}
         />
@@ -116,13 +112,13 @@ const HomeScreen = ({ navigation }) => {
           pages={3}
           hideMonthPointsAtIndex={hideMonthPointsAtIndex}
           hideWeekPointsAtIndex={hideWeekPointsAtIndex}
-          loading={loadingFeelings}
+          loading={refreshing}
           lastWeekFeelings={lastWeekFeelings}
           lastMonthFeelings={lastMonthFeelings}
         />
         <ForumCard
           onPress={() => navigation.navigate('ForumDiscussionsScreen')}
-          loading={loadingPosts}
+          loading={refreshing}
           posts={posts}
         />
       </ScrollView>
