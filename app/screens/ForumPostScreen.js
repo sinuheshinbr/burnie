@@ -29,6 +29,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const ForumPostScreen = ({ route, navigation }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   let isMounted = true
   const [firstPost, setFirstPost] = useState({})
   const [refreshing, setRefreshing] = useState(false)
@@ -83,19 +84,21 @@ const ForumPostScreen = ({ route, navigation }) => {
   }
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setIsSubmitting(true)
     const jwt = await authStorage.getToken()
     const response = await createPost.request(
       _id,
       null,
       values.post,
       jwt,
-      item._id,
+      parentId,
       item.user.name,
       item.user.avatarUrl
     )
     if (!response.ok) return
 
     if (isMounted) {
+      setIsSubmitting(false)
       setPosts([...posts, response.data[0]])
       Keyboard.dismiss()
       setSubmitting(false)
@@ -110,25 +113,22 @@ const ForumPostScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     if (route.params?.editedPost && isMounted) {
-      const remainingPosts = posts.filter(
-        post => post._id !== route.params.editedPost._id
-      )
-      const editedPostArray = posts.filter(
+      const indexOfEdited = posts.findIndex(
         post => post._id === route.params.editedPost._id
       )
-      if (editedPostArray[0]) {
-        const editedPost = editedPostArray[0]
-        editedPost.title = route.params.editedPost.title
-        editedPost.content = route.params.editedPost.content
-        setPosts([...remainingPosts, editedPost])
+
+      if (indexOfEdited >= 0) {
+        const newPosts = [...posts]
+        newPosts[indexOfEdited].title = route.params.editedPost.title
+        newPosts[indexOfEdited].content = route.params.editedPost.content
+        if (isMounted) setPosts(newPosts)
       } else {
-        if (isMounted) {
+        if (isMounted)
           setFirstPost({
             ...firstPost,
             title: route.params.editedPost.title,
             content: route.params.editedPost.content
           })
-        }
       }
     }
   }, [route])
@@ -148,38 +148,43 @@ const ForumPostScreen = ({ route, navigation }) => {
           contentContainerStyle={styles.container}
           scrollEnabled={true}
         >
-          <PostItem
-            canEditPost={_id === firstPost.userId}
-            parent={parentId}
-            title={firstPost.title}
-            navigation={navigation}
-            key={firstPost._id}
-            author={firstPost.author}
-            _id={firstPost._id}
-            content={firstPost.content}
-            image={firstPost.image}
-            createdAt={firstPost.createdAt}
-          />
-          {getPosts.loading && <ActivitySpinner />}
-          {posts.map(post => (
+          {!getPosts.loading && (
             <PostItem
-              canEditPost={_id === post.user._id}
-              navigation={navigation}
+              canEditPost={_id === firstPost.userId}
               parent={parentId}
-              title={title}
-              key={post._id}
-              author={post.user?.name}
-              _id={post._id}
-              content={post.content}
-              image={post.user?.avatarUrl}
-              createdAt={post.createdAt}
+              title={firstPost.title}
+              navigation={navigation}
+              key={firstPost._id}
+              author={firstPost.author}
+              _id={firstPost._id}
+              content={firstPost.content}
+              image={firstPost.image}
+              createdAt={firstPost.createdAt}
             />
-          ))}
+          )}
+          {getPosts.loading && <ActivitySpinner />}
+          {!getPosts.loading &&
+            posts.map(post => (
+              <PostItem
+                firstPostTitle={firstPost.title}
+                canEditPost={_id === post.user._id}
+                navigation={navigation}
+                parent={parentId}
+                title={title}
+                key={post._id}
+                author={post.user?.name}
+                _id={post._id}
+                content={post.content}
+                image={post.user?.avatarUrl}
+                createdAt={post.createdAt}
+              />
+            ))}
         </KeyboardAwareScrollView>
       </ScrollView>
 
       <View style={styles.form}>
         <AppForm
+          isSubmitting={isSubmitting}
           validateOnChange={false}
           validateOnBlur={false}
           submitButtonTitle="publish"

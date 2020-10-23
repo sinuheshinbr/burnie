@@ -21,7 +21,8 @@ const PostItem = ({
   createdAt,
   image,
   canEditPost,
-  navigation
+  navigation,
+  firstPostTitle
 }) => {
   const elapsedTime = moment(createdAt).fromNow()
   const defaultImage = require('../../assets/image-placeholder.png')
@@ -38,7 +39,8 @@ const PostItem = ({
                 title,
                 content,
                 parent,
-                isPostItem
+                isPostItem,
+                firstPostTitle
               })
             }
           >

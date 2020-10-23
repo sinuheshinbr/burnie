@@ -11,7 +11,8 @@ const AppForm = ({
   submitButtonTitle,
   displaySubmitButton = false,
   validateOnChange,
-  validateOnBlur
+  validateOnBlur,
+  isSubmitting
 }) => {
   return (
     <Formik
@@ -22,7 +23,7 @@ const AppForm = ({
       onSubmit={onSubmit}
       validationSchema={validationSchema}
     >
-      {({ isSubmitting }) => (
+      {() => (
         <>
           {children}
           {displaySubmitButton && (
