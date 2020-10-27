@@ -19,7 +19,9 @@ const Chart = ({
 }) => {
   if (data && todayFeeling) data = [...data, todayFeeling]
   const chartConfig = {
+    backgroundColor: '#fff',
     backgroundGradientFromOpacity: 0,
+    backgroundGradientToOpacity: 0,
     backgroundGradientTo: '#fff',
     color: (opacity = 1) => `rgba(59, 180, 228, ${1})`,
     strokeWidth: 0.00001,
