@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-getFeelingsFrom = {
+const getFeelingsFrom = {
   today: function(feelings) {
     const todayFeelingObject = feelings.filter(object => {
       return object.date === moment().format('DD-MM-YYYY')

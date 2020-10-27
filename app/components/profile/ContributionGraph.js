@@ -15,7 +15,9 @@ const AppContributionGraph = ({
   todayFeeling
 }) => {
   const chartConfig = {
+    backgroundColor: '#fff',
     backgroundGradientFromOpacity: 0,
+    backgroundGradientToOpacity: 0,
     backgroundGradientTo: '#fff',
     color: (opacity = 1) => `rgba(255,82,82, ${opacity})`
   }

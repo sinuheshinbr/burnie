@@ -233,21 +233,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10
   },
-  image: {
-    marginTop: 30,
-    width: 70,
-    height: 70,
-    alignSelf: 'center'
-  },
   screen: {
     backgroundColor: colors.light
-  },
-  text: {
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: colors.medium,
-    marginTop: 20
   },
   title: {
     fontSize: 25,
