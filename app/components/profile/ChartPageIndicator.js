@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     position: 'absolute',
-    alignSelf: 'center',
+    left: '50%',
     top: '90%',
     marginTop: 7
   }

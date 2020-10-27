@@ -15,7 +15,7 @@ const ENV = {
 }
 
 const getEnvVars = (env = manifest.releaseChannel) => {
-  return ENV.prod
+  // return ENV.prod
   if (__DEV__) return ENV.dev
   if (env === 'prod') return ENV.prod
 }

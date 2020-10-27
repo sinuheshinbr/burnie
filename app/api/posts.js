@@ -56,10 +56,19 @@ const getPosts = async (id, jwt, post, limit) => {
   )
 }
 
+const incrementViews = async (id, jwt, post) => {
+  return await client.put(
+    `${endpoint}/${id}/${post}`,
+    null,
+    createOptions(jwt, 'application/json')
+  )
+}
+
 export default {
   createPost,
   getPosts,
   deletePost,
   editPost,
-  deleteDiscussion
+  deleteDiscussion,
+  incrementViews
 }

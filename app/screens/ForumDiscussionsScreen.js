@@ -24,6 +24,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
   let isMounted = true
   const [posts, setPosts] = useState([])
   const { request: getPosts, loading } = useApi(postsApi.getPosts)
+  const incrementViews = useApi(postsApi.incrementViews)
   const { user } = useContext(AuthContext)
   const { _id } = user
   const { editedPost, newPost, deletedPost } = route?.params
@@ -61,6 +62,12 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
     }
   }, [route])
 
+  const handleClickPost = async item => {
+    const jwt = await authStorage.getToken()
+    incrementViews.request(_id, jwt, item._id)
+    navigation.navigate('ForumPostScreen', { item })
+  }
+
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path="Forum" />
@@ -82,7 +89,8 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
               author={item.user.name ?? 'Anonymous'}
               _id={item._id}
               createdAt={item.createdAt}
-              onPress={() => navigation.navigate('ForumPostScreen', { item })}
+              onPress={() => handleClickPost(item)}
+              views={item.views}
             />
           )}
           keyExtractor={post => post._id}
