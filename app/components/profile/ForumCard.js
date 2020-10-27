@@ -26,7 +26,7 @@ const ForumCard = ({ onPress, loading, posts }) => {
               navigation.navigate('ForumPostScreen', { item: post })
             }
             elapsedTime={moment(post.createdAt).fromNow()}
-            title={post.title ? post.title : post.parent.title}
+            title={post.title ? post.title : post.parent?.title}
             content={post.content}
             image={
               post.user.avatarUrl ? { uri: post.user.avatarUrl } : defaultImage

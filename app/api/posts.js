@@ -11,25 +11,23 @@ const createOptions = (jwt, contentType) => {
   }
 }
 
-const createPost = async (
-  id,
-  title,
-  content,
-  jwt,
-  parent,
-  parentUserName,
-  parentAvatarUrl
-) => {
+const createPost = async (id, title, content, jwt, parent) => {
   return await client.post(
     `${endpoint}/${id}`,
     JSON.stringify({
       title,
       content,
       id,
-      parent,
-      parentUserName,
-      parentAvatarUrl
+      parent
     }),
+    createOptions(jwt, 'application/json')
+  )
+}
+
+const deletePost = async (id, post, jwt) => {
+  return await client.delete(
+    `${endpoint}/${id}/${post}`,
+    null,
     createOptions(jwt, 'application/json')
   )
 }
@@ -53,5 +51,6 @@ const getPosts = async (id, jwt, post, limit) => {
 export default {
   createPost,
   getPosts,
+  deletePost,
   editPost
 }

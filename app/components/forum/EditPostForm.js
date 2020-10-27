@@ -6,12 +6,14 @@ import ParentPostForm from '../forum/ParentPostForm'
 import ChildPostForm from '../forum/ChildPostForm'
 
 const EditPostForm = ({
+  _id,
   handleSubmit,
   title,
   content,
   firstPostTitle,
   isSubmitting,
-  isMounted
+  isMounted,
+  handleDelete
 }) => {
   const contentEl = useRef(null)
   let isChild = false
@@ -22,6 +24,8 @@ const EditPostForm = ({
       <Text style={styles.text}>Edit Post: </Text>
       {!isChild && (
         <ParentPostForm
+          handleDelete={handleDelete}
+          _id={_id}
           isMounted={isMounted}
           isSubmitting={isSubmitting}
           handleSubmit={handleSubmit}
@@ -32,6 +36,8 @@ const EditPostForm = ({
       )}
       {isChild && (
         <ChildPostForm
+          handleDelete={handleDelete}
+          _id={_id}
           isMounted={isMounted}
           isSubmitting={isSubmitting}
           firstPostTitle={firstPostTitle}

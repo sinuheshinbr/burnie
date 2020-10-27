@@ -73,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
 
     const postsResponse = await getPosts.request(_id, jwt, 'all')
     if (postsResponse?.ok) {
-      setPosts(postsResponse.data.json)
+      setPosts(postsResponse.data.json.reverse())
     }
 
     setRefreshing(false)

@@ -25,6 +25,7 @@ const EditPostScreen = ({ navigation, route }) => {
   const { user } = authContext
   const userId = user._id
   const { request: editPost } = useApi(postsApi.editPost)
+  const deletePost = useApi(postsApi.deletePost)
 
   useEffect(() => {
     return () => (isMounted = false)
@@ -33,9 +34,7 @@ const EditPostScreen = ({ navigation, route }) => {
   const handleSubmit = async ({ title, content }) => {
     if (isMounted) setIssubmitting(true)
     const jwt = await authStorage.getToken()
-    console.log('waiting for response...')
     const response = await editPost(userId, _id, title, content, jwt)
-    console.log('response chegou: ')
     if (isMounted) setIssubmitting(false)
     if (response?.ok) {
       const pageToredirect = isPostItem
@@ -48,11 +47,29 @@ const EditPostScreen = ({ navigation, route }) => {
     }
   }
 
+  const handleDelete = async () => {
+    if (isMounted) setIsDeleting(true)
+    const jwt = await authStorage.getToken()
+    const response = await deletePost.request(userId, _id, jwt)
+    if (isMounted) setIsDeleting(false)
+    if (response?.ok) {
+      const pageToredirect = isPostItem
+        ? 'ForumPostScreen'
+        : 'ForumDiscussionsScreen'
+
+      return navigation.navigate(pageToredirect, {
+        deletedPost: _id
+      })
+    }
+  }
+
   return (
     <>
       <Screen style={styles.screen}>
         <ProfileMenu path="Forum" />
         <EditPostForm
+          handleDelete={handleDelete}
+          userId={userId}
           isMounted={isMounted}
           isSubmitting={isSubmitting}
           handleSubmit={handleSubmit}

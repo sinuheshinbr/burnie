@@ -4,6 +4,7 @@ import colors from '../../config/colors'
 import AppForm from '../forms/AppForm'
 import AppFormField from '../forms/AppFormField'
 import * as Yup from 'yup'
+import AppButton from '../AppButton'
 
 const validationSchema = Yup.object().shape({
   content: Yup.string()
@@ -18,7 +19,8 @@ const ParentPostForm = ({
   contentEl,
   firstPostTitle,
   isSubmitting,
-  isMounted
+  isMounted,
+  handleDelete
 }) => {
   return (
     <>
@@ -47,6 +49,7 @@ const ParentPostForm = ({
           multiline
         />
       </AppForm>
+      <AppButton title="delete" color="danger" onPress={handleDelete} />
     </>
   )
 }

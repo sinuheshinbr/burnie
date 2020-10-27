@@ -20,7 +20,6 @@ const ForumDiscussionsScreen = ({ navigation }) => {
   const handleSubmit = async ({ title, content }) => {
     const jwt = await authStorage.getToken()
     const response = await createPost(_id, title, content, jwt)
-    console.log(response)
     if (!response?.ok) return
     navigation.navigate('ForumDiscussionsScreen', {
       newPost: response.data.json
