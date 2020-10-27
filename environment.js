@@ -1,6 +1,7 @@
 import Constants from 'expo-constants'
 const { manifest } = Constants
-const api = `http://${manifest.debuggerHost.split(':').shift()}:4000/dev`
+const uri = manifest?.debuggerHost ? manifest.debuggerHost : 'localhost'
+const api = `http://${uri.split(':').shift()}:4000/dev`
 
 const localhost = api
 
@@ -14,7 +15,7 @@ const ENV = {
 }
 
 const getEnvVars = (env = manifest.releaseChannel) => {
-  // return ENV.prod
+  return ENV.prod
   if (__DEV__) return ENV.dev
   if (env === 'prod') return ENV.prod
 }

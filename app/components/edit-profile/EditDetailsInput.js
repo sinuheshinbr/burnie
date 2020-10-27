@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput } from 'react-native'
 import colors from '../../config/colors'
 import defaultStyles from '../../config/styles'
 
-const EditDetailsInput = ({ isFocused, ...otherProps }) => {
+const EditDetailsInput = ({ isFocused, setIsFocused, ...otherProps }) => {
   return (
     <View style={styles.container}>
       <View

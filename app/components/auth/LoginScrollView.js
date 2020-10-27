@@ -2,7 +2,14 @@ import React, { useRef } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AppFormField, AppForm, SubmitButton } from '../forms'
 import ErrorMessage from '../ErrorMessage'
-import { Image, Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Platform
+} from 'react-native'
 import AppButton from '../AppButton'
 import colors from '../../config/colors'
 import * as Yup from 'yup'

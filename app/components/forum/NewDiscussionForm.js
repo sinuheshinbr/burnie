@@ -60,10 +60,6 @@ const NewDiscussionForm = ({ handleSubmit }) => {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    width: '90%',
-    alignSelf: 'center'
-  },
   container: {
     width: '90%',
     alignSelf: 'center',

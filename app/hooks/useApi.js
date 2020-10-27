@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default useApi = apiFunc => {
+const useApi = apiFunc => {
   let isMounted = true
   const [error, setError] = useState(false)
   const [data, setData] = useState([])
@@ -39,3 +39,5 @@ export default useApi = apiFunc => {
 
   return { request, error, data, loading }
 }
+
+export default useApi

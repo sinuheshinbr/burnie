@@ -11,6 +11,7 @@ const AppTextInput = ({
   iconColor = defaultStyles.colors.medium,
   innerRef,
   isFocused,
+  setIsFocused,
   nextEl,
   textColor = defaultStyles.colors.white,
   ...otherProps
