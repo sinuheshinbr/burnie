@@ -17,7 +17,8 @@ const ParentPostForm = ({
   content,
   contentEl,
   firstPostTitle,
-  isSubmitting
+  isSubmitting,
+  isMounted
 }) => {
   return (
     <>
@@ -31,6 +32,7 @@ const ParentPostForm = ({
         validationSchema={validationSchema}
       >
         <AppFormField
+          isMounted={isMounted}
           innerRef={contentEl}
           backgroundColor={colors.transparent02}
           name="content"
@@ -43,7 +45,6 @@ const ParentPostForm = ({
           bigFocusDisplay
           textColor={colors.dark}
           multiline
-          isLast
         />
       </AppForm>
     </>

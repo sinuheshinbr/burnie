@@ -38,7 +38,7 @@ const ForumPostScreen = ({ route, navigation }) => {
   const { user } = authContext
   const { _id } = user
 
-  const { item } = route.params
+  const { item, editedPost } = route.params
 
   const createPost = useApi(postsApi.createPost)
   const getPosts = useApi(postsApi.getPosts)
@@ -57,9 +57,14 @@ const ForumPostScreen = ({ route, navigation }) => {
     const response = await getPosts.request(_id, jwt, parentId)
     if (!response?.ok) return
     if (isMounted) {
-      setPosts(response.data)
+      setPosts(response.data.json)
       setRefreshing(false)
-      if (item.title) {
+      if (editedPost?.title) {
+        setFirstPost({
+          ...firstPost,
+          content: editedPost.content
+        })
+      } else if (item.title) {
         setFirstPost({
           _id: item._id,
           userId: item.user._id,
@@ -99,7 +104,7 @@ const ForumPostScreen = ({ route, navigation }) => {
 
     if (isMounted) {
       setIsSubmitting(false)
-      setPosts([...posts, response.data[0]])
+      setPosts([...posts, response.data.json[0]])
       Keyboard.dismiss()
       setSubmitting(false)
       resetForm()

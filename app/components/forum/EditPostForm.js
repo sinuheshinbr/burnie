@@ -10,7 +10,8 @@ const EditPostForm = ({
   title,
   content,
   firstPostTitle,
-  isSubmitting
+  isSubmitting,
+  isMounted
 }) => {
   const contentEl = useRef(null)
   let isChild = false
@@ -21,6 +22,7 @@ const EditPostForm = ({
       <Text style={styles.text}>Edit Post: </Text>
       {!isChild && (
         <ParentPostForm
+          isMounted={isMounted}
           isSubmitting={isSubmitting}
           handleSubmit={handleSubmit}
           title={title}
@@ -30,6 +32,7 @@ const EditPostForm = ({
       )}
       {isChild && (
         <ChildPostForm
+          isMounted={isMounted}
           isSubmitting={isSubmitting}
           firstPostTitle={firstPostTitle}
           handleSubmit={handleSubmit}

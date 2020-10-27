@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
 
     const feelingsResponse = await getFeelings.request(_id, jwt)
     if (feelingsResponse?.ok) {
-      const feelings = feelingsResponse.data.map(daily => ({
+      const feelings = feelingsResponse.data.json.map(daily => ({
         feeling: daily.feeling,
         date: moment(daily.date).format('DD-MM-YYYY')
       }))
@@ -73,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
 
     const postsResponse = await getPosts.request(_id, jwt, 'all')
     if (postsResponse?.ok) {
-      setPosts(postsResponse.data)
+      setPosts(postsResponse.data.json)
     }
 
     setRefreshing(false)

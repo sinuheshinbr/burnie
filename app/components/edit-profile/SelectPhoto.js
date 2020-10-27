@@ -42,6 +42,7 @@ const SelectPhoto = ({ image, isMounted, setImage, progress, setProgress }) => {
       const response = await uploadImage(_id, jsonBase64, token, progress => {
         if (isMounted) setProgress(progress * 0.9)
       })
+
       if (!response?.ok || !isMounted) return
       setImage({ uri: response.data })
       setProgress(progress => progress + 0.1)

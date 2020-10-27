@@ -11,6 +11,7 @@ const AppFormField = ({
   name,
   nextEl,
   textColor,
+  isMounted,
   ...otherProps
 }) => {
   const [isFocused, setIsFocused] = useState(false)
@@ -31,10 +32,14 @@ const AppFormField = ({
         textColor={textColor}
         innerRef={innerRef}
         isFocused={isFocused}
-        onFocus={() => setIsFocused(true)}
+        onFocus={() => {
+          if (isMounted) setIsFocused(true)
+        }}
         onBlur={() => {
-          setFieldTouched(name)
-          setIsFocused(false)
+          if (isMounted) {
+            setFieldTouched(name)
+            setIsFocused(false)
+          }
 
           if (isLast) submitForm()
         }}

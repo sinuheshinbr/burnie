@@ -4,7 +4,7 @@ import AuthContext from '../../auth/context'
 import authStorage from '../../auth/storage'
 import Card from './Card'
 import EmojiScale from './EmojiScale'
-import feelsApi from '../../api/feelings'
+import feelingsApi from '../../api/feelings'
 import useApi from '../../hooks/useApi'
 import YouAreFeeling from './YouAreFeeling'
 import ActivitySpinner from '../../components/ActivitySpinner'
@@ -14,12 +14,14 @@ const FeelingsCard = ({ todayFeeling, setTodayFeeling, loading }) => {
   const { user } = authContext
   const { _id } = user
 
-  const { request: createFeeling } = useApi(feelsApi.createFeeling)
+  const { request: createFeeling } = useApi(feelingsApi.createFeeling)
 
   const selectFeeling = async feeling => {
     const jwt = await authStorage.getToken()
-    setTodayFeeling(feeling)
-    createFeeling(_id, feeling, jwt)
+    const response = await createFeeling(_id, feeling, jwt)
+    if (response?.ok) {
+      setTodayFeeling(feeling)
+    }
   }
 
   return (

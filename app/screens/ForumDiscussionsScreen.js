@@ -31,7 +31,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
     const jwt = await authStorage.getToken()
     const response = await getPosts(_id, jwt)
     if (!response?.ok) return
-    if (isMounted) setPosts(response.data)
+    if (isMounted) setPosts(response.data.json)
   }
 
   useEffect(() => {

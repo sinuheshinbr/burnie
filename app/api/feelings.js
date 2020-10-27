@@ -14,12 +14,13 @@ const createOptions = (jwt, contentType, onUploadProgress = () => {}) => {
   }
 }
 
-const createFeeling = async (id, feeling, jwt) => {
-  return await client.post(
-    `${endpoint}/${id}`,
-    JSON.stringify({ feeling, id }),
-    createOptions(jwt, 'application/json')
-  )
+const createFeeling = (id, feeling, jwt) => {
+  return client.post(`${endpoint}/${id}`, JSON.stringify({ id, feeling }), {
+    headers: {
+      authorization: jwt,
+      'Content-Type': 'application/json'
+    }
+  })
 }
 
 const getFeelings = async (id, jwt) => {

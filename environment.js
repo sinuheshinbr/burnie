@@ -9,11 +9,12 @@ const ENV = {
     apiUrl: localhost
   },
   prod: {
-    apiUrl: 'https://odrsdxfb08.execute-api.sa-east-1.amazonaws.com/dev'
+    apiUrl: 'https://rlbjfnpmpl.execute-api.sa-east-1.amazonaws.com/dev'
   }
 }
 
 const getEnvVars = (env = manifest.releaseChannel) => {
+  // return ENV.prod
   if (__DEV__) return ENV.dev
   if (env === 'prod') return ENV.prod
 }

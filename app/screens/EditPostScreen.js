@@ -33,16 +33,17 @@ const EditPostScreen = ({ navigation, route }) => {
   const handleSubmit = async ({ title, content }) => {
     if (isMounted) setIssubmitting(true)
     const jwt = await authStorage.getToken()
+    console.log('waiting for response...')
     const response = await editPost(userId, _id, title, content, jwt)
+    console.log('response chegou: ')
+    if (isMounted) setIssubmitting(false)
     if (response?.ok) {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      if (isMounted) setIssubmitting(false)
       const pageToredirect = isPostItem
         ? 'ForumPostScreen'
         : 'ForumDiscussionsScreen'
 
       return navigation.navigate(pageToredirect, {
-        editedPost: response.data
+        editedPost: response.data.json
       })
     }
   }
@@ -52,6 +53,7 @@ const EditPostScreen = ({ navigation, route }) => {
       <Screen style={styles.screen}>
         <ProfileMenu path="Forum" />
         <EditPostForm
+          isMounted={isMounted}
           isSubmitting={isSubmitting}
           handleSubmit={handleSubmit}
           navigation={navigation}
