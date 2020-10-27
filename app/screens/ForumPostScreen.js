@@ -55,43 +55,37 @@ const ForumPostScreen = ({ route, navigation }) => {
   const onLoad = async () => {
     const jwt = await authStorage.getToken()
     const response = await getPosts.request(_id, jwt, parentId)
-    // if (!response?.ok) return
-    // if (isMounted) {
-    // if (deletedPost) {
-    //   posts.filter(post => {
-    //     post._id === deletedPost
-    //   })
-    //   console.log('deleted post', posts)
-    // }
-    // setPosts(response.data.json)
-    // setRefreshing(false)
-    // if (editedPost?.title) {
-    //   setFirstPost({
-    //     ...firstPost,
-    //     content: editedPost.content
-    //   })
-    // } else if (item.title) {
-    //   setFirstPost({
-    //     _id: item._id,
-    //     userId: item.user._id,
-    //     author: item.user.name,
-    //     content: item.content,
-    //     image: item.user.avatarUrl,
-    //     createdAt: item.createdAt,
-    //     title: item.title
-    //   })
-    // } else {
-    //   setFirstPost({
-    //     _id: item.parent._id,
-    //     userId: item.parent.user,
-    //     author: item.parent.user.name,
-    //     content: item.parent.content,
-    //     image: item.parent.user.avatarUrl,
-    //     createdAt: item.parent.createdAt,
-    //     title: item.parent.title
-    //   })
-    // }
-    // }
+    if (!response?.ok) return
+    if (isMounted) {
+      setPosts(response.data.json)
+      setRefreshing(false)
+      if (editedPost?.title) {
+        setFirstPost({
+          ...firstPost,
+          content: editedPost.content
+        })
+      } else if (item.title) {
+        setFirstPost({
+          _id: item._id,
+          userId: item.user._id,
+          author: item.user.name,
+          content: item.content,
+          image: item.user.avatarUrl,
+          createdAt: item.createdAt,
+          title: item.title
+        })
+      } else {
+        setFirstPost({
+          _id: item.parent._id,
+          userId: item.parent.user,
+          author: item.parent.user.name,
+          content: item.parent.content,
+          image: item.parent.user.avatarUrl,
+          createdAt: item.parent.createdAt,
+          title: item.parent.title
+        })
+      }
+    }
   }
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -122,27 +116,31 @@ const ForumPostScreen = ({ route, navigation }) => {
     return () => (isMounted = false)
   }, [])
 
-  // useEffect(() => {
-  //   if (route.params?.editedPost && isMounted) {
-  //     const indexOfEdited = posts.findIndex(
-  //       post => post._id === route.params.editedPost._id
-  //     )
+  useEffect(() => {
+    if (deletedPost && isMounted) {
+      const newPosts = posts.filter(post => post._id !== deletedPost)
+      setPosts(newPosts)
+    }
+    if (route.params?.editedPost && isMounted) {
+      const indexOfEdited = posts.findIndex(
+        post => post._id === route.params.editedPost._id
+      )
 
-  //     if (indexOfEdited >= 0) {
-  //       const newPosts = [...posts]
-  //       newPosts[indexOfEdited].title = route.params.editedPost.title
-  //       newPosts[indexOfEdited].content = route.params.editedPost.content
-  //       if (isMounted) setPosts(newPosts)
-  //     } else {
-  //       if (isMounted)
-  //         setFirstPost({
-  //           ...firstPost,
-  //           title: route.params.editedPost.title,
-  //           content: route.params.editedPost.content
-  //         })
-  //     }
-  //   }
-  // }, [route])
+      if (indexOfEdited >= 0) {
+        const newPosts = [...posts]
+        newPosts[indexOfEdited].title = route.params.editedPost.title
+        newPosts[indexOfEdited].content = route.params.editedPost.content
+        if (isMounted) setPosts(newPosts)
+      } else {
+        if (isMounted)
+          setFirstPost({
+            ...firstPost,
+            title: route.params.editedPost.title,
+            content: route.params.editedPost.content
+          })
+      }
+    }
+  }, [route])
 
   return (
     <Screen style={styles.screen}>

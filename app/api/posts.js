@@ -32,6 +32,14 @@ const deletePost = async (id, post, jwt) => {
   )
 }
 
+const deleteDiscussion = async (id, post, jwt) => {
+  return await client.delete(
+    `${endpoint}/${id}/${post}/all`,
+    null,
+    createOptions(jwt, 'application/json')
+  )
+}
+
 const editPost = async (id, post, title, content, jwt) => {
   return await client.post(
     `${endpoint}/${id}/${post}`,
@@ -52,5 +60,6 @@ export default {
   createPost,
   getPosts,
   deletePost,
-  editPost
+  editPost,
+  deleteDiscussion
 }

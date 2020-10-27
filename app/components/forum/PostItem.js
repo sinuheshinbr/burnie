@@ -58,9 +58,8 @@ const PostItem = ({
       />
       <View style={styles.detailsContainer}>
         <AppText numberOfLines={1} style={styles.author}>
-          {author ? author : 'Annonymous'}
+          {author ? author : 'Anonymous'}
         </AppText>
-
         <View style={styles.contentContainer}>
           <AppText style={styles.content}>{content}</AppText>
         </View>

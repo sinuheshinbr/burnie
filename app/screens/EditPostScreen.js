@@ -11,6 +11,7 @@ import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
 
 const EditPostScreen = ({ navigation, route }) => {
+  const [isDeleting, setIsDeleting] = useState(false)
   const [isSubmitting, setIssubmitting] = useState(false)
   let isMounted = true
   const {
@@ -26,6 +27,7 @@ const EditPostScreen = ({ navigation, route }) => {
   const userId = user._id
   const { request: editPost } = useApi(postsApi.editPost)
   const deletePost = useApi(postsApi.deletePost)
+  const deleteDiscussion = useApi(postsApi.deleteDiscussion)
 
   useEffect(() => {
     return () => (isMounted = false)
@@ -53,11 +55,19 @@ const EditPostScreen = ({ navigation, route }) => {
     const response = await deletePost.request(userId, _id, jwt)
     if (isMounted) setIsDeleting(false)
     if (response?.ok) {
-      const pageToredirect = isPostItem
-        ? 'ForumPostScreen'
-        : 'ForumDiscussionsScreen'
+      return navigation.navigate('ForumPostScreen', {
+        deletedPost: _id
+      })
+    }
+  }
 
-      return navigation.navigate(pageToredirect, {
+  const handleDeleteDiscussion = async () => {
+    if (isMounted) setIsDeleting(true)
+    const jwt = await authStorage.getToken()
+    const response = await deleteDiscussion.request(userId, _id, jwt)
+    if (isMounted) setIsDeleting(false)
+    if (response?.ok) {
+      return navigation.navigate('ForumDiscussionsScreen', {
         deletedPost: _id
       })
     }
@@ -68,6 +78,8 @@ const EditPostScreen = ({ navigation, route }) => {
       <Screen style={styles.screen}>
         <ProfileMenu path="Forum" />
         <EditPostForm
+          handleDeleteDiscussion={handleDeleteDiscussion}
+          isDeleting={isDeleting}
           handleDelete={handleDelete}
           userId={userId}
           isMounted={isMounted}

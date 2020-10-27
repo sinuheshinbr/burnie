@@ -20,7 +20,8 @@ const ParentPostForm = ({
   firstPostTitle,
   isSubmitting,
   isMounted,
-  handleDelete
+  handleDelete,
+  isDeleting
 }) => {
   return (
     <>
@@ -49,7 +50,12 @@ const ParentPostForm = ({
           multiline
         />
       </AppForm>
-      <AppButton title="delete" color="danger" onPress={handleDelete} />
+      <AppButton
+        disabled={isDeleting}
+        title="delete"
+        color="danger"
+        onPress={handleDelete}
+      />
     </>
   )
 }

@@ -13,7 +13,9 @@ const EditPostForm = ({
   firstPostTitle,
   isSubmitting,
   isMounted,
-  handleDelete
+  handleDelete,
+  isDeleting,
+  handleDeleteDiscussion
 }) => {
   const contentEl = useRef(null)
   let isChild = false
@@ -24,7 +26,8 @@ const EditPostForm = ({
       <Text style={styles.text}>Edit Post: </Text>
       {!isChild && (
         <ParentPostForm
-          handleDelete={handleDelete}
+          isDeleting={isDeleting}
+          handleDelete={handleDeleteDiscussion}
           _id={_id}
           isMounted={isMounted}
           isSubmitting={isSubmitting}
@@ -36,6 +39,7 @@ const EditPostForm = ({
       )}
       {isChild && (
         <ChildPostForm
+          isDeleting={isDeleting}
           handleDelete={handleDelete}
           _id={_id}
           isMounted={isMounted}

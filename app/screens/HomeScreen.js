@@ -117,7 +117,7 @@ const HomeScreen = ({ navigation }) => {
           lastMonthFeelings={lastMonthFeelings}
         />
         <ForumCard
-          onPress={() => navigation.navigate('ForumDiscussionsScreen')}
+          onPress={() => navigation.navigate('ForumDiscussionsScreen', {})}
           loading={refreshing}
           posts={posts}
         />

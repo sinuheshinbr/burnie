@@ -63,9 +63,9 @@ const DiscussionItem = ({
               {content}
             </AppText>
           )}
-          {author && (
-            <AppText style={styles.author}>Posted by: {author}</AppText>
-          )}
+          <AppText style={styles.author}>
+            Posted by: {author ? author : 'Anonymous'}
+          </AppText>
         </View>
         <View style={styles.bottomLine}>
           <View style={styles.iconsContainer}>
