@@ -91,6 +91,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
               createdAt={item.createdAt}
               onPress={() => handleClickPost(item)}
               views={item.views}
+              comments={item.comments}
             />
           )}
           keyExtractor={post => post._id}
