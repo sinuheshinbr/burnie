@@ -6,6 +6,7 @@ import authStorage from '../auth/storage'
 import colors from '../config/colors'
 import feelingsApi from '../api/feelings'
 import postsApi from '../api/posts'
+import likesApi from '../api/likes'
 import moment from 'moment'
 import {
   Profile,
@@ -17,6 +18,7 @@ import {
 import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
 import getFeelingsFrom from '../utils/getFeelingsFrom'
+import addLikesToPosts from '../utils/addLikesToPosts'
 
 const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false)
@@ -36,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
 
   const getFeelings = useApi(feelingsApi.getFeelings)
   const getPosts = useApi(postsApi.getPosts)
+  const getLikes = useApi(likesApi.getLikes)
 
   const onLoad = async () => {
     setRefreshing(true)
@@ -71,9 +74,12 @@ const HomeScreen = ({ navigation }) => {
       )
     }
 
-    const postsResponse = await getPosts.request(_id, jwt, 'all')
-    if (postsResponse?.ok) {
-      setPosts(postsResponse.data.json.reverse())
+    const postsResponse = await getPosts.request(_id, jwt, 'all', 30)
+    const likesResponse = await getLikes.request(_id, jwt)
+    if (postsResponse?.ok && likesResponse?.ok) {
+      const postsWithLikes = addLikesToPosts(postsResponse, likesResponse)
+
+      setPosts(postsWithLikes)
     }
 
     setRefreshing(false)

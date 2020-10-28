@@ -1,57 +1,56 @@
 import moment from 'moment'
-import React from 'react'
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableWithoutFeedback
-} from 'react-native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Text, Image } from 'react-native'
 
 import AppText from '../AppText'
 import colors from '../../config/colors'
+import EditPostButton from './EditPostButton'
+import LikePostButton from './LikePostButton'
 
 const PostItem = ({
   _id,
-  title,
-  parent,
   author,
+  canEditPost,
   content = '',
   createdAt,
+  firstPost,
+  firstPostTitle,
   image,
-  canEditPost,
+  isLiked = false,
   navigation,
-  firstPostTitle
+  parent,
+  setFirstPost,
+  title = ''
 }) => {
+  const [innerIsLiked, setInnerIsLiked] = useState(false)
   const elapsedTime = moment(createdAt).fromNow()
   const defaultImage = require('../../assets/image-placeholder.png')
   const isPostItem = true
 
+  useEffect(() => {
+    if (isLiked) setInnerIsLiked(true)
+  }, [])
+
   return (
     <View style={styles.container}>
       {canEditPost && (
-        <View style={styles.editIcon}>
-          <TouchableWithoutFeedback
-            onPress={() =>
-              navigation.navigate('EditPostScreen', {
-                _id,
-                title,
-                content,
-                parent,
-                isPostItem,
-                firstPostTitle
-              })
-            }
-          >
-            <MaterialCommunityIcons
-              color={colors.medium}
-              size={20}
-              name="pencil-outline"
-            />
-          </TouchableWithoutFeedback>
-        </View>
+        <EditPostButton
+          navigation={navigation}
+          parent={parent}
+          _id={_id}
+          title={title}
+          content={content}
+          isPostItem={isPostItem}
+          firstPostTitle={firstPostTitle}
+        />
       )}
+      <LikePostButton
+        firstPost={firstPost}
+        setFirstPost={setFirstPost}
+        isLiked={innerIsLiked}
+        setIsliked={setInnerIsLiked}
+        _id={_id}
+      />
       <Image
         source={image ? { uri: image } : defaultImage}
         style={styles.image}

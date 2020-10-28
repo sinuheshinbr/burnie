@@ -13,27 +13,40 @@ import AuthContext from '../auth/context'
 import authStorage from '../auth/storage'
 import colors from '../config/colors'
 import postsApi from '../api/posts'
+import likesApi from '../api/likes'
 import DiscussionItem from '../components/forum/DiscussionItem'
 import IconButton from '../components/IconButton'
 import { ProfileMenu } from '../components/profile'
 import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
 import ActivitySpinner from '../components/ActivitySpinner'
+import addLikesToPosts from '../utils/addLikesToPosts'
 
 const ForumDiscussionsScreen = ({ navigation, route }) => {
+  const [loading, setLoading] = useState(false)
   let isMounted = true
   const [posts, setPosts] = useState([])
-  const { request: getPosts, loading } = useApi(postsApi.getPosts)
+  const { request: getPosts } = useApi(postsApi.getPosts)
   const incrementViews = useApi(postsApi.incrementViews)
+  const getLikes = useApi(likesApi.getLikes)
   const { user } = useContext(AuthContext)
   const { _id } = user
   const { editedPost, newPost, deletedPost } = route?.params
 
   const onLoad = async () => {
+    if (isMounted) setLoading(true)
     const jwt = await authStorage.getToken()
-    const response = await getPosts(_id, jwt)
-    if (!response?.ok) return
-    if (isMounted) setPosts(response.data.json.reverse())
+    const postsResponse = await getPosts(_id, jwt, 'fathers')
+    const likesResponse = await getLikes.request(_id, jwt)
+
+    const postsWithLikes = addLikesToPosts(postsResponse, likesResponse)
+
+    if (postsResponse?.ok && likesResponse?.ok) {
+      if (isMounted) {
+        setPosts(postsWithLikes)
+        setLoading(false)
+      }
+    }
   }
 
   useEffect(() => {
@@ -54,10 +67,10 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
     if (editedPost && isMounted) {
       const remainingPosts = posts.filter(post => post._id !== editedPost._id)
       const editedPostArray = posts.filter(post => post._id === editedPost._id)
-      const editedPost = editedPostArray[0]
-      editedPost.title = editedPost.title
-      editedPost.content = editedPost.content
-      setPosts([editedPost, ...remainingPosts])
+      const newEditedPost = editedPostArray[0]
+      newEditedPost.title = editedPost.title
+      newEditedPost.content = editedPost.content
+      setPosts([newEditedPost, ...remainingPosts])
       delete route.params.editedPost
     }
   }, [route])
@@ -92,6 +105,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
               onPress={() => handleClickPost(item)}
               views={item.views}
               comments={item.comments}
+              isLiked={item.isLiked}
             />
           )}
           keyExtractor={post => post._id}

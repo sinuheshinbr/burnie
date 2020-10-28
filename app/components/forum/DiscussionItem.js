@@ -1,59 +1,56 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import moment from 'moment'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import AppText from '../AppText'
 import colors from '../../config/colors'
-import {
-  View,
-  StyleSheet,
-  TouchableHighlight,
-  Text,
-  TouchableWithoutFeedback
-} from 'react-native'
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import normalizeNumber from '../../utils/normalizeNumber'
+import EditPostButton from './EditPostButton'
+import LikePostButton from './LikePostButton'
 
 const DiscussionItem = ({
   _id,
   author,
   canEditPost = false,
-  comments = 0,
+  comments,
   content,
   createdAt,
+  isLiked = false,
   likes = 0,
   navigation,
   onPress,
   parent,
   title,
-  views = 0
+  views
 }) => {
+  const [innerIsLiked, setInnerIsLiked] = useState(false)
   const elapsedTime = moment(createdAt).fromNow()
   let normalizedComments = normalizeNumber(comments)
   let normalizedLikes = normalizeNumber(likes)
   let normalizedViews = normalizeNumber(views)
+
+  useEffect(() => {
+    if (isLiked) setInnerIsLiked(true)
+  }, [])
+
   return (
     <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
       <View style={styles.container}>
         {canEditPost && (
-          <View style={styles.editIcon}>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                navigation.navigate('EditPostScreen', {
-                  _id,
-                  title,
-                  content,
-                  parent
-                })
-              }
-            >
-              <MaterialCommunityIcons
-                color={colors.medium}
-                size={20}
-                name="pencil-outline"
-              />
-            </TouchableWithoutFeedback>
-          </View>
+          <EditPostButton
+            navigation={navigation}
+            parent={parent}
+            _id={_id}
+            title={title}
+            content={content}
+          />
         )}
+        <LikePostButton
+          isLiked={innerIsLiked}
+          setIsliked={setInnerIsLiked}
+          _id={_id}
+        />
         <View style={styles.detailsContainer}>
           <AppText numberOfLines={1} style={styles.title}>
             {title}
@@ -124,11 +121,6 @@ const styles = StyleSheet.create({
   },
   content: {
     color: colors.medium
-  },
-  editIcon: {
-    position: 'absolute',
-    left: '97%',
-    top: '12%'
   },
   detailsContainer: {
     justifyContent: 'center',

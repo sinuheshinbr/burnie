@@ -10,17 +10,19 @@ import {
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import ActivitySpinner from '../components/ActivitySpinner'
 import AppForm from '../components/forms/AppForm'
 import AppFormField from '../components/forms/AppFormField'
+import AuthContext from '../auth/context'
+import authStorage from '../auth/storage'
 import colors from '../config/colors'
+import likesApi from '../api/likes'
+import postsApi from '../api/posts'
 import PostItem from '../components/forum/PostItem'
 import { ProfileMenu } from '../components/profile'
 import Screen from '../components/Screen'
 import useApi from '../hooks/useApi'
-import postsApi from '../api/posts'
-import AuthContext from '../auth/context'
-import authStorage from '../auth/storage'
-import ActivitySpinner from '../components/ActivitySpinner'
+import addLikesToPosts from '../utils/addLikesToPosts'
 
 const validationSchema = Yup.object().shape({
   post: Yup.string()
@@ -29,9 +31,10 @@ const validationSchema = Yup.object().shape({
 })
 
 const ForumPostScreen = ({ route, navigation }) => {
+  const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   let isMounted = true
-  const [firstPost, setFirstPost] = useState({})
   const [refreshing, setRefreshing] = useState(false)
   const [posts, setPosts] = useState([])
   const authContext = useContext(AuthContext)
@@ -42,48 +45,41 @@ const ForumPostScreen = ({ route, navigation }) => {
 
   const createPost = useApi(postsApi.createPost)
   const getPosts = useApi(postsApi.getPosts)
+  const getLikes = useApi(likesApi.getLikes)
 
   let parentId = ''
-  if (item.title) {
-    parentId = item._id
-  } else {
+  if (item.parent) {
     parentId = item.parent._id
+  } else {
+    parentId = item._id
   }
 
-  let title = ''
-
   const onLoad = async () => {
+    if (isMounted) setLoading(true)
+
     const jwt = await authStorage.getToken()
-    const response = await getPosts.request(_id, jwt, parentId)
-    if (!response?.ok) return
-    if (isMounted) {
-      setPosts(response.data.json)
-      setRefreshing(false)
-      if (editedPost?.title) {
-        setFirstPost({
-          ...firstPost,
-          content: editedPost.content
-        })
-      } else if (item.title) {
-        setFirstPost({
-          _id: item._id,
-          userId: item.user._id,
-          author: item.user.name,
-          content: item.content,
-          image: item.user.avatarUrl,
-          createdAt: item.createdAt,
-          title: item.title
-        })
-      } else {
-        setFirstPost({
-          _id: item.parent._id,
-          userId: item.parent.user,
-          author: item.parent.user.name,
-          content: item.parent.content,
-          image: item.parent.user.avatarUrl,
-          createdAt: item.parent.createdAt,
-          title: item.parent.title
-        })
+    const fatherPostResponse = await getPosts.request(
+      _id,
+      jwt,
+      parentId,
+      'father'
+    )
+    let postsResponse = await getPosts.request(_id, jwt, parentId, 'children')
+
+    const likesResponse = await getLikes.request(_id, jwt)
+
+    if (fatherPostResponse?.ok && postsResponse?.ok && likesResponse?.ok) {
+      const postsWithLikes = addLikesToPosts(
+        postsResponse,
+        likesResponse,
+        fatherPostResponse
+      )
+
+      if (isMounted) {
+        setTitle(fatherPostResponse.data.json[0].title)
+        setPosts(postsWithLikes)
+        setRefreshing(false)
+        setLoading(false)
       }
     }
   }
@@ -120,6 +116,7 @@ const ForumPostScreen = ({ route, navigation }) => {
     if (deletedPost && isMounted) {
       const newPosts = posts.filter(post => post._id !== deletedPost)
       setPosts(newPosts)
+      delete route.params.deletedPost
     }
     if (route.params?.editedPost && isMounted) {
       const indexOfEdited = posts.findIndex(
@@ -128,24 +125,19 @@ const ForumPostScreen = ({ route, navigation }) => {
 
       if (indexOfEdited >= 0) {
         const newPosts = [...posts]
-        newPosts[indexOfEdited].title = route.params.editedPost.title
+        if (route.params.editedPost.title && isMounted)
+          setTitle(route.params.editedPost.title)
         newPosts[indexOfEdited].content = route.params.editedPost.content
         if (isMounted) setPosts(newPosts)
-      } else {
-        if (isMounted)
-          setFirstPost({
-            ...firstPost,
-            title: route.params.editedPost.title,
-            content: route.params.editedPost.content
-          })
       }
+      delete route.params.editedPost
     }
   }, [route])
 
   return (
     <Screen style={styles.screen}>
       <ProfileMenu path={`Forum`} />
-      <Text style={styles.title}>{firstPost.title}</Text>
+      <Text style={styles.title}>{title}</Text>
       <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
@@ -157,35 +149,22 @@ const ForumPostScreen = ({ route, navigation }) => {
           contentContainerStyle={styles.container}
           scrollEnabled={true}
         >
-          {!getPosts.loading && (
-            <PostItem
-              canEditPost={_id === firstPost.userId}
-              parent={parentId}
-              title={firstPost.title}
-              navigation={navigation}
-              key={firstPost._id}
-              author={firstPost.author}
-              _id={firstPost._id}
-              content={firstPost.content}
-              image={firstPost.image}
-              createdAt={firstPost.createdAt}
-            />
-          )}
-          {getPosts.loading && <ActivitySpinner />}
-          {!getPosts.loading &&
+          {loading && <ActivitySpinner />}
+          {!loading &&
             posts.map(post => (
               <PostItem
-                firstPostTitle={firstPost.title}
+                _id={post._id}
+                author={post.user?.name}
                 canEditPost={_id === post.user._id}
+                content={post.content}
+                createdAt={post.createdAt}
+                firstPostTitle={title}
+                key={post._id}
+                image={post.user?.avatarUrl}
+                isLiked={post.isLiked}
                 navigation={navigation}
                 parent={parentId}
-                title={title}
-                key={post._id}
-                author={post.user?.name}
-                _id={post._id}
-                content={post.content}
-                image={post.user?.avatarUrl}
-                createdAt={post.createdAt}
+                title={post.title}
               />
             ))}
         </KeyboardAwareScrollView>
