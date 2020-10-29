@@ -162,6 +162,7 @@ const ForumPostScreen = ({ route, navigation }) => {
                 key={post._id}
                 image={post.user?.avatarUrl}
                 isLiked={post.isLiked}
+                isFather={!post.parent}
                 navigation={navigation}
                 parent={parentId}
                 title={post.title}

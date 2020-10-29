@@ -13,13 +13,12 @@ const PostItem = ({
   canEditPost,
   content = '',
   createdAt,
-  firstPost,
   firstPostTitle,
   image,
   isLiked = false,
+  isFather = false,
   navigation,
   parent,
-  setFirstPost,
   title = ''
 }) => {
   const [innerIsLiked, setInnerIsLiked] = useState(false)
@@ -45,8 +44,8 @@ const PostItem = ({
         />
       )}
       <LikePostButton
-        firstPost={firstPost}
-        setFirstPost={setFirstPost}
+        parentId={parent}
+        isFather={isFather}
         isLiked={innerIsLiked}
         setIsliked={setInnerIsLiked}
         _id={_id}

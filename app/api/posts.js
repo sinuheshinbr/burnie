@@ -56,9 +56,17 @@ const getPosts = async (id, jwt, post, limit) => {
   )
 }
 
+const incrementLikes = async (id, jwt, post, amount) => {
+  return await client.put(
+    `${endpoint}/${id}/${post}/likes`,
+    JSON.stringify({ amount }),
+    createOptions(jwt, 'application/json')
+  )
+}
+
 const incrementViews = async (id, jwt, post) => {
   return await client.put(
-    `${endpoint}/${id}/${post}`,
+    `${endpoint}/${id}/${post}/views`,
     null,
     createOptions(jwt, 'application/json')
   )
@@ -70,5 +78,6 @@ export default {
   deletePost,
   editPost,
   deleteDiscussion,
+  incrementLikes,
   incrementViews
 }

@@ -17,6 +17,7 @@ const DiscussionItem = ({
   content,
   createdAt,
   isLiked = false,
+  isFather = false,
   likes = 0,
   navigation,
   onPress,
@@ -47,6 +48,7 @@ const DiscussionItem = ({
           />
         )}
         <LikePostButton
+          isFather={isFather}
           isLiked={innerIsLiked}
           setIsliked={setInnerIsLiked}
           _id={_id}

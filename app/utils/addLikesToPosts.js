@@ -1,5 +1,11 @@
-const addLikesToPosts = (postsResponse, likesResponse, fatherPostResponse) => {
-  let postsWithoutLikes = postsResponse.data.json.reverse()
+const addLikesToPosts = (
+  postsResponse,
+  likesResponse,
+  fatherPostResponse,
+  reverse = false
+) => {
+  let postsWithoutLikes = postsResponse.data.json
+  if (reverse) postsWithoutLikes = postsWithoutLikes.reverse()
   if (fatherPostResponse) {
     postsWithoutLikes = [fatherPostResponse.data.json[0], ...postsWithoutLikes]
   }

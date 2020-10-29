@@ -6,17 +6,13 @@ import AuthContext from '../../auth/context'
 import authStorage from '../../auth/storage'
 import colors from '../../config/colors'
 import likesApi from '../../api/likes'
+import postsApi from '../../api/posts'
 import useApi from '../../hooks/useApi'
 
-const EditPostButton = ({
-  _id,
-  firstPost,
-  isLiked,
-  setFirstPost,
-  setIsliked
-}) => {
+const EditPostButton = ({ _id, parentId, isLiked, isFather, setIsliked }) => {
   const createLike = useApi(likesApi.createLike)
   const deleteLike = useApi(likesApi.deleteLike)
+  const incrementLikes = useApi(postsApi.incrementLikes)
   const { user } = useContext(AuthContext)
   const userId = user._id
 
@@ -25,10 +21,23 @@ const EditPostButton = ({
 
   const handleClick = async () => {
     const jwt = await authStorage.getToken()
-    setIsliked(!isLiked)
-    if (setFirstPost) setFirstPost({ ...firstPost, isLiked: isLiked })
-    if (isLiked) return deleteLike.request(userId, _id, jwt)
-    return createLike.request(userId, _id, jwt)
+    if (isLiked) {
+      setIsliked(false)
+      deleteLike.request(userId, _id, jwt)
+      if (isFather) {
+        incrementLikes.request(userId, jwt, _id, -1)
+      } else {
+        incrementLikes.request(userId, jwt, parentId, -1)
+      }
+    } else {
+      setIsliked(true)
+      createLike.request(userId, _id, jwt)
+      if (isFather) {
+        incrementLikes.request(userId, jwt, _id, 1)
+      } else {
+        incrementLikes.request(userId, jwt, parentId, 1)
+      }
+    }
   }
 
   return (

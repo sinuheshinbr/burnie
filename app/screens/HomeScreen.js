@@ -77,7 +77,12 @@ const HomeScreen = ({ navigation }) => {
     const postsResponse = await getPosts.request(_id, jwt, 'all', 30)
     const likesResponse = await getLikes.request(_id, jwt)
     if (postsResponse?.ok && likesResponse?.ok) {
-      const postsWithLikes = addLikesToPosts(postsResponse, likesResponse)
+      const postsWithLikes = addLikesToPosts(
+        postsResponse,
+        likesResponse,
+        null,
+        true
+      )
 
       setPosts(postsWithLikes)
     }

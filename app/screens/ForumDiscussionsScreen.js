@@ -93,6 +93,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
           data={posts}
           renderItem={({ item }) => (
             <DiscussionItem
+              isFather={!item.parent}
               parent={item.parent}
               navigation={navigation}
               canEditPost={_id === item.user._id}
@@ -105,6 +106,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
               onPress={() => handleClickPost(item)}
               views={item.views}
               comments={item.comments}
+              likes={item.likes}
               isLiked={item.isLiked}
             />
           )}
