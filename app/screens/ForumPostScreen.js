@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import {
   StyleSheet,
   Text,
@@ -31,6 +31,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const ForumPostScreen = ({ route, navigation }) => {
+  const scrollViewRef = useRef()
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -41,7 +42,7 @@ const ForumPostScreen = ({ route, navigation }) => {
   const { user } = authContext
   const { _id } = user
 
-  const { item, editedPost, deletedPost } = route.params
+  const { item, deletedPost } = route.params
 
   const createPost = useApi(postsApi.createPost)
   const getPosts = useApi(postsApi.getPosts)
@@ -104,6 +105,7 @@ const ForumPostScreen = ({ route, navigation }) => {
       Keyboard.dismiss()
       setSubmitting(false)
       resetForm()
+      scrollViewRef.current.scrollToEnd({ animated: true })
     }
   }
 
@@ -139,6 +141,7 @@ const ForumPostScreen = ({ route, navigation }) => {
       <ProfileMenu path={`Forum`} />
       <Text style={styles.title}>{title}</Text>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onLoad} />
