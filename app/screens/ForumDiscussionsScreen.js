@@ -39,7 +39,12 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
     const postsResponse = await getPosts(_id, jwt, 'fathers')
     const likesResponse = await getLikes.request(_id, jwt)
 
-    const postsWithLikes = addLikesToPosts(postsResponse, likesResponse)
+    const postsWithLikes = addLikesToPosts(
+      postsResponse,
+      likesResponse,
+      null,
+      true
+    )
 
     if (postsResponse?.ok && likesResponse?.ok) {
       if (isMounted) {

@@ -20,7 +20,7 @@ const RegisterScreen = ({ navigation }) => {
     if (!response?.ok) return
     const user = jwtDecode(response.data.json)
     authContext.setUser(user)
-    authStorage.storeToken(response.data)
+    authStorage.storeToken(response.data.json)
   }
 
   return (

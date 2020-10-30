@@ -2,17 +2,29 @@ import React, { useState } from 'react'
 import { Text, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
+import authStorage from '../../auth/storage'
 import ActivitySpinner from '../ActivitySpinner'
 import Card from './Card'
 import colors from '../../config/colors'
 import moment from 'moment'
+import postsApi from '../../api/posts'
 import ListItemSeparator from '../ListItemSeparator'
 import Post from './Post'
+import useApi from '../../hooks/useApi'
 
-const ForumCard = ({ onPress, loading, posts }) => {
-  const [numberOfPosts, setNumberOfPosts] = useState(5)
-  const navigation = useNavigation()
+const ForumCard = ({ onPress, loading, posts, userId }) => {
   const defaultImage = require('../../assets/image-placeholder.png')
+  const incrementViews = useApi(postsApi.incrementViews)
+  const navigation = useNavigation()
+  const [numberOfPosts, setNumberOfPosts] = useState(5)
+
+  const handleClickPost = async post => {
+    const jwt = await authStorage.getToken()
+    navigation.navigate('ForumPostScreen', { item: post })
+    let postId
+    postId = post.parent ? post.parent._id : post._id
+    incrementViews.request(userId, jwt, postId)
+  }
 
   return (
     <Card onPress={onPress} title={loading ? 'Please wait...' : 'Forum'}>
@@ -22,9 +34,7 @@ const ForumCard = ({ onPress, loading, posts }) => {
         {posts.slice(0, numberOfPosts).map(post => (
           <Post
             key={post._id}
-            onPress={() =>
-              navigation.navigate('ForumPostScreen', { item: post })
-            }
+            onPress={() => handleClickPost(post)}
             elapsedTime={moment(post.createdAt).fromNow()}
             title={post.title ? post.title : post.parent?.title}
             content={post.content}

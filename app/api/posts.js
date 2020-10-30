@@ -67,7 +67,7 @@ const incrementLikes = async (id, jwt, post, amount) => {
 const incrementViews = async (id, jwt, post) => {
   return await client.put(
     `${endpoint}/${id}/${post}/views`,
-    null,
+    {},
     createOptions(jwt, 'application/json')
   )
 }
