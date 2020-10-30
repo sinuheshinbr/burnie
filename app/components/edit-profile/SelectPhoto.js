@@ -2,6 +2,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { Entypo } from '@expo/vector-icons'
 import React, { useState, useContext } from 'react'
 import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
+import * as ImageManipulator from 'expo-image-manipulator'
 
 import AuthContext from '../../auth/context'
 import authStorage from '../../auth/storage'
@@ -22,16 +23,23 @@ const SelectPhoto = ({ image, isMounted, setImage, progress, setProgress }) => {
     const options = {
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
-      base64: true
+      quality: 1
     }
 
     let result = await ImagePicker.launchImageLibraryAsync(options)
-    const base64 = result.base64
 
-    const jsonBase64 = {
-      base64: base64
-    }
+    const manipResult = await ImageManipulator.manipulateAsync(
+      result.uri,
+      [{ resize: { width: 350 } }],
+      {
+        compress: 1,
+        format: ImageManipulator.SaveFormat.JPEG,
+        base64: true
+      }
+    )
+    const base64 = manipResult.base64
+
+    const jsonBase64 = { base64: base64 }
 
     if (!result.cancelled) {
       if (isMounted) {

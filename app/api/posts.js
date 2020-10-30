@@ -26,7 +26,7 @@ const createPost = async (id, title, content, jwt, parent) => {
 
 const deletePost = async (id, post, jwt) => {
   return await client.delete(
-    `${endpoint}/${id}/${post}`,
+    `${endpoint}/${id}/${post}/1`,
     null,
     createOptions(jwt, 'application/json')
   )
