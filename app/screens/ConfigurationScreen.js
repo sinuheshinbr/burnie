@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 
 import ActivityIndicator from '../components/ActivityIndicator'
 import AuthContext from '../auth/context'
@@ -9,7 +9,7 @@ import useApi from '../hooks/useApi'
 import usersApi from '../api/users'
 
 const ConfigurationScreen = ({ navigation }) => {
-  let isMounted = true
+  let isMounted = useRef(true)
   const authContext = useContext(AuthContext)
   const { user, setUser } = authContext
   const { _id, avatarUrl } = user
@@ -23,7 +23,7 @@ const ConfigurationScreen = ({ navigation }) => {
   )
 
   useEffect(() => {
-    return () => (isMounted = false)
+    return () => (isMounted.current = false)
   }, [])
 
   const handleSubmit = async values => {

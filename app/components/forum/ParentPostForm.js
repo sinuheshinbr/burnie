@@ -10,7 +10,7 @@ const validationSchema = Yup.object().shape({
     .required('Your discussion need a title')
     .max(100),
   content: Yup.string()
-    .required('Post something...')
+    .required('Please, write a message')
     .max(500)
 })
 

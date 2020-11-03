@@ -1,5 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 import React, { useEffect, useState } from 'react'
 
 import AppText from '../AppText'
@@ -26,7 +28,7 @@ const DiscussionItem = ({
   views
 }) => {
   const [innerIsLiked, setInnerIsLiked] = useState(false)
-  const elapsedTime = moment(createdAt).fromNow()
+  const elapsedTime = dayjs(createdAt).fromNow()
   let normalizedComments = normalizeNumber(comments)
   let normalizedLikes = normalizeNumber(likes)
   let normalizedViews = normalizeNumber(views)

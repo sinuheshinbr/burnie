@@ -8,7 +8,7 @@ import AppButton from '../AppButton'
 
 const validationSchema = Yup.object().shape({
   content: Yup.string()
-    .required('Post something...')
+    .required('Please, write a message')
     .max(500)
 })
 

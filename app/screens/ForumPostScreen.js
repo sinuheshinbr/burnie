@@ -26,7 +26,7 @@ import addLikesToPosts from '../utils/addLikesToPosts'
 
 const validationSchema = Yup.object().shape({
   post: Yup.string()
-    .required('Post something...')
+    .required('Please, write a message')
     .max(500)
 })
 

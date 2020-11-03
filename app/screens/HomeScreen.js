@@ -7,7 +7,7 @@ import colors from '../config/colors'
 import feelingsApi from '../api/feelings'
 import postsApi from '../api/posts'
 import likesApi from '../api/likes'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
   Profile,
   ProfileMenu,
@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
     if (feelingsResponse?.ok) {
       const feelings = feelingsResponse.data.json.map(daily => ({
         feeling: daily.feeling,
-        date: moment(daily.date).format('DD-MM-YYYY')
+        date: dayjs(daily.date).format('DD-MM-YYYY')
       }))
 
       setTodayFeeling(getFeelingsFrom.today(feelings))

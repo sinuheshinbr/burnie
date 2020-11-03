@@ -1,9 +1,9 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const getFeelingsFrom = {
   today: function(feelings) {
     const todayFeelingObject = feelings.filter(object => {
-      return object.date === moment().format('DD-MM-YYYY')
+      return object.date === dayjs().format('DD-MM-YYYY')
     })
     if (todayFeelingObject[0]) return String(todayFeelingObject[0].feeling)
   },
@@ -13,7 +13,7 @@ const getFeelingsFrom = {
 
     for (let i = 0; i < days; i++) {
       lastPeriodDays.push(
-        moment()
+        dayjs()
           .subtract(days - i, 'days')
           .format('DD-MM-YYYY')
       )
@@ -31,7 +31,7 @@ const getFeelingsFrom = {
       count: 4 - object.feeling
     }))
 
-    const date = moment()
+    const date = dayjs()
       .subtract(days + 1, 'days')
       .format('DD-MM-YYYY')
 

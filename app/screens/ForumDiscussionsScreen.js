@@ -1,4 +1,10 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useRef,
+  useCallback
+} from 'react'
 import {
   StyleSheet,
   Text,
@@ -24,7 +30,7 @@ import addLikesToPosts from '../utils/addLikesToPosts'
 
 const ForumDiscussionsScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false)
-  let isMounted = true
+  let isMounted = useRef(true)
   const [posts, setPosts] = useState([])
   const { request: getPosts } = useApi(postsApi.getPosts)
   const incrementViews = useApi(postsApi.incrementViews)
@@ -56,7 +62,7 @@ const ForumDiscussionsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     onLoad()
-    return () => (isMounted = false)
+    return () => (isMounted.current = false)
   }, [])
 
   useEffect(() => {

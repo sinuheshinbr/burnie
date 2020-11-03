@@ -1,4 +1,6 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 
@@ -22,7 +24,7 @@ const PostItem = ({
   title = ''
 }) => {
   const [innerIsLiked, setInnerIsLiked] = useState(false)
-  const elapsedTime = moment(createdAt).fromNow()
+  const elapsedTime = dayjs(createdAt).fromNow()
   const defaultImage = require('../../assets/image-placeholder.png')
   const isPostItem = true
 

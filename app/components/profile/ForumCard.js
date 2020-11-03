@@ -6,7 +6,9 @@ import authStorage from '../../auth/storage'
 import ActivitySpinner from '../ActivitySpinner'
 import Card from './Card'
 import colors from '../../config/colors'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 import postsApi from '../../api/posts'
 import ListItemSeparator from '../ListItemSeparator'
 import Post from './Post'
@@ -35,7 +37,7 @@ const ForumCard = ({ onPress, loading, posts, userId }) => {
           <Post
             key={post._id}
             onPress={() => handleClickPost(post)}
-            elapsedTime={moment(post.createdAt).fromNow()}
+            elapsedTime={dayjs(post.createdAt).fromNow()}
             title={post.title ? post.title : post.parent?.title}
             content={post.content}
             image={

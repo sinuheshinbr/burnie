@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { StyleSheet } from 'react-native'
 
 import AuthContext from '../auth/context'
@@ -13,7 +13,7 @@ import useApi from '../hooks/useApi'
 const EditPostScreen = ({ navigation, route }) => {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isSubmitting, setIssubmitting] = useState(false)
-  let isMounted = true
+  let isMounted = useRef(true)
   const {
     _id,
     title,
@@ -30,7 +30,7 @@ const EditPostScreen = ({ navigation, route }) => {
   const deleteDiscussion = useApi(postsApi.deleteDiscussion)
 
   useEffect(() => {
-    return () => (isMounted = false)
+    return () => (isMounted.current = false)
   }, [])
 
   const handleSubmit = async ({ title, content }) => {

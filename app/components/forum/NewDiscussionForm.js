@@ -4,14 +4,13 @@ import { View, StyleSheet, Text } from 'react-native'
 
 import { AppForm, AppFormField } from '../forms'
 import colors from '../../config/colors'
-import SubmitButton from '../forms/SubmitButton'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .required('Your discussion need a title')
     .max(100),
   content: Yup.string()
-    .required('Post something...')
+    .required('Please, write a message')
     .max(500)
 })
 
