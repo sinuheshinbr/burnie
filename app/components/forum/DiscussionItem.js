@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.medium,
     fontSize: 20,
-    width: '90%'
+    width: '80%'
   }
 })
 

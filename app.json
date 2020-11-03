@@ -17,6 +17,10 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "package": "com.burnieapp",
+      "versionCode": 1
+    },
     "web": {
       "favicon": "./app/assets/favicon.png"
     }
