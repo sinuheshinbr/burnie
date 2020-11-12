@@ -106,6 +106,7 @@ const HomeScreen = ({ navigation }) => {
       >
         <View style={styles.profile}>
           <Profile
+            onPress={() => navigation.navigate('ConfigurationScreen')}
             name={name ? name : 'Username'}
             occupation={occupation ? occupation : 'Occupation'}
             city={city ? city : 'City'}

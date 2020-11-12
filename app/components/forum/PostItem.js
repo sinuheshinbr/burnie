@@ -19,6 +19,7 @@ const PostItem = ({
   image,
   isLiked = false,
   isFather = false,
+  isMounted,
   navigation,
   parent,
   title = ''
@@ -30,7 +31,7 @@ const PostItem = ({
 
   useEffect(() => {
     if (isLiked) setInnerIsLiked(true)
-  }, [])
+  }, [isLiked])
 
   return (
     <View style={styles.container}>
@@ -49,6 +50,7 @@ const PostItem = ({
         parentId={parent}
         isFather={isFather}
         isLiked={innerIsLiked}
+        isMounted={isMounted}
         setIsliked={setInnerIsLiked}
         _id={_id}
       />
@@ -74,7 +76,8 @@ const PostItem = ({
 const styles = StyleSheet.create({
   author: {
     fontWeight: '700',
-    color: colors.medium
+    color: colors.medium,
+    width: '80%'
   },
   container: {
     flexDirection: 'row',

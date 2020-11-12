@@ -166,6 +166,7 @@ const ForumPostScreen = ({ route, navigation }) => {
                 image={post.user?.avatarUrl}
                 isLiked={post.isLiked}
                 isFather={!post.parent}
+                isMounted={isMounted}
                 navigation={navigation}
                 parent={parentId}
                 title={post.title}

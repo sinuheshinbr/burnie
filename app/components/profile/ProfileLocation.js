@@ -8,7 +8,11 @@ const ProfileLocation = ({ city }) => {
   return (
     <View style={styles.container}>
       <Entypo name="location-pin" size={18} color={colors.danger} />
-      {city && <AppText style={styles.text}>{city}</AppText>}
+      {city && (
+        <AppText numberOfLines={1} style={styles.text}>
+          {city}
+        </AppText>
+      )}
     </View>
   )
 }

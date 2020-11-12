@@ -9,7 +9,14 @@ import likesApi from '../../api/likes'
 import postsApi from '../../api/posts'
 import useApi from '../../hooks/useApi'
 
-const EditPostButton = ({ _id, parentId, isLiked, isFather, setIsliked }) => {
+const EditPostButton = ({
+  _id,
+  parentId,
+  isLiked,
+  isFather,
+  isMounted,
+  setIsliked
+}) => {
   const createLike = useApi(likesApi.createLike)
   const deleteLike = useApi(likesApi.deleteLike)
   const incrementLikes = useApi(postsApi.incrementLikes)
@@ -22,7 +29,7 @@ const EditPostButton = ({ _id, parentId, isLiked, isFather, setIsliked }) => {
   const handleClick = async () => {
     const jwt = await authStorage.getToken()
     if (isLiked) {
-      setIsliked(false)
+      if (isMounted) setIsliked(false)
       deleteLike.request(userId, _id, jwt)
       if (isFather) {
         incrementLikes.request(userId, jwt, _id, -1)
@@ -30,7 +37,7 @@ const EditPostButton = ({ _id, parentId, isLiked, isFather, setIsliked }) => {
         incrementLikes.request(userId, jwt, parentId, -1)
       }
     } else {
-      setIsliked(true)
+      if (isMounted) setIsliked(true)
       createLike.request(userId, _id, jwt)
       if (isFather) {
         incrementLikes.request(userId, jwt, _id, 1)
